@@ -1,9 +1,9 @@
 import { memo } from "react";
 import { Document, Page } from "react-pdf";
-import { FileText } from "lucide-react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
+import { CustomNodeTypes, widths } from "@/app/constants";
 
-const FIXED_WIDTH = 300;
+const nodeType = CustomNodeTypes.YOUTUBE;
 
 function PDFNode({
   data,
@@ -16,32 +16,11 @@ function PDFNode({
   };
 }) {
   return (
-    <CustomNodeContainer type="pdf" title={data.name}>
+    <CustomNodeContainer type={nodeType} title={data.name}>
       <Document file={data.path}>
-        <Page pageNumber={1} width={FIXED_WIDTH - 24} />
+        <Page pageNumber={1} width={widths[nodeType] - 24} />
       </Document>
     </CustomNodeContainer>
-  );
-
-  return (
-    <>
-      <div
-        className="flex flex-col gap-4 bg-slate-50 p-4 rounded-md"
-        style={{
-          width: `${FIXED_WIDTH + 8}px`,
-        }}
-      >
-        <div className="flex flex-row gap-2 align-middle">
-          <FileText />
-
-          <p className="">{data.name}</p>
-        </div>
-
-        <Document file={data.path}>
-          <Page pageNumber={1} width={FIXED_WIDTH - 24} />
-        </Document>
-      </div>
-    </>
   );
 }
 

@@ -1,6 +1,14 @@
-import { widths, icons } from "@/app/constants";
+import { widths, icons, CustomNodeTypes } from "@/app/constants";
 
-const CustomNodeContainer = ({ children, type, title }) => {
+const CustomNodeContainer = ({
+  children,
+  type,
+  title,
+}: {
+  children: React.ReactNode;
+  type: CustomNodeTypes;
+  title: string;
+}) => {
   const Icon = icons[type];
 
   return (

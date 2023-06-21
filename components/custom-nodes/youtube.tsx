@@ -1,6 +1,8 @@
 import Youtube from "react-youtube";
 import CustomNodeContainer from "@/components/custom-nodes/container";
-import { widths } from "@/app/constants";
+import { widths, CustomNodeTypes } from "@/app/constants";
+
+const nodeType = CustomNodeTypes.YOUTUBE;
 
 const YoutubeNode = ({
   data,
@@ -11,11 +13,11 @@ const YoutubeNode = ({
   };
 }) => {
   return (
-    <CustomNodeContainer type="youtube" title={data.name}>
+    <CustomNodeContainer type={nodeType} title={data.name}>
       <Youtube
         videoId={data.id}
         opts={{
-          width: `${widths.youtube - 24}`,
+          width: `${widths[nodeType] - 24}`,
         }}
       />
     </CustomNodeContainer>
