@@ -1,9 +1,9 @@
-import { FileText, MessageSquare, Youtube } from "lucide-react";
+import { FileText, MessagesSquare, Youtube } from "lucide-react";
 
 export enum CustomNodeTypes {
-  PDF,
-  YOUTUBE,
-  CHAT,
+  PDF = "pdf",
+  YOUTUBE = "youtube",
+  CHAT = "chat",
 }
 
 export const widths = {
@@ -15,5 +15,5 @@ export const widths = {
 export const icons = {
   [CustomNodeTypes.PDF]: FileText,
   [CustomNodeTypes.YOUTUBE]: Youtube,
-  [CustomNodeTypes.CHAT]: MessageSquare,
+  [CustomNodeTypes.CHAT]: MessagesSquare,
 };

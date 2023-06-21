@@ -29,7 +29,7 @@ const initialNodes: Node[] = [
   {
     id: "1",
     position: { x: 50, y: 70 },
-    type: [CustomNodeTypes.YOUTUBE],
+    type: CustomNodeTypes.YOUTUBE,
     data: {
       id: "lGaQWIV8PZ4",
       name: "Sal Khan's thoughts on mastery learning",
@@ -38,7 +38,7 @@ const initialNodes: Node[] = [
   {
     id: "2",
     position: { x: 650, y: 70 },
-    type: [CustomNodeTypes.CHAT],
+    type: CustomNodeTypes.CHAT,
     data: {
       name: "Trying to understand Sal's thoughts on mastery learning",
     },
@@ -46,7 +46,7 @@ const initialNodes: Node[] = [
   {
     id: "3",
     position: { x: 1350, y: 50 },
-    type: [CustomNodeTypes.PDF],
+    type: CustomNodeTypes.PDF,
     data: {
       path: "/The-Future-of-Educational-Assessment-White-Paper.pdf",
       name: "The Future of Educational Assessment",
@@ -55,7 +55,7 @@ const initialNodes: Node[] = [
 ];
 const initialEdges: Edge[] = [];
 
-const nodeTypes: NodeTypes = {
+const nodeTypes = {
   [CustomNodeTypes.PDF]: PDFNode,
   [CustomNodeTypes.YOUTUBE]: YoutubeNode,
   [CustomNodeTypes.CHAT]: ChatNode,

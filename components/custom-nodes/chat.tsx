@@ -4,18 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 
-const nodeType = CustomNodeTypes.CHAT;
-
 const ChatNode = ({
   data,
+  type,
 }: {
+  type: CustomNodeTypes;
   data: {
     id: string;
     name: string;
   };
 }) => {
   return (
-    <CustomNodeContainer type={nodeType} title={data.name}>
+    <CustomNodeContainer type={type} title={data.name}>
       <div className="flex gap-2">
         <Input placeholder="Type your message here" className="bg-white" />
         <Button>

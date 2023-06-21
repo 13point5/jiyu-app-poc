@@ -18,8 +18,8 @@ const CustomNodeContainer = ({
         width: `${widths[type] + 8}px`,
       }}
     >
-      <div className="flex flex-row gap-2 align-middle">
-        <Icon />
+      <div className="flex flex-row gap-2">
+        <Icon size={24} />
 
         <p className="">{title}</p>
       </div>
