@@ -1,5 +1,7 @@
 "use client";
 
+import VanillaApp from "@/app/vanilla";
+
 export default function Home() {
-  return <div>Jiyu</div>;
+  return <VanillaApp />;
 }
