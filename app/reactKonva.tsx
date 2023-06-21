@@ -1,13 +1,15 @@
 import * as React from "react";
-import { Stage, Layer, Line, Text } from "react-konva";
+import { Stage, Layer, Line, Text, Rect, Group } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
+import { Document, Page } from "react-pdf";
+import { Html } from "react-konva-utils";
 
 type LineType = {
   tool: string;
   points: number[];
 };
 
-const VanillaApp = () => {
+const ReactKonvaApp = () => {
   const [tool, setTool] = React.useState("pen");
   const [lines, setLines] = React.useState<LineType[]>([]);
   const isDrawing = React.useRef(false);
@@ -61,6 +63,22 @@ const VanillaApp = () => {
       >
         <Layer>
           <Text text="Just start drawing" x={5} y={30} />
+
+          <Group
+            draggable
+            onDragStart={() => {
+              console.log("dragstart");
+            }}
+          >
+            <Html divProps={{ style: { pointerEvents: "none" } }}>
+              <div style={{}}>
+                <Document file="/The-Future-of-Educational-Assessment-White-Paper.pdf">
+                  <Page pageNumber={1} width={200} />
+                </Document>
+              </div>
+            </Html>
+          </Group>
+
           {lines.map((line, i) => (
             <Line
               key={i}
@@ -90,4 +108,4 @@ const VanillaApp = () => {
   );
 };
 
-export default VanillaApp;
+export default ReactKonvaApp;

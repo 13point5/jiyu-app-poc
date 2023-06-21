@@ -1,7 +1,5 @@
 "use client";
 
-import "./pdf";
-
 import PDFNode from "@/components/custom-nodes/pdf";
 
 import React, { useCallback, useState } from "react";

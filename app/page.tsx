@@ -1,7 +1,9 @@
 "use client";
 
-import VanillaApp from "@/app/vanilla";
+import "./pdf";
+
+import ReactKonvaApp from "@/app/reactKonva";
 
 export default function Home() {
-  return <VanillaApp />;
+  return <ReactKonvaApp />;
 }
