@@ -2,8 +2,8 @@
 
 import "./pdf";
 
-import ReactKonvaApp from "@/app/reactKonva";
+import VanillaApp from "@/app/vanilla";
 
 export default function Home() {
-  return <ReactKonvaApp />;
+  return <VanillaApp />;
 }
