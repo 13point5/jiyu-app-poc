@@ -29,7 +29,10 @@ const initialNodes: Node[] = [
     id: "3",
     position: { x: 200, y: 200 },
     type: "pdf",
-    data: { path: "/The-Future-of-Educational-Assessment-White-Paper.pdf" },
+    data: {
+      path: "/The-Future-of-Educational-Assessment-White-Paper.pdf",
+      name: "The Future of Educational Assessment",
+    },
   },
 ];
 const initialEdges: Edge[] = [];

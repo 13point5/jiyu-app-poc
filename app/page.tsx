@@ -2,8 +2,8 @@
 
 import "./pdf";
 
-import VanillaApp from "@/app/vanilla";
+import ReactFlowApp from "@/app/reactFlow";
 
 export default function Home() {
-  return <VanillaApp />;
+  return <ReactFlowApp />;
 }
