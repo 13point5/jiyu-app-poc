@@ -1,13 +1,12 @@
 import { memo } from "react";
 import { Document, Page } from "react-pdf";
 import { FileText } from "lucide-react";
+import CustomNodeContainer from "@/components/custom-nodes/container";
 
 const FIXED_WIDTH = 300;
 
 function PDFNode({
-  id,
   data,
-  selected,
 }: {
   id: string;
   selected: boolean;
@@ -16,6 +15,14 @@ function PDFNode({
     path: string;
   };
 }) {
+  return (
+    <CustomNodeContainer type="pdf" title={data.name}>
+      <Document file={data.path}>
+        <Page pageNumber={1} width={FIXED_WIDTH - 24} />
+      </Document>
+    </CustomNodeContainer>
+  );
+
   return (
     <>
       <div

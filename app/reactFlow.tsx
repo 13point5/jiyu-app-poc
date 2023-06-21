@@ -1,6 +1,7 @@
 "use client";
 
 import PDFNode from "@/components/custom-nodes/pdf";
+import YoutubeNode from "@/components/custom-nodes/youtube";
 
 import React, { useCallback, useState } from "react";
 import ReactFlow, {
@@ -23,8 +24,15 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 
 const initialNodes: Node[] = [
-  { id: "1", position: { x: 50, y: 50 }, data: { label: "1" } },
-  { id: "2", position: { x: 100, y: 100 }, data: { label: "2" } },
+  {
+    id: "1",
+    position: { x: 50, y: 50 },
+    type: "youtube",
+    data: {
+      id: "lGaQWIV8PZ4",
+      name: "Sal Khan's thoughts on mastery learning",
+    },
+  },
   {
     id: "3",
     position: { x: 200, y: 200 },
@@ -39,6 +47,7 @@ const initialEdges: Edge[] = [];
 
 const nodeTypes: NodeTypes = {
   pdf: PDFNode,
+  youtube: YoutubeNode,
 };
 
 export default function ReactFlowApp() {
