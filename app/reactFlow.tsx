@@ -94,6 +94,7 @@ export default function ReactFlowApp() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        panOnDrag={false}
       >
         <Panel position="top-left">
           <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
