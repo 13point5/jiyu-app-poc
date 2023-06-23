@@ -25,7 +25,6 @@ const ChatNode = ({
           <Button>
             <Send size={16} />
           </Button>
-          M
         </div>
       </div>
     </CustomNodeContainer>
