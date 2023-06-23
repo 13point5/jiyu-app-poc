@@ -32,6 +32,9 @@ import Toolbar from "@/components/Utils/Toolbar";
 import { DEFAULT_BLOCK_DIMS } from "./constants";
 import { useCanvasStore } from "./store";
 
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
+
 function Canvas() {
   const [canvasState, setState] = useState<CanvasState>({
     mode: CanvasMode.None,
@@ -363,7 +366,7 @@ function Canvas() {
         <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
 
         <svg
-          className="w-screen h-screen"
+          className={`${inter.className} w-screen h-screen`}
           onWheel={onWheel}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
