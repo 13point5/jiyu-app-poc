@@ -14,12 +14,19 @@ const YoutubeNode = ({
 }) => {
   return (
     <CustomNodeContainer type={type} title={data.name}>
-      <Youtube
+      <iframe
+        width="300"
+        // height="720"
+        src="https://www.youtube.com/embed/lGaQWIV8PZ4?start=7&end=11;rel=0&amp;showinfo=0"
+        frameBorder="0"
+        allowFullScreen
+      ></iframe>
+      {/* <Youtube
         videoId={data.id}
         opts={{
           width: `${widths[type] - 24}`,
         }}
-      />
+      /> */}
     </CustomNodeContainer>
   );
 };
