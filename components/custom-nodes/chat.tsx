@@ -1,9 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
 import { CustomNodeTypes } from "@/app/constants";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
+import axios from "axios";
 
 type MessageType = {
   role: OpenAIRoles.USER | OpenAIRoles.ASSISTANT;
@@ -21,21 +24,36 @@ const ChatNode = ({
   };
 }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
     setMessages((prev) => [
       ...prev,
       {
         role: OpenAIRoles.USER,
-        content: "Hi",
-      },
-      {
-        role: OpenAIRoles.ASSISTANT,
-        content: "Hi how can i help",
+        content: query,
       },
     ]);
+    setQuery("");
+
+    const res = await axios.post("http://localhost:8000/chat", {
+      message: query,
+    });
+    console.log("res", res);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: OpenAIRoles.ASSISTANT,
+        content: res.data.result,
+      },
+    ]);
+
+    setLoading(false);
   };
 
   return (
@@ -54,9 +72,18 @@ const ChatNode = ({
           </div>
         )}
         <form onSubmit={handleSubmit} className="flex gap-2">
-          <Input placeholder="Type your message here" className="bg-white" />
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Type your message here"
+            className="bg-white"
+          />
           <Button type="submit">
-            <Send size={16} />
+            {loading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Send size={16} />
+            )}
           </Button>
         </form>
       </div>

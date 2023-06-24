@@ -89,14 +89,12 @@ export default function ReactFlowApp() {
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => {
-      console.log("onNodesChange", changes);
       setNodes((nds) => applyNodeChanges(changes, nds));
     },
     [setNodes]
   );
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => {
-      console.log("onEdgesChange", changes);
       setEdges((eds) => applyEdgeChanges(changes, eds));
     },
     [setEdges]
