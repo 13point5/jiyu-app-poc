@@ -5,7 +5,7 @@ import { CustomNodeTypes } from "@/app/constants";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-function NoteNode({ type, ...restProps }: { type: CustomNodeTypes }) {
+function NoteNode({ type, data, ...restProps }: { type: CustomNodeTypes }) {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -17,7 +17,7 @@ function NoteNode({ type, ...restProps }: { type: CustomNodeTypes }) {
   });
 
   return (
-    <CustomNodeContainer type={type}>
+    <CustomNodeContainer type={type} title={data.name}>
       <EditorContent
         style={{
           height: "200px",

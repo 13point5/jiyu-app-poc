@@ -25,6 +25,14 @@ const initialNodes: Node[] = [
       name: 'LangChain "OpenAI functions" Webinar',
     },
   },
+  {
+    id: "2",
+    position: { x: 750, y: 70 },
+    type: CustomNodeTypes.NOTE,
+    data: {
+      name: "Notes on OpenAI Functions",
+    },
+  },
   // {
   //   id: "2",
   //   position: { x: 650, y: 70 },
@@ -100,6 +108,9 @@ const useStore = create<RFState>((set, get) => ({
         return n;
       }),
     });
+  },
+  getNodeById: (id: string) => {
+    return get().nodes.find((node) => node.id === id);
   },
 }));
 
