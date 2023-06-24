@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
-import { CustomNodeTypes } from "@/app/constants";
+import { CustomNodeTypes, widths } from "@/app/constants";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, Loader2 } from "lucide-react";
 import axios from "axios";
+import { nanoid } from "nanoid";
+
+import useStore from "@/app/reactFlowStore";
 
 type MessageType = {
   role: OpenAIRoles.USER | OpenAIRoles.ASSISTANT;
@@ -16,6 +19,9 @@ type MessageType = {
 const ChatNode = ({
   data,
   type,
+  xPos,
+  yPos,
+  ...restProps
 }: {
   type: CustomNodeTypes;
   data: {
@@ -23,9 +29,12 @@ const ChatNode = ({
     name: string;
   };
 }) => {
+  const nodeRef = useRef();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+
+  const addNode = useStore((state) => state.addNode);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,12 +62,29 @@ const ChatNode = ({
       },
     ]);
 
+    const segments = JSON.parse(res.data.source_documents[0].metadata.segments);
+    segments?.forEach((doc, docIndex) => {
+      addNode({
+        id: nanoid(),
+        position: {
+          x: xPos + docIndex * widths[CustomNodeTypes.YOUTUBE] + 100,
+          y: yPos + nodeRef.current.offsetHeight + 60,
+        },
+        type: CustomNodeTypes.YOUTUBE,
+        data: {
+          id: "LxI0iofzKWA",
+          start: doc.start,
+          end: doc.end,
+        },
+      });
+    });
+
     setLoading(false);
   };
 
   return (
     <CustomNodeContainer type={type} title={data.name || "Chat"}>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2" ref={nodeRef}>
         {messages.length > 0 && (
           <div className="flex flex-col gap-0 my-3">
             {messages.map((message, messageIndex) => (

@@ -15,16 +15,7 @@ import ReactFlow, {
   Controls,
   Background,
   BackgroundVariant,
-  addEdge,
-  Node,
-  Edge,
-  applyNodeChanges,
-  applyEdgeChanges,
-  OnConnect,
-  OnNodesChange,
-  OnEdgesChange,
   Panel,
-  NodeTypes,
 } from "reactflow";
 import {
   ContextMenu,
@@ -46,76 +37,36 @@ import {
 import "reactflow/dist/style.css";
 import { FileText, MessagesSquare, StickyNote, Youtube } from "lucide-react";
 
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    position: { x: 50, y: 70 },
-    type: CustomNodeTypes.YOUTUBE,
-    data: {
-      id: "LxI0iofzKWA",
-      name: 'LangChain "OpenAI functions" Webinar',
-    },
-  },
-  // {
-  //   id: "2",
-  //   position: { x: 650, y: 70 },
-  //   type: CustomNodeTypes.CHAT,
-  //   data: {
-  //     name: "Chat",
-  //   },
-  // },
-  // {
-  //   id: "3",
-  //   position: { x: 1350, y: 50 },
-  //   type: CustomNodeTypes.PDF,
-  //   data: {
-  //     path: "/The-Future-of-Educational-Assessment-White-Paper.pdf",
-  //     name: "The Future of Educational Assessment",
-  //   },
-  // },
-];
-const initialEdges: Edge[] = [];
-
 const nodeTypes = {
   [CustomNodeTypes.PDF]: PDFNode,
   [CustomNodeTypes.YOUTUBE]: YoutubeNode,
   [CustomNodeTypes.CHAT]: ChatNode,
   [CustomNodeTypes.NOTE]: NoteNode,
 };
+import { shallow } from "zustand/shallow";
+import useStore from "./reactFlowStore";
+
+const selector = (state) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+  addNode: state.addNode,
+});
 
 export default function ReactFlowApp() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
-  const onNodesChange: OnNodesChange = useCallback(
-    (changes) => {
-      setNodes((nds) => applyNodeChanges(changes, nds));
-    },
-    [setNodes]
-  );
-  const onEdgesChange: OnEdgesChange = useCallback(
-    (changes) => {
-      setEdges((eds) => applyEdgeChanges(changes, eds));
-    },
-    [setEdges]
-  );
-
-  const onConnect: OnConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
+  const { nodes, edges, addNode, onNodesChange, onEdgesChange, onConnect } =
+    useStore(selector, shallow);
 
   const handleAddBlock = (e: MouseEvent, blockType: CustomNodeTypes) => {
     console.log({ x: e.clientX, y: e.clientY });
-    setNodes((prev) => [
-      ...prev,
-      {
-        id: nanoid(),
-        position: { x: e.clientX, y: e.clientY },
-        type: blockType,
-        data: {},
-      },
-    ]);
+    addNode({
+      id: nanoid(),
+      position: { x: e.clientX, y: e.clientY },
+      type: blockType,
+      data: {},
+    });
   };
 
   return (
