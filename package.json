@@ -13,6 +13,9 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-menubar": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@tiptap/pm": "^2.0.3",
+    "@tiptap/react": "^2.0.3",
+    "@tiptap/starter-kit": "^2.0.3",
     "@tldraw/tldraw": "^2.0.0-alpha.12",
     "@types/node": "20.3.1",
     "@types/ramda": "^0.29.2",
@@ -25,6 +28,7 @@
     "eslint-config-next": "13.4.6",
     "konva": "^9.2.0",
     "lucide-react": "^0.252.0",
+    "nanoid": "^4.0.2",
     "next": "13.4.6",
     "perfect-freehand": "^1.2.0",
     "postcss": "8.4.24",
@@ -45,6 +49,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "raw-loader": "^4.0.2"
   }
 }

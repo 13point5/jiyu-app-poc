@@ -1,9 +1,11 @@
 "use client";
 
+import { nanoid } from "nanoid";
 import { CustomNodeTypes } from "@/app/constants";
 import ChatNode from "@/components/custom-nodes/chat";
 import PDFNode from "@/components/custom-nodes/pdf";
 import YoutubeNode from "@/components/custom-nodes/youtube";
+import NoteNode from "@/components/custom-nodes/note";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,7 +44,7 @@ import {
 } from "@/components/ui/context-menu";
 
 import "reactflow/dist/style.css";
-import { FileText, MessagesSquare, Youtube } from "lucide-react";
+import { FileText, MessagesSquare, StickyNote, Youtube } from "lucide-react";
 
 const initialNodes: Node[] = [
   {
@@ -78,6 +80,7 @@ const nodeTypes = {
   [CustomNodeTypes.PDF]: PDFNode,
   [CustomNodeTypes.YOUTUBE]: YoutubeNode,
   [CustomNodeTypes.CHAT]: ChatNode,
+  [CustomNodeTypes.NOTE]: NoteNode,
 };
 
 export default function ReactFlowApp() {
@@ -104,17 +107,15 @@ export default function ReactFlowApp() {
     [setEdges]
   );
 
-  const handleAddChatBlock = (e) => {
+  const handleAddBlock = (e: MouseEvent, blockType: CustomNodeTypes) => {
     console.log({ x: e.clientX, y: e.clientY });
     setNodes((prev) => [
       ...prev,
       {
-        id: "3",
+        id: nanoid(),
         position: { x: e.clientX, y: e.clientY },
-        type: CustomNodeTypes.CHAT,
-        data: {
-          name: "Chat",
-        },
+        type: blockType,
+        data: {},
       },
     ]);
   };
@@ -143,10 +144,17 @@ export default function ReactFlowApp() {
         </ContextMenuTrigger>
         <ContextMenuContent className={`${inter.className} w-64`}>
           <ContextMenuItem
-            onClick={handleAddChatBlock}
+            onClick={(e) => handleAddBlock(e, CustomNodeTypes.CHAT)}
             className="cursor-pointer"
           >
             <MessagesSquare size={16} className="mr-3" /> Chat
+          </ContextMenuItem>
+
+          <ContextMenuItem
+            className="cursor-pointer"
+            onClick={(e) => handleAddBlock(e, CustomNodeTypes.NOTE)}
+          >
+            <StickyNote size={16} className="mr-3" /> Note
           </ContextMenuItem>
 
           <ContextMenuSeparator />
