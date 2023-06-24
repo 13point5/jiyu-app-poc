@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import { create } from "zustand";
 import {
   Connection,
@@ -74,6 +75,30 @@ const useStore = create<RFState>((set, get) => ({
   addNode: (node: Node) => {
     set({
       nodes: [...get().nodes, node],
+    });
+  },
+  updateNodeData: (id: string, data: Object) => {
+    const node = get().nodes.find((n) => n.id === id);
+    if (!node) return;
+
+    const updatedNode = R.mergeDeepRight(node, { data });
+
+    set({
+      nodes: get().nodes.map((n) => (n.id === id ? updatedNode : n)),
+    });
+  },
+  setSourcesVisibility: (id: string, show: boolean) => {
+    set({
+      nodes: get().nodes.map((n) => {
+        if (n?.responseId === id) {
+          return {
+            ...n,
+            hidden: !show,
+          };
+        }
+
+        return n;
+      }),
     });
   },
 }));

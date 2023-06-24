@@ -5,13 +5,14 @@ import CustomNodeContainer from "@/components/custom-nodes/container";
 import { CustomNodeTypes, widths } from "@/app/constants";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Info, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import { nanoid } from "nanoid";
 
 import useStore from "@/app/reactFlowStore";
 
 type MessageType = {
+  id: string;
   role: OpenAIRoles.USER | OpenAIRoles.ASSISTANT;
   content: string;
 };
@@ -21,16 +22,28 @@ const ChatNode = ({
   type,
   xPos,
   yPos,
-  ...restProps
 }: {
   type: CustomNodeTypes;
+  xPos: number;
+  yPos: number;
   data: {
     id: string;
     name: string;
   };
 }) => {
-  const nodeRef = useRef();
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const nodeRef = useRef(null);
+  const [messages, setMessages] = useState<MessageType[]>([
+    // {
+    //   id: nanoid(),
+    //   role: OpenAIRoles.USER,
+    //   content: "Hello! I'm OpenAI's GPT-3 chatbot. Ask me anything!",
+    // },
+    // {
+    //   id: nanoid(),
+    //   role: OpenAIRoles.ASSISTANT,
+    //   content: "Hello! I'm OpenAI's GPT-3 chatbot. Ask me anything!",
+    // },
+  ]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -43,6 +56,7 @@ const ChatNode = ({
     setMessages((prev) => [
       ...prev,
       {
+        id: nanoid(),
         role: OpenAIRoles.USER,
         content: query,
       },
@@ -54,21 +68,26 @@ const ChatNode = ({
     });
     console.log("res", res);
 
+    const responseId = nanoid();
+
     setMessages((prev) => [
       ...prev,
       {
+        id: responseId,
         role: OpenAIRoles.ASSISTANT,
         content: res.data.result,
       },
     ]);
 
     const segments = JSON.parse(res.data.source_documents[0].metadata.segments);
-    segments?.forEach((doc, docIndex) => {
+    segments?.forEach((doc, docIndex: number) => {
       addNode({
         id: nanoid(),
+        hidden: true,
+        responseId,
         position: {
-          x: xPos + docIndex * widths[CustomNodeTypes.YOUTUBE] + 100,
-          y: yPos + nodeRef.current.offsetHeight + 60,
+          x: xPos + docIndex * (widths[CustomNodeTypes.YOUTUBE] + 100),
+          y: yPos + (nodeRef?.current?.offsetHeight || 0) + 300,
         },
         type: CustomNodeTypes.YOUTUBE,
         data: {
@@ -89,7 +108,8 @@ const ChatNode = ({
           <div className="flex flex-col gap-0 my-3">
             {messages.map((message, messageIndex) => (
               <Message
-                key={messageIndex}
+                key={message.id}
+                id={message.id}
                 role={message.role}
                 content={message.content}
                 isLast={messageIndex === messages.length - 1}
@@ -124,19 +144,41 @@ export enum OpenAIRoles {
   ASSISTANT = "assistant",
 }
 
-type Props = {
-  role: OpenAIRoles.USER | OpenAIRoles.ASSISTANT;
-  content: string | React.ReactNode;
+type Props = MessageType & {
   isLast?: boolean;
 };
 
-const Message = ({ role, content, isLast = false }: Props) => {
+const Message = ({ id, role, content, isLast = false }: Props) => {
+  const [showSources, setShowSources] = useState(false);
+  const setSourcesVisibility = useStore((state) => state.setSourcesVisibility);
+
+  const toggleSources = () => {
+    setSourcesVisibility(id, !showSources);
+    setShowSources(!showSources);
+  };
+
   return (
     <div className={`flex gap-3`}>
       <span>{role === OpenAIRoles.ASSISTANT ? "🤖" : "👤"}</span>
 
       <div className="w-full">
         <p>{content}</p>
+
+        {role === OpenAIRoles.ASSISTANT && (
+          <Button
+            onClick={toggleSources}
+            size="sm"
+            variant="link"
+            className="p-0 mt-3 bg-transparent text-slate-500"
+          >
+            Sources
+            {showSources ? (
+              <EyeOff className="ml-2" size={16} />
+            ) : (
+              <Eye className="ml-2" size={16} />
+            )}
+          </Button>
+        )}
 
         {!isLast && <div className=" bg-slate-300 h-[1px] w-full my-4"></div>}
       </div>

@@ -9,12 +9,12 @@ const getURL = (id: string, start?: number, end?: number) => {
   }
 
   if (start) {
-    url += `&start=${start}`;
+    url += `&start=${Math.floor(start)}`;
   }
 
-  if (end) {
-    url += `&end=${end}`;
-  }
+  // if (end) {
+  //   url += `&end=${Math.ceil(end)}`;
+  // }
 
   return url;
 };
