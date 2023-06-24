@@ -13,7 +13,7 @@ const CustomNodeContainer = ({
 
   return (
     <div
-      className="flex flex-col gap-4 bg-slate-200 p-4 rounded-md"
+      className="flex flex-col gap-4 bg-slate-100 p-4 rounded-md shadow-md"
       style={{
         width: `${widths[type] + 8}px`,
       }}

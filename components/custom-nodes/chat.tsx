@@ -17,10 +17,12 @@ const ChatNode = ({
   return (
     <CustomNodeContainer type={type} title={data.name}>
       <div className="flex flex-col gap-2">
-        <Message role={OpenAIRoles.ASSISTANT} content="Hello there!" />
-        <Message role={OpenAIRoles.USER} content="Hi!" />
+        <div className="flex flex-col gap-0 mt-3">
+          <Message role={OpenAIRoles.ASSISTANT} content="Hello there!" />
+          <Message role={OpenAIRoles.USER} content="Hi!" isLast />
+        </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-3">
           <Input placeholder="Type your message here" className="bg-white" />
           <Button>
             <Send size={16} />
@@ -41,18 +43,19 @@ export enum OpenAIRoles {
 type Props = {
   role: OpenAIRoles.USER | OpenAIRoles.ASSISTANT;
   content: string | React.ReactNode;
+  isLast?: boolean;
 };
 
-const Message = ({ role, content }: Props) => {
+const Message = ({ role, content, isLast = false }: Props) => {
   return (
-    <div
-      className={`flex gap-1 px-1 py-2 bg-${
-        role === OpenAIRoles.USER ? "white" : "gray-50"
-      }`}
-    >
+    <div className={`flex gap-3`}>
       <span>{role === OpenAIRoles.ASSISTANT ? "🤖" : "👤"}</span>
 
-      <p>{content}</p>
+      <div className="w-full">
+        <p>{content}</p>
+
+        {!isLast && <div className=" bg-slate-300 h-[1px] w-full my-4"></div>}
+      </div>
     </div>
   );
 };
