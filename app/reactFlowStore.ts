@@ -18,7 +18,7 @@ import { CustomNodeTypes } from "@/app/constants";
 const initialNodes: Node[] = [
   {
     id: "k3u46gu4bg",
-    position: { x: 50, y: 70 },
+    position: { x: 50, y: 100 },
     type: CustomNodeTypes.YOUTUBE,
     data: {
       id: "LxI0iofzKWA",
@@ -26,8 +26,17 @@ const initialNodes: Node[] = [
     },
   },
   {
+    id: "blala",
+    position: { x: 900, y: 100 },
+    type: CustomNodeTypes.YOUTUBE,
+    data: {
+      id: "GrCFyyyAxCU",
+      name: "LangChain SQL Webinar",
+    },
+  },
+  {
     id: "2",
-    position: { x: 750, y: 70 },
+    position: { x: 70, y: 500 },
     type: CustomNodeTypes.NOTE,
     data: {
       name: "Notes on OpenAI Functions",
@@ -95,13 +104,26 @@ const useStore = create<RFState>((set, get) => ({
       nodes: get().nodes.map((n) => (n.id === id ? updatedNode : n)),
     });
   },
-  setSourcesVisibility: (id: string, show: boolean) => {
+  setSourcesVisibility: (id: string, blockId: string, show: boolean) => {
+    const nodes = get().nodes;
+    console.log("id", id);
+    console.log("blockId", blockId);
+    console.log("nodes", nodes);
+    const sourceNode = nodes.find((n) => n.id === blockId);
+    if (!sourceNode) return;
+
+    console.log("sourceNode", sourceNode);
+
     set({
       nodes: get().nodes.map((n) => {
         if (n?.responseId === id) {
           return {
             ...n,
             hidden: !show,
+            position: {
+              x: sourceNode.position.x,
+              y: sourceNode.position.y + sourceNode.height + 100,
+            },
           };
         }
 

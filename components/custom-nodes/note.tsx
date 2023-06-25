@@ -12,6 +12,8 @@ const noteConfig = R.mergeDeepRight(editorConfig, {
       class: "h-full w-full prose prose-sm focus:outline-none bg-transparent",
     },
   },
+  content:
+    "<h1>OpenAI Functions</h1><p>You can <strong>have</strong> <strong><em>rich</em></strong> text here with</p><ul><li><p>bullet points</p></li><li><p>and more...</p></li></ul>",
 });
 
 function NoteNode({ type, data, ...restProps }: { type: CustomNodeTypes }) {

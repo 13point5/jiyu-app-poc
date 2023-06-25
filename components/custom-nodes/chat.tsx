@@ -3,10 +3,8 @@
 import { useState, useRef } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
 import { CustomNodeTypes, widths } from "@/app/constants";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, Loader2, Info, Eye, EyeOff } from "lucide-react";
-import axios from "axios";
 import { nanoid } from "nanoid";
 import editorConfig from "@/app/tiptapConfig";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -27,18 +25,20 @@ const ChatNode = ({
   type,
   xPos,
   yPos,
+  id,
 }: {
   type: CustomNodeTypes;
   xPos: number;
   yPos: number;
   data: {
-    id: string;
     name: string;
   };
 }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState(false);
+
+  console.log("messages", messages);
 
   const editor = useEditor({
     ...editorConfig,
@@ -49,57 +49,79 @@ const ChatNode = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await chatCall();
-    return;
+    // await chatCall();
+    // return;
 
     setLoading(true);
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: nanoid(),
-        role: OpenAIRoles.USER,
-        content: editor?.getHTML() || "",
-      },
-    ]);
 
-    const formattedQuery = formatHTMLWithMentions(editor?.getHTML() || "");
+    try {
+      const htmlContent = editor?.getHTML() || "";
 
-    const res = await axios.post("http://localhost:8000/chat", {
-      message: formattedQuery,
-    });
-    console.log("res", res);
-
-    const responseId = nanoid();
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: responseId,
-        role: OpenAIRoles.ASSISTANT,
-        content: res.data.result,
-      },
-    ]);
-
-    const segments = JSON.parse(res.data.source_documents[0].metadata.segments);
-    segments?.forEach((doc, docIndex: number) => {
-      addNode({
-        id: nanoid(),
-        hidden: true,
-        responseId,
-        position: {
-          x: xPos + docIndex * (widths[CustomNodeTypes.YOUTUBE] + 100),
-          y: yPos + (nodeRef?.current?.clientHeight || 0) + 300,
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: nanoid(),
+          role: OpenAIRoles.USER,
+          content: htmlContent,
         },
-        type: CustomNodeTypes.YOUTUBE,
-        data: {
-          id: "LxI0iofzKWA",
-          start: doc.start,
-          end: doc.end,
+      ]);
+
+      editor?.commands.clearContent();
+
+      const formattedQuery = formatHTMLWithMentions(htmlContent);
+
+      // const res = await axios.post("http://localhost:8000/chat", {
+      //   message: formattedQuery,
+      // });
+      const res = await chatCall(formattedQuery);
+      console.log("res", res);
+
+      const responseId = nanoid();
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: responseId,
+          role: OpenAIRoles.ASSISTANT,
+          content: res.output.text,
         },
+      ]);
+
+      // const segments = JSON.parse(res.data.source_documents[0].metadata.segments);
+      const segments = res.output.sourceDocuments[0].metadata.segments;
+      segments?.forEach((doc, docIndex: number) => {
+        addNode({
+          id: nanoid(),
+          hidden: true,
+          responseId,
+          position: {
+            x: xPos + docIndex * (widths[CustomNodeTypes.YOUTUBE] + 100),
+            y: yPos + (nodeRef?.current?.clientHeight || 0) + 300,
+          },
+          type: CustomNodeTypes.YOUTUBE,
+          data: {
+            id: "LxI0iofzKWA",
+            start: doc.start,
+            end: doc.end,
+            sourceText: res.output.sourceDocuments[0].pageContent,
+          },
+        });
       });
-    });
 
-    setLoading(false);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: nanoid(),
+          role: OpenAIRoles.ASSISTANT,
+          content: "Sorry I didn't get that. Can you please rephrase?",
+        },
+      ]);
+    }
   };
 
   return (
@@ -114,6 +136,7 @@ const ChatNode = ({
                 role={message.role}
                 content={message.content}
                 isLast={messageIndex === messages.length - 1}
+                blockId={id}
               />
             ))}
           </div>
@@ -126,7 +149,7 @@ const ChatNode = ({
               width: "100%",
             }}
           />
-          <Button type="submit">
+          <Button type="submit" disabled={loading}>
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
@@ -148,16 +171,26 @@ export enum OpenAIRoles {
 
 type Props = MessageType & {
   isLast?: boolean;
+  blockId: string;
 };
 
-const Message = ({ id, role, content, isLast = false }: Props) => {
-  const editor = useEditor(editorConfig);
+const Message = ({ id, blockId, role, content, isLast = false }: Props) => {
+  const editor = useEditor({
+    ...editorConfig,
+    editorProps: {
+      attributes: {
+        class: "bg-transparent",
+      },
+    },
+    content,
+    editable: false,
+  });
 
   const [showSources, setShowSources] = useState(false);
   const setSourcesVisibility = useStore((state) => state.setSourcesVisibility);
 
   const toggleSources = () => {
-    setSourcesVisibility(id, !showSources);
+    setSourcesVisibility(id, blockId, !showSources);
     setShowSources(!showSources);
   };
 
@@ -168,7 +201,6 @@ const Message = ({ id, role, content, isLast = false }: Props) => {
       <div className="w-full">
         <EditorContent
           editor={editor}
-          content={content}
           style={{
             width: "100%",
           }}

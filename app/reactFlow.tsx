@@ -81,9 +81,9 @@ export default function ReactFlowApp() {
             nodeTypes={nodeTypes}
           >
             <Panel position="top-left">
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                 Jiyu
-              </h4>
+              </h1>
             </Panel>
             <Controls />
             <MiniMap />

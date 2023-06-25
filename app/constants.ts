@@ -10,7 +10,7 @@ export enum CustomNodeTypes {
 export const widths = {
   [CustomNodeTypes.PDF]: 300,
   [CustomNodeTypes.YOUTUBE]: 500,
-  [CustomNodeTypes.CHAT]: 600,
+  [CustomNodeTypes.CHAT]: 700,
   [CustomNodeTypes.NOTE]: 300,
 };
 

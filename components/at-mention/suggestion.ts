@@ -13,6 +13,11 @@ const suggestion = {
         type: CustomNodeTypes.YOUTUBE,
       },
       {
+        id: "blala",
+        label: "LangChain SQL Webinar",
+        type: CustomNodeTypes.YOUTUBE,
+      },
+      {
         id: "2",
         label: "OpenAI Notes",
         type: CustomNodeTypes.NOTE,
