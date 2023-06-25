@@ -17,7 +17,7 @@ import { CustomNodeTypes } from "@/app/constants";
 
 const initialNodes: Node[] = [
   {
-    id: "1",
+    id: "k3u46gu4bg",
     position: { x: 50, y: 70 },
     type: CustomNodeTypes.YOUTUBE,
     data: {

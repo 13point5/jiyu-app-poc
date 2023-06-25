@@ -8,7 +8,7 @@ const suggestion = {
   items: ({ query }) => {
     return [
       {
-        id: "1",
+        id: "k3u46gu4bg",
         label: "LangChain OpenAI Functions Webinar",
         type: CustomNodeTypes.YOUTUBE,
       },
