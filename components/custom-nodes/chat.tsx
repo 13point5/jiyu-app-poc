@@ -14,6 +14,7 @@ import React from "react";
 
 import useStore from "@/app/reactFlowStore";
 import { formatHTMLWithMentions } from "@/app/utils";
+import { chat as chatCall } from "@/dummy/chat";
 
 type MessageType = {
   id: string;
@@ -47,6 +48,9 @@ const ChatNode = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    await chatCall();
+    return;
 
     setLoading(true);
     setMessages((prev) => [
