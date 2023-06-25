@@ -24,7 +24,6 @@ const MentionList = forwardRef((props, ref) => {
     const item = props.items[index];
 
     if (item) {
-      console.log("item", item);
       props.command(item);
     }
   };

@@ -60,7 +60,6 @@ export default function ReactFlowApp() {
     useStore(selector, shallow);
 
   const handleAddBlock = (e: MouseEvent, blockType: CustomNodeTypes) => {
-    console.log({ x: e.clientX, y: e.clientY });
     addNode({
       id: nanoid(),
       position: { x: e.clientX, y: e.clientY },

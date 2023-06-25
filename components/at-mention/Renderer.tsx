@@ -23,9 +23,7 @@ export const Mention = Node.create<MentionOptions>({
     return {
       HTMLAttributes: {},
       addClassName({ node }) {
-        console.log("node", node);
         const actualNode = reactFlowStore.getState().getNodeById(node.attrs.id);
-        console.log("actualNode", actualNode);
         if (!actualNode) return {};
         return {
           class: bgColors[actualNode.type],
@@ -39,7 +37,6 @@ export const Mention = Node.create<MentionOptions>({
         char: "@",
         pluginKey: MentionPluginKey,
         command: ({ editor, range, props }) => {
-          console.log("props", props);
           // increase range.to by one when the next node is of type "text"
           // and starts with a space character
           const nodeAfter = editor.view.state.selection.$to.nodeAfter;

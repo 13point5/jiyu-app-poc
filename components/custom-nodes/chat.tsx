@@ -13,6 +13,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import React from "react";
 
 import useStore from "@/app/reactFlowStore";
+import { formatHTMLWithMentions } from "@/app/utils";
 
 type MessageType = {
   id: string;
@@ -34,21 +35,9 @@ const ChatNode = ({
     name: string;
   };
 }) => {
-  const nodeRef = useRef(null);
-  const [messages, setMessages] = useState<MessageType[]>([
-    // {
-    //   id: nanoid(),
-    //   role: OpenAIRoles.USER,
-    //   content: "Hello! I'm OpenAI's GPT-3 chatbot. Ask me anything!",
-    // },
-    // {
-    //   id: nanoid(),
-    //   role: OpenAIRoles.ASSISTANT,
-    //   content: "Hello! I'm OpenAI's GPT-3 chatbot. Ask me anything!",
-    // },
-  ]);
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("");
 
   const editor = useEditor({
     ...editorConfig,
@@ -59,24 +48,20 @@ const ChatNode = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("editor", editor?.getHTML());
-    console.log("text", editor?.getText());
-    console.log("json", editor?.getJSON());
-    // return;
-
     setLoading(true);
     setMessages((prev) => [
       ...prev,
       {
         id: nanoid(),
         role: OpenAIRoles.USER,
-        content: query,
+        content: editor?.getHTML() || "",
       },
     ]);
-    setQuery("");
+
+    const formattedQuery = formatHTMLWithMentions(editor?.getHTML() || "");
 
     const res = await axios.post("http://localhost:8000/chat", {
-      message: editor?.getHTML(),
+      message: formattedQuery,
     });
     console.log("res", res);
 
@@ -99,7 +84,7 @@ const ChatNode = ({
         responseId,
         position: {
           x: xPos + docIndex * (widths[CustomNodeTypes.YOUTUBE] + 100),
-          y: yPos + (nodeRef?.current?.offsetHeight || 0) + 300,
+          y: yPos + (nodeRef?.current?.clientHeight || 0) + 300,
         },
         type: CustomNodeTypes.YOUTUBE,
         data: {
@@ -130,12 +115,6 @@ const ChatNode = ({
           </div>
         )}
         <form onSubmit={handleSubmit} className="flex gap-2">
-          {/* <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type your message here"
-            className="bg-white"
-          /> */}
           <EditorContent
             editor={editor}
             className="border border-gray-300 rounded-md p-2 bg-white"
