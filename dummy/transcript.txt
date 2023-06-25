@@ -1,0 +1,528 @@
+We've got an awesome agenda today.
+ We're gonna be talking about OpenAI Functions.
+ Released, I guess it was released basically
+ a little bit over a week ago.
+ So very, very recent.
+ Excited to be joined currently by Francisco and Jason.
+ Both been doing a bunch of awesome stuff
+ on LinkedIn, on Twitter, in general.
+ We will also be joined momentarily by Ati from OpenAI
+ as soon as I invite him to the stage.
+ And I think we'll kick things off.
+ Well, okay, so minor logistics.
+ We are recording.
+ And so it will be accessible on the link here afterwards.
+ And then we'll probably also post it on YouTube afterwards.
+ What we'll basically do is we'll have each of the speakers
+ talk for a few minutes about an overview
+ of what they worked on.
+ So Ati from OpenAI will talk in general
+ about the functions endpoint and kind of set the stage
+ for everything that we'll talk about later.
+ Then we'll have Francisco talk about some of his work
+ that he's been doing.
+ Then we'll go over to Jason.
+ And then we'll finish up with David from ActiveLoop,
+ who I will add to the stage momentarily as well.
+ Then basically what we'll do is we'll go
+ into question and answer.
+ So there's a lot to discuss.
+ There's a lot to explore.
+ We really want, I think part of the excitement here
+ is it's just so new and there's so many different use cases.
+ So if you do have questions, please put them
+ in the little question box on the right.
+ It's the Q&A box.
+ It's under the chat.
+ It's got the question mark on it.
+ You can also upvote other ones.
+ So basically, after about 30, 40 minutes,
+ we'll just start going through the user questions
+ and answering the top ones.
+ Can be anything about the functions endpoint itself.
+ We're lucky to have someone from OpenAI
+ who can answer that.
+ Can be anything about the use cases
+ that you've seen Jason or Francisco
+ or David tweeting about on Twitter.
+ So yeah, should be a really fun one.
+ So thanks again, everyone for joining us.
+ Thank you to all the panelists.
+ Panelist sounds really formal.
+ So, but thank you for you guys for joining.
+ And maybe we can take things off with,
+ actually before we do that,
+ maybe quick introductions from everyone
+ just to set the stage for, yeah.
+ Francisco, do you want to start?
+ Yeah, sure.
+ So hi there.
+ My name is Francisco.
+ I am a data scientist.
+ I'm based in Argentina.
+ I worked for several years
+ in a big e-commerce company here in Argentina,
+ like Amazon from Latin America.
+ And I am really, really fascinated with LLMs
+ and the things that are being made possible.
+ I've been building LLMs
+ and contributing a bit to LangChain as well
+ for the past few months.
+ And recently I've been involved in using functions
+ for tagging and extraction.
+ So that's what I'm being,
+ what I'm playing with right now.
+ Awesome.
+ Jason, do you want to do a quick intro?
+ Cool, yeah.
+ So I'm Jason.
+ I spent the past, like maybe eight, 10 years
+ doing things in machine learning
+ around computer vision and recommendation systems.
+ And I almost neglected natural language processing
+ because I thought it was kind of like a boring subject.
+ And coming back to it, I kind of regret doing that.
+ And now I think language models
+ are sort of like the coolest thing out there.
+ So I remember playing with GBD2,
+ thinking it was cool,
+ then going back to my actual work.
+ And now GBD4, I'm kind of like asking nicely,
+ saying please, and doing everything I can
+ to get the answer out.
+ So it's been a fun ride.
+ All right.
+ Ati, do you want to go?
+ Sure.
+ Hi everyone.
+ My name is Ati.
+ I'm an engineer at OpenAI.
+ I help build chat completions and function calling.
+ And it's crazy to see more than a thousand people here.
+ So I'm excited to share more today.
+ And David.
+ Hi everyone.
+ Sorry for running a little bit late.
+ My name is David.
+ I'm the founder of ActiveOp.
+ Before starting the company,
+ I was doing a PhD at Princeton University.
+ Mostly was in computer vision space,
+ but we had some projects actually building social bots
+ and super excited for the last five years.
+ What happened to the NLP and whole
+ large language model industry, I'll say now.
+ I'm super excited for this talk
+ and talk about the OpenAI functions.
+ Awesome.
+ So let's just jump right into it.
+ So Ati, take it away.
+ Yeah.
+ Well, I didn't prepare any slides or anything
+ because I think most of you have sort of played around
+ with the product and built some amazing things
+ and shared them on Twitter.
+ So I'll just give you a little bit of a background
+ and history maybe about how this came to be,
+ where we think this is going
+ and why I'm personally excited about all this.
+ You know, language models sort of came to shore
+ maybe three, four years ago.
+ GPT-1, 2, 3 started to show some signs of life last year.
+ In the early use cases,
+ we're sort of using it for content generation, right?
+ Like write me an email, write me an essay,
+ things like that.
+ And a couple of businesses sort of took off from there.
+ 3.5 came out sort of late last year, early this year.
+ And that's when sort of the more application level
+ integrations really seemed possible.
+ You could actually build natural language interfaces
+ to your products.
+ ChatGPT of course is sort of the general purpose interface
+ for natural language, ask it anything, get it done,
+ get anything done is sort of the promise of ChatGPT.
+ But what's really exciting about the API
+ and developers building on top of it
+ is that you can bring this power to any other application.
+ 4 of course is sort of like, you know,
+ way more intelligent, a little bit slow.
+ And the beauty of both 3.5 and 4
+ is that they were trained on this format called ChatML.
+ And ChatML basically breaks down the language model output,
+ input and output into these like turn by turn conversations
+ where there's a system message
+ that sort of describes instructions to the model,
+ user messages, model messages.
+ And you can imagine adding more roles to this conversation.
+ And that's where this role of sort of functions
+ came out as well.
+ We've always been here at OpenAI
+ interested in tool use as a concept.
+ How do you connect language models safely
+ to the outside world?
+ Whether it's, you know, send me an email
+ or, you know, buy me some food or do my taxes for me.
+ And the early explorations here were very much like,
+ you know, what if we did make this one tool
+ and see how well it works?
+ And then what if you made this other tool
+ and how well that works?
+ And the early interface between the language model
+ and these tools was also just plain text.
+ And so the first 2 tools that we built actually
+ are now in production,
+ code interpreter and browsing with Bing.
+ And they're both sort of under the hood,
+ actually just using very simple interfaces
+ you know, very similar to all the tools and plugins
+ that you guys might have built
+ using libraries like LangChain.
+ But then as we move towards plugins earlier this year
+ and we decided, you know,
+ what if we could generalize this?
+ What if anybody could build with the least effort possible
+ something that plugs into a language model?
+ That's when we came up with the idea
+ of this sort of OpenAPI based interface.
+ But OpenAPI schemas are like quite verbose
+ and they get very long.
+ And we actually generalized it like,
+ hey, today we might use OpenAPI
+ but tomorrow we might use GraphQL
+ or some other like, you know, RPC language.
+ You might even want to call tools
+ that are local to the client.
+ Like, I don't know if you're building an iOS app
+ and at some point you want the language model
+ to decide to take a photo or to vibrate the phone.
+ That stuff doesn't even go over HTTP.
+ And so all of these kinds of tool integrations
+ when generalized become functions.
+ It's just, you know, call a function
+ and do something with it.
+ And so that's what took us down this path of,
+ you know, JSON schema and generalizing
+ sort of the interface.
+ And we first built plugins and trained the model on it.
+ And early days it was sort of, you know,
+ showing good life, but not quite there.
+ And in the last two, three months
+ since the plugins launch,
+ what we've done is basically
+ repeatedly fine tune the model
+ on tens of thousands of examples
+ of what good interactive tools looks like
+ with the weather API, with the work from API
+ and, you know, hundreds of other APIs like that.
+ And now the model has been fine tuned on it
+ and is really good at both choosing
+ when to call a particular tool or a plugin or a function,
+ you know, pick whatever word you want,
+ using its understanding and reasoning ability
+ and also then converting that into structured output.
+ And, you know, structured output is like 95% there.
+ Mostly outputs valid JSON
+ and mostly outputs the correct output.
+ There are a few more steps we think we can take
+ over the next, you know, coming months to improve that.
+ But it worked for us and we were like, you know,
+ this has to be unleashed
+ and, you know, let the developer creativity flow.
+ So that's sort of what led down to the functions launch.
+ And we're one week in and so many cool demos on Twitter.
+ So that's a quick introduction to how it came to be
+ and where we see things going as well.
+ That's awesome background.
+ And I'm sure there's a lot of questions
+ around some of that,
+ but one that I have just to set the stage
+ for some of the other stuff that we'll be talking about
+ is a lot of the use cases that I've seen
+ are almost less around function calling
+ and more just like structuring output in a specific way.
+ Like is that something you guys anticipated?
+ Is that a good use case or like, you know,
+ it seems a little bit like, yeah.
+ Will the model perform well?
+ Can we expect the model to be like reliable
+ for that use case basically?
+ Yeah, it's definitely a supported use case.
+ We definitely encourage people to use function calling
+ for structured output, data extraction, things like that.
+ I understand the interface is kind of like one step removed,
+ like you wouldn't call it functions,
+ you'd call it some sort of templating.
+ And there's some cool projects out there
+ like Microsoft guidance that sort of,
+ show direction on where else templating can go.
+ And so we're definitely looking at those things closely.
+ I think we have some experiments internally
+ on how stuff like that can work,
+ but as you all know, OpenAI operates at like immense scale
+ and latency is already a problem
+ and adding more logic in there
+ can complicate things a little bit.
+ So, we're researching ways to do this
+ performantly and safely.
+ And once we have something we'll share it with the world.
+ Yeah.
+ Awesome.
+ Awesome.
+ All right, so that's great overview
+ on the history of functions.
+ And so just going in order,
+ Francisco, do you maybe wanna chat a little bit
+ for five-ish minutes or so
+ about what you've been working on and how that relates?
+ Yeah, sure.
+ So, what I'm mainly been working on is exactly this,
+ like using the functions functionality
+ to extract information from documents and to tag documents.
+ I'm really excited on how this allows us developers
+ to do this extraction and tagging in a very easy way
+ without any need for training.
+ So, starting with tagging,
+ tagging is basically extracting from the document
+ a few labels, right?
+ Or setting a few labels for the document.
+ For example, you can ask what the sentiment
+ is for a document, what the language is on a document
+ or other things, even also for passages or sentences.
+ And I see this like as a zero-shot classification,
+ no need for training,
+ but with the possibility of defining your labels
+ in a very structured way and having them all respect that.
+ And the other great advantage I see
+ is that you can classify into several sets of labels
+ at the same time.
+ So, you can have like, have the sentiment, the language,
+ and for example, the aggressiveness of the comment
+ classified in one code.
+ So, I think that is quite great
+ and having the ability of defining the labels
+ also helps in having some predictability
+ on the output, on the desired output.
+ The other thing is data extraction.
+ So, this is also a very common use case
+ where you have unstructured document
+ and you want to extract some entities
+ and their attributes for those entities.
+ So, one common example that I've been looking at
+ is like CVs, where you have a lot of CVs
+ and they're all structured differently.
+ Like every CV has its own style
+ and the information is displayed in different places.
+ And also you have some information
+ that is present in some CVs and it's not present in others.
+ So, you have this challenge,
+ but as Adi was saying,
+ with the new functions, the new functionality,
+ it's kind of like a hack in my view
+ because you're not actually calling a function
+ after the response from the model,
+ but it's the actual response with those parameters
+ that you care for.
+ So, you're telling the model,
+ so here is the function,
+ which is the extract data function.
+ And these are the parameters I need.
+ The parameters I need are, for example,
+ in the CV case, the candidate's name,
+ the candidate's skills,
+ the last company that the candidate worked on
+ and the number of years of experience, for example,
+ and a contact email.
+ So, the API will return a function
+ that gives you all these attributes as parameters.
+ And you can, the nice thing about this
+ is you can set, for example,
+ the allowed values or the type of the output.
+ And in this way, you can control,
+ you have a great degree of control
+ over what the output looks like.
+ And when you're trying to extract structured data
+ from a structured document,
+ that's exactly what you want.
+ So, I think that's really exciting.
+ I've been playing around with it.
+ I think it works really well
+ when rightly prompted and used correctly.
+ So, yeah, that's a very nice use case
+ that has been opened with this new release.
+ And just diving in, when you say rightly prompted,
+ what prompting techniques have you found
+ to work particularly well for functions in particular?
+ So, specifically for extraction,
+ some things I've been doing is,
+ this is not nothing new,
+ but I'm asking it not to hallucinate.
+ So, do not invent.
+ If you don't find it, do not return it.
+ Also, I wrote, if you find no,
+ so if it's not required, right,
+ and if you find no answer, just return empty string.
+ Like, don't be afraid to return an empty string.
+ And that worked well to avoid
+ trying to place a piece of data
+ just to fit into that value, right, for that attribute.
+ But it's really nothing very sophisticated.
+ It works quite well out of the box.
+ Awesome.
+ And did you have a demo or anything
+ that you wanted to show for this?
+ Yeah, I can show.
+ So, I did just a small demo.
+ This is something I hacked away yesterday.
+ Please.
+ I'm sorry for the design.
+ It's not very beautiful.
+ But it shows a practical use case of this.
+ So, okay, so let's say this is a demo CD, right?
+ The name and what the candidate does,
+ contact, about me, education.
+ So, let's say we want to extract
+ structured data from here.
+ This is using also Langchain under the hood,
+ which also uses OpenAI functions.
+ So, we can upload here the CD.
+ And here we set a few attributes.
+ This is where we are specifying the type.
+ This is very nice because, for example,
+ there's an example in the Langchain documentation
+ where the written example says,
+ Claudia is one year older than Alex,
+ or one foot higher, I don't remember.
+ And since we set the attribute to a number,
+ it doesn't return one year older or one foot higher,
+ but it just returns, if Alex was five, it returns six.
+ And that's because we specified
+ the type we want in the answer.
+ So, I really like the fact that we can define
+ what the type is and the model respects that.
+ Another thing we can set is a small description.
+ And this description is very nice.
+ It's kind of like a prompt engineering
+ because we are trying to constrain the model
+ to only give us the type of information
+ that we really want and not to get confused
+ in giving us a response that we do not care for.
+ So, here we are saying, okay, candidate full name,
+ the years of experience, here is a Boolean, right?
+ If it's a software developer, this is interesting
+ because obviously in the document,
+ it doesn't say I am not a software developer,
+ but it doesn't say that he's a software developer
+ and it says that his profession is in anything.
+ So, it will work correctly.
+ And that's because we specified that it is a Boolean.
+ Again, university languages and contact.
+ Here, I said ways to contact.
+ This is quite open.
+ It's a text.
+ So, this is probably a way to catch many use cases
+ or many strings and not only one, right?
+ So, if we submit here, this is running through LangChain.
+ And here is the output.
+ So, we get the full name, the years of experience,
+ not a software developer.
+ If there's nothing specified about languages,
+ we get an empty string.
+ University and all the ways to contact the candidate.
+ So, this is a small demo of some way
+ in which this functionality might be useful for people.
+ Awesome.
+ Thanks for sharing that.
+ All right, Jason, you've been experimenting
+ from the beginning on a lot of pretty out there stuff.
+ So, I'm excited to hear what you have to share.
+ And yeah, we'd love to also hear just a little bit
+ about how your motivation,
+ because you've been doing some of the most interesting stuff
+ on Twitter, I think.
+ And so, we'd just love to hear also how you thought about it
+ and started approaching it and stuff like that.
+ Sure, yeah.
+ I guess I started mostly playing around with this stuff
+ primarily because I've been sort of consulting
+ some early stage startups on figuring out
+ what are the right practices to do.
+ And almost, I would say 90% of the time,
+ it's about having structured data
+ that we can do computations over.
+ So, agents are kind of too far out,
+ but we still want to do some kind of extraction.
+ I'll give an example of this email segmentation
+ that I've been working on for another company.
+ But ultimately, it's about getting structured data
+ and then running some computation over that data.
+ So, this is kind of like rough slides,
+ but really it's just code that I've been writing.
+ So, I'll go with that.
+ The general idea is that function calls are great,
+ it's structured data, but it's still technically a string.
+ And then we parse it to JSON.
+ And if we use Pydantic,
+ we get basically Python objects right back out,
+ and we don't actually have to write JSON schema.
+ Not only are these strings, they become structured data.
+ And because it's Pydantic, which is a Python object,
+ it also contains computation.
+ In the examples I'll show for like the segment search queries,
+ we see that it's a very flat segmented.
+ computation, but I've also shown some examples where we do like kind of a DAG
+ generation that we can then execute in parallel with like DFS or BFS. And then
+ lastly, not only can it do computation, it's computation that could potentially
+ interact with its own inputs. And I'll show an example of doing citations.
+ These are kind of like pretty atrocious abuse of the function call API, but I
+ think these are some cool examples worth showing off. The first example I'll show
+ is one around maybe preventing SQL injection. Right now when we use SQL
+ agents, they kind of just output the SQL with like no escaped values. But we know
+ that to call SQL safely, we want to have template strings and we want to have
+ query parameters. So if we model this, so you know, a SQL template has a literal
+ or an identifier. There are parameters that have keys and values with a type.
+ And the SQL query is actually a template and its parameters. And just for
+ safety, I add a is dangerous flag that determines whether or not I think or the
+ model thinks there's any kind of SQL injection. So this is all kind of just
+ modeling the data. What PyData can do is it generates the function schema
+ automatically for you. Here I just give an example of some SQL tables and then I
+ make a response. And so these are some examples I can give me, right? Give me
+ the ID, give you the name for a select true, yada, yada, yada. And then when you
+ look at the examples, it does quite well, right? It escapes the right templates. It
+ uses query parameters. It'll warn me if a query is risky, but still produce a
+ query that is technically safe. So that's a fun example of sort of going away from
+ computation as a string to computation of structured data. In the second example,
+ I want to do something differently. I want to take a request that may contain
+ multiple parts and maybe search across different backends. So again, I have a
+ search type, which is a video or an email. I have a single search object, which is
+ a query and a type. I also implement the execute method, which could potentially
+ run that query. And then I define something called multi-search, which is
+ basically just a list of queries. So in this sense, we can have an array of
+ computation for a single task. And then this execute is just made up, but all it
+ does is it asynchronously calls all these separate tasks. So now if I have a
+ message that says, send me the last week, send me the video from last week about
+ the investment case study and the documents on GDPR, I can now asynchronously
+ call to two different backends with two different search queries. So this is kind
+ of like a flat computation, but we can still go even one step further. Instead of
+ generating almost like a map-reduced query, we can actually generate an
+ arbitrary tree of computations. So this is a crazier example. And so hopefully
+ this will be uploaded on YouTube. You guys can go back and forth and pause when
+ it's relevant. But here I have a single question or a multi-question where to
+ answer this question, I had to answer like three other questions, right? I have
+ a compute, which is the... Oh, sorry. Let me skip ahead to the query actually.
+ So now we have a query, which has an ID, the question it's asking, the ID of its
+ dependencies, and whether it's a single query or a multi-query. And I have some
+ logic here that says, if it's a single query, make the request. If it's a multi-query,
+ query the dependencies first, concatenate all the responses, and then put that in the
+ context of the larger query and try to answer that question. This is just the code that
+ does this kind of work. But again, what this actually gets you is if I scroll to the bottom,
+ if I ask the question, what is the difference between the population of Canada and my home
+ country? It first identifies my home country, finds the population of Canada, finds the
+ population of my home country, which will be answered with the first question, and then
+ finally calculate the difference in population between Canada and Jason's home country. And
+ you can see all the dependencies are done correctly, which means that if we want to
+ compute over this graph, we can do that in kind of a concurrent way. So this was also
+ like a really fun example because so far it's worked. So that kind of goes over strings with
+ some data, some multiple compute over that data, and then some like dynamic multi-compute
+ over that data. And the last one, which I think is quite interesting, actually, is around
+ having the data sort of reference its own inputs. And so here I'm going to...

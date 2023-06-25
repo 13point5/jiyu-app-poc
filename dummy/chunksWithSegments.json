@@ -1,0 +1,862 @@
+[
+  {
+    "pageContent": "We've got an awesome agenda today.\n We're gonna be talking about OpenAI Functions.\n Released, I guess it was released basically\n a little bit over a week ago.\n So very, very recent.\n Excited to be joined currently by Francisco and Jason.\n Both been doing a bunch of awesome stuff\n on LinkedIn, on Twitter, in general.\n We will also be joined momentarily by Ati from OpenAI\n as soon as I invite him to the stage.\n And I think we'll kick things off.\n Well, okay, so minor logistics.\n We are recording.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 0,
+          "end": 37.76
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And so it will be accessible on the link here afterwards.\n And then we'll probably also post it on YouTube afterwards.\n What we'll basically do is we'll have each of the speakers\n talk for a few minutes about an overview\n of what they worked on.\n So Ati from OpenAI will talk in general\n about the functions endpoint and kind of set the stage\n for everything that we'll talk about later.\n Then we'll have Francisco talk about some of his work\n that he's been doing.\n Then we'll go over to Jason.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 37.76,
+          "end": 47.239999999999995
+        },
+        {
+          "start": 49.04,
+          "end": 78.84
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And then we'll finish up with David from ActiveLoop,\n who I will add to the stage momentarily as well.\n Then basically what we'll do is we'll go\n into question and answer.\n So there's a lot to discuss.\n There's a lot to explore.\n We really want, I think part of the excitement here\n is it's just so new and there's so many different use cases.\n So if you do have questions, please put them\n in the little question box on the right.\n It's the Q&A box.\n It's under the chat.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 78.88000000000001,
+          "end": 104.56
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "It's got the question mark on it.\n You can also upvote other ones.\n So basically, after about 30, 40 minutes,\n we'll just start going through the user questions\n and answering the top ones.\n Can be anything about the functions endpoint itself.\n We're lucky to have someone from OpenAI\n who can answer that.\n Can be anything about the use cases\n that you've seen Jason or Francisco\n or David tweeting about on Twitter.\n So yeah, should be a really fun one.\n So thanks again, everyone for joining us.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 104.56,
+          "end": 127.44
+        },
+        {
+          "start": 128.6,
+          "end": 134.44
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "Thank you to all the panelists.\n Panelist sounds really formal.\n So, but thank you for you guys for joining.\n And maybe we can take things off with,\n actually before we do that,\n maybe quick introductions from everyone\n just to set the stage for, yeah.\n Francisco, do you want to start?\n Yeah, sure.\n So hi there.\n My name is Francisco.\n I am a data scientist.\n I'm based in Argentina.\n I worked for several years\n in a big e-commerce company here in Argentina,\n like Amazon from Latin America.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 134.44,
+          "end": 144.72
+        },
+        {
+          "start": 146.04,
+          "end": 152.56
+        },
+        {
+          "start": 153.84,
+          "end": 171.88
+        },
+        {
+          "start": 237.2,
+          "end": 238.04
+        },
+        {
+          "start": 284.72,
+          "end": 285.72
+        },
+        {
+          "start": 640.2,
+          "end": 641.04
+        },
+        {
+          "start": 660.46,
+          "end": 661.54
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And I am really, really fascinated with LLMs\n and the things that are being made possible.\n I've been building LLMs\n and contributing a bit to LangChain as well\n for the past few months.\n And recently I've been involved in using functions\n for tagging and extraction.\n So that's what I'm being,\n what I'm playing with right now.\n Awesome.\n Jason, do you want to do a quick intro?\n Cool, yeah.\n So I'm Jason.\n I spent the past, like maybe eight, 10 years\n doing things in machine learning",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 171.88,
+          "end": 192.88
+        },
+        {
+          "start": 194,
+          "end": 203.68
+        },
+        {
+          "start": 279.44,
+          "end": 280.28000000000003
+        },
+        {
+          "start": 284.72,
+          "end": 285.72
+        },
+        {
+          "start": 640.2,
+          "end": 641.04
+        },
+        {
+          "start": 642.38,
+          "end": 644.26
+        },
+        {
+          "start": 924.24,
+          "end": 925.0799999999999
+        },
+        {
+          "start": 1103.1399999999999,
+          "end": 1104.42
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "around computer vision and recommendation systems.\n And I almost neglected natural language processing\n because I thought it was kind of like a boring subject.\n And coming back to it, I kind of regret doing that.\n And now I think language models\n are sort of like the coolest thing out there.\n So I remember playing with GBD2,\n thinking it was cool,\n then going back to my actual work.\n And now GBD4, I'm kind of like asking nicely,\n saying please, and doing everything I can",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 203.68,
+          "end": 229.44
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "to get the answer out.\n So it's been a fun ride.\n All right.\n Ati, do you want to go?\n Sure.\n Hi everyone.\n My name is Ati.\n I'm an engineer at OpenAI.\n I help build chat completions and function calling.\n And it's crazy to see more than a thousand people here.\n So I'm excited to share more today.\n And David.\n Hi everyone.\n Sorry for running a little bit late.\n My name is David.\n I'm the founder of ActiveOp.\n Before starting the company,\n I was doing a PhD at Princeton University.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 229.44,
+          "end": 231.72
+        },
+        {
+          "start": 234.12,
+          "end": 236.12
+        },
+        {
+          "start": 237.2,
+          "end": 251.84
+        },
+        {
+          "start": 254.08,
+          "end": 254.92000000000002
+        },
+        {
+          "start": 256.56,
+          "end": 263.6
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "Mostly was in computer vision space,\n but we had some projects actually building social bots\n and super excited for the last five years.\n What happened to the NLP and whole\n large language model industry, I'll say now.\n I'm super excited for this talk\n and talk about the OpenAI functions.\n Awesome.\n So let's just jump right into it.\n So Ati, take it away.\n Yeah.\n Well, I didn't prepare any slides or anything\n because I think most of you have sort of played around",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 194,
+          "end": 195.2
+        },
+        {
+          "start": 263.6,
+          "end": 278.08000000000004
+        },
+        {
+          "start": 279.44,
+          "end": 283.08
+        },
+        {
+          "start": 284.72,
+          "end": 289.76
+        },
+        {
+          "start": 640.2,
+          "end": 641.04
+        },
+        {
+          "start": 642.38,
+          "end": 644.26
+        },
+        {
+          "start": 924.24,
+          "end": 925.0799999999999
+        },
+        {
+          "start": 1103.1399999999999,
+          "end": 1104.42
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "with the product and built some amazing things\n and shared them on Twitter.\n So I'll just give you a little bit of a background\n and history maybe about how this came to be,\n where we think this is going\n and why I'm personally excited about all this.\n You know, language models sort of came to shore\n maybe three, four years ago.\n GPT-1, 2, 3 started to show some signs of life last year.\n In the early use cases,\n we're sort of using it for content generation, right?",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 289.76,
+          "end": 301.96000000000004
+        },
+        {
+          "start": 303.2,
+          "end": 315.71999999999997
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "Like write me an email, write me an essay,\n things like that.\n And a couple of businesses sort of took off from there.\n 3.5 came out sort of late last year, early this year.\n And that's when sort of the more application level\n integrations really seemed possible.\n You could actually build natural language interfaces\n to your products.\n ChatGPT of course is sort of the general purpose interface\n for natural language, ask it anything, get it done,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 315.71999999999997,
+          "end": 340.52
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "get anything done is sort of the promise of ChatGPT.\n But what's really exciting about the API\n and developers building on top of it\n is that you can bring this power to any other application.\n 4 of course is sort of like, you know,\n way more intelligent, a little bit slow.\n And the beauty of both 3.5 and 4\n is that they were trained on this format called ChatML.\n And ChatML basically breaks down the language model output,\n input and output into these like turn by turn conversations",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 340.52,
+          "end": 370.68
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "where there's a system message\n that sort of describes instructions to the model,\n user messages, model messages.\n And you can imagine adding more roles to this conversation.\n And that's where this role of sort of functions\n came out as well.\n We've always been here at OpenAI\n interested in tool use as a concept.\n How do you connect language models safely\n to the outside world?\n Whether it's, you know, send me an email\n or, you know, buy me some food or do my taxes for me.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 370.68,
+          "end": 395.88
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And the early explorations here were very much like,\n you know, what if we did make this one tool\n and see how well it works?\n And then what if you made this other tool\n and how well that works?\n And the early interface between the language model\n and these tools was also just plain text.\n And so the first 2 tools that we built actually\n are now in production,\n code interpreter and browsing with Bing.\n And they're both sort of under the hood,\n actually just using very simple interfaces",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 397.12,
+          "end": 421.6
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "you know, very similar to all the tools and plugins\n that you guys might have built\n using libraries like LangChain.\n But then as we move towards plugins earlier this year\n and we decided, you know,\n what if we could generalize this?\n What if anybody could build with the least effort possible\n something that plugs into a language model?\n That's when we came up with the idea\n of this sort of OpenAPI based interface.\n But OpenAPI schemas are like quite verbose\n and they get very long.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 422.6,
+          "end": 448.16
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And we actually generalized it like,\n hey, today we might use OpenAPI\n but tomorrow we might use GraphQL\n or some other like, you know, RPC language.\n You might even want to call tools\n that are local to the client.\n Like, I don't know if you're building an iOS app\n and at some point you want the language model\n to decide to take a photo or to vibrate the phone.\n That stuff doesn't even go over HTTP.\n And so all of these kinds of tool integrations\n when generalized become functions.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 449.12,
+          "end": 472.8
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "It's just, you know, call a function\n and do something with it.\n And so that's what took us down this path of,\n you know, JSON schema and generalizing\n sort of the interface.\n And we first built plugins and trained the model on it.\n And early days it was sort of, you know,\n showing good life, but not quite there.\n And in the last two, three months\n since the plugins launch,\n what we've done is basically\n repeatedly fine tune the model\n on tens of thousands of examples",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 472.8,
+          "end": 499.16
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "of what good interactive tools looks like\n with the weather API, with the work from API\n and, you know, hundreds of other APIs like that.\n And now the model has been fine tuned on it\n and is really good at both choosing\n when to call a particular tool or a plugin or a function,\n you know, pick whatever word you want,\n using its understanding and reasoning ability\n and also then converting that into structured output.\n And, you know, structured output is like 95% there.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 499.16,
+          "end": 514.24
+        },
+        {
+          "start": 515.4,
+          "end": 525.88
+        },
+        {
+          "start": 527,
+          "end": 532
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "Mostly outputs valid JSON\n and mostly outputs the correct output.\n There are a few more steps we think we can take\n over the next, you know, coming months to improve that.\n But it worked for us and we were like, you know,\n this has to be unleashed\n and, you know, let the developer creativity flow.\n So that's sort of what led down to the functions launch.\n And we're one week in and so many cool demos on Twitter.\n So that's a quick introduction to how it came to be",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 532.52,
+          "end": 541.9200000000001
+        },
+        {
+          "start": 543,
+          "end": 557.96
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "and where we see things going as well.\n That's awesome background.\n And I'm sure there's a lot of questions\n around some of that,\n but one that I have just to set the stage\n for some of the other stuff that we'll be talking about\n is a lot of the use cases that I've seen\n are almost less around function calling\n and more just like structuring output in a specific way.\n Like is that something you guys anticipated?\n Is that a good use case or like, you know,\n it seems a little bit like, yeah.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 284.72,
+          "end": 285.72
+        },
+        {
+          "start": 557.96,
+          "end": 586.28
+        },
+        {
+          "start": 640.2,
+          "end": 641.04
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "Will the model perform well?\n Can we expect the model to be like reliable\n for that use case basically?\n Yeah, it's definitely a supported use case.\n We definitely encourage people to use function calling\n for structured output, data extraction, things like that.\n I understand the interface is kind of like one step removed,\n like you wouldn't call it functions,\n you'd call it some sort of templating.\n And there's some cool projects out there\n like Microsoft guidance that sort of,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 318.04,
+          "end": 319.12
+        },
+        {
+          "start": 586.28,
+          "end": 591.6800000000001
+        },
+        {
+          "start": 592.72,
+          "end": 600.24
+        },
+        {
+          "start": 600,
+          "end": 611.44
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "show direction on where else templating can go.\n And so we're definitely looking at those things closely.\n I think we have some experiments internally\n on how stuff like that can work,\n but as you all know, OpenAI operates at like immense scale\n and latency is already a problem\n and adding more logic in there\n can complicate things a little bit.\n So, we're researching ways to do this\n performantly and safely.\n And once we have something we'll share it with the world.\n Yeah.\n Awesome.\n Awesome.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 194,
+          "end": 195.2
+        },
+        {
+          "start": 279.44,
+          "end": 280.28000000000003
+        },
+        {
+          "start": 284.72,
+          "end": 285.72
+        },
+        {
+          "start": 611.44,
+          "end": 641.04
+        },
+        {
+          "start": 642.38,
+          "end": 644.26
+        },
+        {
+          "start": 924.24,
+          "end": 925.0799999999999
+        },
+        {
+          "start": 1103.1399999999999,
+          "end": 1104.42
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "All right, so that's great overview\n on the history of functions.\n And so just going in order,\n Francisco, do you maybe wanna chat a little bit\n for five-ish minutes or so\n about what you've been working on and how that relates?\n Yeah, sure.\n So, what I'm mainly been working on is exactly this,\n like using the functions functionality\n to extract information from documents and to tag documents.\n I'm really excited on how this allows us developers",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 156.16,
+          "end": 157.4
+        },
+        {
+          "start": 237.2,
+          "end": 238.04
+        },
+        {
+          "start": 644.26,
+          "end": 674.12
+        },
+        {
+          "start": 675.22,
+          "end": 679.74
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "to do this extraction and tagging in a very easy way\n without any need for training.\n So, starting with tagging,\n tagging is basically extracting from the document\n a few labels, right?\n Or setting a few labels for the document.\n For example, you can ask what the sentiment\n is for a document, what the language is on a document\n or other things, even also for passages or sentences.\n And I see this like as a zero-shot classification,\n no need for training,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 679.74,
+          "end": 715.06
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "but with the possibility of defining your labels\n in a very structured way and having them all respect that.\n And the other great advantage I see\n is that you can classify into several sets of labels\n at the same time.\n So, you can have like, have the sentiment, the language,\n and for example, the aggressiveness of the comment\n classified in one code.\n So, I think that is quite great\n and having the ability of defining the labels\n also helps in having some predictability",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 715.06,
+          "end": 747.38
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "on the output, on the desired output.\n The other thing is data extraction.\n So, this is also a very common use case\n where you have unstructured document\n and you want to extract some entities\n and their attributes for those entities.\n So, one common example that I've been looking at\n is like CVs, where you have a lot of CVs\n and they're all structured differently.\n Like every CV has its own style\n and the information is displayed in different places.\n And also you have some information",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 747.38,
+          "end": 779.96
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "that is present in some CVs and it's not present in others.\n So, you have this challenge,\n but as Adi was saying,\n with the new functions, the new functionality,\n it's kind of like a hack in my view\n because you're not actually calling a function\n after the response from the model,\n but it's the actual response with those parameters\n that you care for.\n So, you're telling the model,\n so here is the function,\n which is the extract data function.\n And these are the parameters I need.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 779.96,
+          "end": 810.34
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "The parameters I need are, for example,\n in the CV case, the candidate's name,\n the candidate's skills,\n the last company that the candidate worked on\n and the number of years of experience, for example,\n and a contact email.\n So, the API will return a function\n that gives you all these attributes as parameters.\n And you can, the nice thing about this\n is you can set, for example,\n the allowed values or the type of the output.\n And in this way, you can control,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 810.34,
+          "end": 840.5
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "you have a great degree of control\n over what the output looks like.\n And when you're trying to extract structured data\n from a structured document,\n that's exactly what you want.\n So, I think that's really exciting.\n I've been playing around with it.\n I think it works really well\n when rightly prompted and used correctly.\n So, yeah, that's a very nice use case\n that has been opened with this new release.\n And just diving in, when you say rightly prompted,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 840.5,
+          "end": 869.4
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "what prompting techniques have you found\n to work particularly well for functions in particular?\n So, specifically for extraction,\n some things I've been doing is,\n this is not nothing new,\n but I'm asking it not to hallucinate.\n So, do not invent.\n If you don't find it, do not return it.\n Also, I wrote, if you find no,\n so if it's not required, right,\n and if you find no answer, just return empty string.\n Like, don't be afraid to return an empty string.\n And that worked well to avoid",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 869.4,
+          "end": 874.56
+        },
+        {
+          "start": 875.64,
+          "end": 881.78
+        },
+        {
+          "start": 883.24,
+          "end": 904.5799999999999
+        },
+        {
+          "start": 905.8199999999999,
+          "end": 908.86
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "trying to place a piece of data\n just to fit into that value, right, for that attribute.\n But it's really nothing very sophisticated.\n It works quite well out of the box.\n Awesome.\n And did you have a demo or anything\n that you wanted to show for this?\n Yeah, I can show.\n So, I did just a small demo.\n This is something I hacked away yesterday.\n Please.\n I'm sorry for the design.\n It's not very beautiful.\n But it shows a practical use case of this.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 194,
+          "end": 195.2
+        },
+        {
+          "start": 279.44,
+          "end": 280.28000000000003
+        },
+        {
+          "start": 642.38,
+          "end": 644.26
+        },
+        {
+          "start": 908.86,
+          "end": 915
+        },
+        {
+          "start": 916.1800000000001,
+          "end": 921.4200000000001
+        },
+        {
+          "start": 924.24,
+          "end": 942.14
+        },
+        {
+          "start": 1103.1399999999999,
+          "end": 1104.42
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "So, okay, so let's say this is a demo CD, right?\n The name and what the candidate does,\n contact, about me, education.\n So, let's say we want to extract\n structured data from here.\n This is using also Langchain under the hood,\n which also uses OpenAI functions.\n So, we can upload here the CD.\n And here we set a few attributes.\n This is where we are specifying the type.\n This is very nice because, for example,\n there's an example in the Langchain documentation\n where the written example says,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 943,
+          "end": 982.8399999999999
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "Claudia is one year older than Alex,\n or one foot higher, I don't remember.\n And since we set the attribute to a number,\n it doesn't return one year older or one foot higher,\n but it just returns, if Alex was five, it returns six.\n And that's because we specified\n the type we want in the answer.\n So, I really like the fact that we can define\n what the type is and the model respects that.\n Another thing we can set is a small description.\n And this description is very nice.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 982.8399999999999,
+          "end": 1008.06
+        },
+        {
+          "start": 1009.1800000000001,
+          "end": 1014.1800000000001
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "It's kind of like a prompt engineering\n because we are trying to constrain the model\n to only give us the type of information\n that we really want and not to get confused\n in giving us a response that we do not care for.\n So, here we are saying, okay, candidate full name,\n the years of experience, here is a Boolean, right?\n If it's a software developer, this is interesting\n because obviously in the document,\n it doesn't say I am not a software developer,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1014.1800000000001,
+          "end": 1043.6399999999999
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "but it doesn't say that he's a software developer\n and it says that his profession is in anything.\n So, it will work correctly.\n And that's because we specified that it is a Boolean.\n Again, university languages and contact.\n Here, I said ways to contact.\n This is quite open.\n It's a text.\n So, this is probably a way to catch many use cases\n or many strings and not only one, right?\n So, if we submit here, this is running through LangChain.\n And here is the output.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 999.2,
+          "end": 1000.8399999999999
+        },
+        {
+          "start": 1043.6399999999999,
+          "end": 1055.08
+        },
+        {
+          "start": 1056.28,
+          "end": 1078.96
+        },
+        {
+          "start": 1080.22,
+          "end": 1081.42
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "So, we get the full name, the years of experience,\n not a software developer.\n If there's nothing specified about languages,\n we get an empty string.\n University and all the ways to contact the candidate.\n So, this is a small demo of some way\n in which this functionality might be useful for people.\n Awesome.\n Thanks for sharing that.\n All right, Jason, you've been experimenting\n from the beginning on a lot of pretty out there stuff.\n So, I'm excited to hear what you have to share.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 194,
+          "end": 195.2
+        },
+        {
+          "start": 279.44,
+          "end": 280.28000000000003
+        },
+        {
+          "start": 642.38,
+          "end": 644.26
+        },
+        {
+          "start": 924.24,
+          "end": 925.0799999999999
+        },
+        {
+          "start": 1081.42,
+          "end": 1100.84
+        },
+        {
+          "start": 1103.1399999999999,
+          "end": 1115.82
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And yeah, we'd love to also hear just a little bit\n about how your motivation,\n because you've been doing some of the most interesting stuff\n on Twitter, I think.\n And so, we'd just love to hear also how you thought about it\n and started approaching it and stuff like that.\n Sure, yeah.\n I guess I started mostly playing around with this stuff\n primarily because I've been sort of consulting\n some early stage startups on figuring out\n what are the right practices to do.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 284.72,
+          "end": 285.72
+        },
+        {
+          "start": 640.2,
+          "end": 641.04
+        },
+        {
+          "start": 1115.82,
+          "end": 1131.22
+        },
+        {
+          "start": 1132.8400000000001,
+          "end": 1141.6399999999999
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And almost, I would say 90% of the time,\n it's about having structured data\n that we can do computations over.\n So, agents are kind of too far out,\n but we still want to do some kind of extraction.\n I'll give an example of this email segmentation\n that I've been working on for another company.\n But ultimately, it's about getting structured data\n and then running some computation over that data.\n So, this is kind of like rough slides,\n but really it's just code that I've been writing.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1141.6399999999999,
+          "end": 1169.74
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "So, I'll go with that.\n The general idea is that function calls are great,\n it's structured data, but it's still technically a string.\n And then we parse it to JSON.\n And if we use Pydantic,\n we get basically Python objects right back out,\n and we don't actually have to write JSON schema.\n Not only are these strings, they become structured data.\n And because it's Pydantic, which is a Python object,\n it also contains computation.\n In the examples I'll show for like the segment search queries,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1169.74,
+          "end": 1193.48
+        },
+        {
+          "start": 1194.9,
+          "end": 1197.72
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "we see that it's a very flat segmented.\n computation, but I've also shown some examples where we do like kind of a DAG\n generation that we can then execute in parallel with like DFS or BFS. And then\n lastly, not only can it do computation, it's computation that could potentially\n interact with its own inputs. And I'll show an example of doing citations.\n These are kind of like pretty atrocious abuse of the function call API, but I",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1197.72,
+          "end": 1200.12
+        },
+        {
+          "start": 1200,
+          "end": 1225.12
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "think these are some cool examples worth showing off. The first example I'll show\n is one around maybe preventing SQL injection. Right now when we use SQL\n agents, they kind of just output the SQL with like no escaped values. But we know\n that to call SQL safely, we want to have template strings and we want to have\n query parameters. So if we model this, so you know, a SQL template has a literal\n or an identifier. There are parameters that have keys and values with a type.",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1225.12,
+          "end": 1255.04
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "And the SQL query is actually a template and its parameters. And just for\n safety, I add a is dangerous flag that determines whether or not I think or the\n model thinks there's any kind of SQL injection. So this is all kind of just\n modeling the data. What PyData can do is it generates the function schema\n automatically for you. Here I just give an example of some SQL tables and then I\n make a response. And so these are some examples I can give me, right? Give me",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1255.04,
+          "end": 1285.2
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "the ID, give you the name for a select true, yada, yada, yada. And then when you\n look at the examples, it does quite well, right? It escapes the right templates. It\n uses query parameters. It'll warn me if a query is risky, but still produce a\n query that is technically safe. So that's a fun example of sort of going away from\n computation as a string to computation of structured data. In the second example,\n I want to do something differently. I want to take a request that may contain",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1285.2,
+          "end": 1317.68
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "multiple parts and maybe search across different backends. So again, I have a\n search type, which is a video or an email. I have a single search object, which is\n a query and a type. I also implement the execute method, which could potentially\n run that query. And then I define something called multi-search, which is\n basically just a list of queries. So in this sense, we can have an array of\n computation for a single task. And then this execute is just made up, but all it",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1317.68,
+          "end": 1348.88
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "does is it asynchronously calls all these separate tasks. So now if I have a\n message that says, send me the last week, send me the video from last week about\n the investment case study and the documents on GDPR, I can now asynchronously\n call to two different backends with two different search queries. So this is kind\n of like a flat computation, but we can still go even one step further. Instead of\n generating almost like a map-reduced query, we can actually generate an",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1348.88,
+          "end": 1381.2
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "arbitrary tree of computations. So this is a crazier example. And so hopefully\n this will be uploaded on YouTube. You guys can go back and forth and pause when\n it's relevant. But here I have a single question or a multi-question where to\n answer this question, I had to answer like three other questions, right? I have\n a compute, which is the... Oh, sorry. Let me skip ahead to the query actually.\n So now we have a query, which has an ID, the question it's asking, the ID of its",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1381.2,
+          "end": 1406.64
+        },
+        {
+          "start": 1407.76,
+          "end": 1412.96
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "dependencies, and whether it's a single query or a multi-query. And I have some\n logic here that says, if it's a single query, make the request. If it's a multi-query,\n query the dependencies first, concatenate all the responses, and then put that in the\n context of the larger query and try to answer that question. This is just the code that\n does this kind of work. But again, what this actually gets you is if I scroll to the bottom,",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1412.96,
+          "end": 1438.8
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "if I ask the question, what is the difference between the population of Canada and my home\n country? It first identifies my home country, finds the population of Canada, finds the\n population of my home country, which will be answered with the first question, and then\n finally calculate the difference in population between Canada and Jason's home country. And\n you can see all the dependencies are done correctly, which means that if we want to",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1439.6,
+          "end": 1464
+        }
+      ]
+    }
+  },
+  {
+    "pageContent": "compute over this graph, we can do that in kind of a concurrent way. So this was also\n like a really fun example because so far it's worked. So that kind of goes over strings with\n some data, some multiple compute over that data, and then some like dynamic multi-compute\n over that data. And the last one, which I think is quite interesting, actually, is around\n having the data sort of reference its own inputs. And so here I'm going to...",
+    "metadata": {
+      "blockId": "k3u46gu4bg",
+      "segments": [
+        {
+          "start": 1464,
+          "end": 1494.96
+        }
+      ]
+    }
+  }
+]
