@@ -27,7 +27,9 @@ export const Mention = Node.create<MentionOptions>({
         const actualNode = reactFlowStore.getState().getNodeById(node.attrs.id);
         console.log("actualNode", actualNode);
         if (!actualNode) return {};
-        return { class: bgColors[actualNode.type] };
+        return {
+          class: bgColors[actualNode.type],
+        };
       },
       renderLabel({ options, node }) {
         // return `${options.suggestion.char}${node.attrs.label ?? node.attrs.id}`;

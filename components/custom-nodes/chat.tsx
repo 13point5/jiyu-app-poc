@@ -8,13 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Send, Loader2, Info, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import { nanoid } from "nanoid";
-// import Mention from "@tiptap/extension-mention";
-import { Mention } from "@/components/at-mention/Renderer";
+import editorConfig from "@/app/tiptapConfig";
 import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import React from "react";
-
-import suggestion from "/components/at-mention";
 
 import useStore from "@/app/reactFlowStore";
 
@@ -53,24 +49,9 @@ const ChatNode = ({
   ]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+
   const editor = useEditor({
-    content:
-      '<p>advdsv <span data-type="mention" class="mention" data-id="LangChain OpenAI Functions Webinar">@LangChain OpenAI Functions Webinar</span> advsvdf</p>',
-    extensions: [
-      StarterKit,
-      Mention.configure({
-        HTMLAttributes: {
-          class: "p-1 rounded-sm",
-        },
-        suggestion,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class:
-          "h-full w-full prose prose-sm focus:outline-none text-inherit bg-white",
-      },
-    },
+    ...editorConfig,
   });
 
   const addNode = useStore((state) => state.addNode);
@@ -79,7 +60,9 @@ const ChatNode = ({
     e.preventDefault();
 
     console.log("editor", editor?.getHTML());
-    return;
+    console.log("text", editor?.getText());
+    console.log("json", editor?.getJSON());
+    // return;
 
     setLoading(true);
     setMessages((prev) => [
@@ -93,7 +76,7 @@ const ChatNode = ({
     setQuery("");
 
     const res = await axios.post("http://localhost:8000/chat", {
-      message: query,
+      message: editor?.getHTML(),
     });
     console.log("res", res);
 
@@ -185,6 +168,8 @@ type Props = MessageType & {
 };
 
 const Message = ({ id, role, content, isLast = false }: Props) => {
+  const editor = useEditor(editorConfig);
+
   const [showSources, setShowSources] = useState(false);
   const setSourcesVisibility = useStore((state) => state.setSourcesVisibility);
 
@@ -198,7 +183,13 @@ const Message = ({ id, role, content, isLast = false }: Props) => {
       <span>{role === OpenAIRoles.ASSISTANT ? "🤖" : "👤"}</span>
 
       <div className="w-full">
-        <p>{content}</p>
+        <EditorContent
+          editor={editor}
+          content={content}
+          style={{
+            width: "100%",
+          }}
+        />
 
         {role === OpenAIRoles.ASSISTANT && (
           <Button

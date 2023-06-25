@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { widths, icons, CustomNodeTypes, bgColors } from "@/app/constants";
 
 const CustomNodeContainer = ({
@@ -23,7 +24,7 @@ const CustomNodeContainer = ({
       <div className="flex flex-row gap-2">
         <Icon size={24} />
 
-        <p className="">{title}</p>
+        <p>{title}</p>
       </div>
 
       {children}
