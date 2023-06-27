@@ -9,6 +9,7 @@ import { nanoid } from "nanoid";
 import editorConfig from "@/app/tiptapConfig";
 import { EditorContent, useEditor } from "@tiptap/react";
 import React from "react";
+import { useWhisper } from "@chengsokdara/use-whisper";
 
 import useStore from "@/app/reactFlowStore";
 import { formatHTMLWithMentions } from "@/app/utils";
@@ -37,6 +38,20 @@ const ChatNode = ({
   const nodeRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const {
+    recording,
+    speaking,
+    transcribing,
+    transcript,
+    pauseRecording,
+    startRecording,
+    stopRecording,
+  } = useWhisper({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  });
+
+  console.log({ recording, speaking, transcribing, transcript });
 
   console.log("messages", messages);
 
@@ -141,7 +156,7 @@ const ChatNode = ({
             ))}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <div className="flex gap-2">
           <EditorContent
             editor={editor}
             className="border border-gray-300 rounded-md p-2 bg-white"
@@ -149,14 +164,18 @@ const ChatNode = ({
               width: "100%",
             }}
           />
-          <Button type="submit" disabled={loading}>
+          <Button onClick={handleSubmit} disabled={loading}>
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
               <Send size={16} />
             )}
           </Button>
-        </form>
+
+          <Button onClick={recording ? stopRecording : startRecording}>
+            {recording ? "Stop" : "Start"} Recording
+          </Button>
+        </div>
       </div>
     </CustomNodeContainer>
   );
