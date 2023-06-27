@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
 import { CustomNodeTypes, widths } from "@/app/constants";
 import { Button } from "@/components/ui/button";
-import { Send, Loader2, Info, Eye, EyeOff } from "lucide-react";
+import { Send, Loader2, Info, Eye, EyeOff, Mic, Pause } from "lucide-react";
 import { nanoid } from "nanoid";
 import editorConfig from "@/app/tiptapConfig";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -202,7 +202,7 @@ const ChatNode = ({
           </Button>
 
           <Button onClick={recording ? stopRecording : startRecording}>
-            {recording ? "Stop" : "Start"} Recording
+            {recording ? <Pause size={16} /> : <Mic size={16} />}
           </Button>
         </div>
       </div>

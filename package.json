@@ -36,6 +36,7 @@
     "lucide-react": "^0.252.0",
     "nanoid": "^4.0.2",
     "next": "13.4.6",
+    "pdf-parse": "^1.1.1",
     "perfect-freehand": "^1.2.0",
     "postcss": "8.4.24",
     "ramda": "^0.29.0",
