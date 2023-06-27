@@ -81,6 +81,7 @@ export const chat = async (query: string) => {
   //   "What did jason say about sql injection in <@block:k3u46gu4bg>?";
 
   const blockMentions = getBlockMentions(query);
+  console.log("blockMentions", blockMentions);
 
   const stores = await Promise.all(
     blockMentions.map((blockId) =>
@@ -100,38 +101,43 @@ export const chat = async (query: string) => {
 
   const tools = blockMentions.map(
     (blockId, blockIndex) =>
-      new CustomTool(
-        // `Information about block with id = ${blockId}`,
-        blockId,
-        `Use this tool to answer questions about block with id = ${blockId}`,
-        {
-          store: stores[blockIndex],
-          llm: chatModel,
-        }
-      )
+      // new CustomTool(
+      //   // `Information about block with id = ${blockId}`,
+      //   // blockId,
+      //   `get_info_about_block_${blockId}`,
+      //   `Use this tool to answer questions about block with id = ${blockId}`,
+      //   {
+      //     store: stores[blockIndex],
+      //     llm: chatModel,
+      //   }
+      // )
 
-    // new ChainTool({
-    //   name: `get_info_about_block_${blockId}`,
-    //   description: `Use this tool to answer questions about block with id = ${blockId}`,
-    //   chain: RetrievalQAChain.fromLLM(
-    //     chatModel,
-    //     stores[blockIndex].asRetriever(),
-    //     {
-    //       // returnSourceDocuments: true,
-    //     }
-    //   ),
-    // })
+      new ChainTool({
+        name: `get_info_about_block_${blockId}`,
+        description: `Use this tool to answer questions about block with id = ${blockId}`,
+        chain: RetrievalQAChain.fromLLM(
+          chatModel,
+          stores[blockIndex].asRetriever(),
+          {
+            // returnSourceDocuments: true,
+          }
+        ),
+      })
   );
 
   const executor = await initializeAgentExecutorWithOptions(tools, chatModel, {
-    // agentType: "openai-functions",
+    agentType: "openai-functions",
 
     // this one works with CustomTool
-    agentType: "chat-conversational-react-description",
+    // agentType: "chat-conversational-react-description",
 
     // maxIterations: 3,
     verbose: true,
     returnIntermediateSteps: true,
+    agentArgs: {
+      // systemMessage:
+      //   "You are a helpful assistant who answers user queries about the info stored in blocks that will be referenced by their IDs. When the user seems to refer to one or more blocks using words like 'this' or 'this block', you will be given with a list of Block IDs in the same order the user referred them with their voice and mouse by clicking on the respective blocks. You need to extract the info from each block based on the user's query using the tools of each block and then combine the results to answer the user",
+    },
   });
 
   // return executor.run(query);

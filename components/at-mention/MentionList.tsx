@@ -15,6 +15,8 @@ import React, {
 const colors = {
   [CustomNodeTypes.YOUTUBE]: { bg: "#fecaca", border: "#ef4444" },
   [CustomNodeTypes.NOTE]: { bg: "#fef08a", border: "#eab308" },
+  [CustomNodeTypes.WEBSITE]: { bg: "#dbeafe", border: "#3b82f6" },
+  [CustomNodeTypes.PDF]: { bg: "#dbeafe", border: "#3b82f6" },
 };
 
 const MentionList = forwardRef((props, ref) => {
@@ -64,6 +66,7 @@ const MentionList = forwardRef((props, ref) => {
       return false;
     },
   }));
+  console.log("props.items", props.items);
 
   return (
     <div className={`${inter.className} shadow-sm rounded-lg bg-transparent`}>
@@ -77,8 +80,8 @@ const MentionList = forwardRef((props, ref) => {
               border: "2px solid",
               borderColor:
                 index === selectedIndex
-                  ? colors[item.type].border
-                  : colors[item.type].bg,
+                  ? colors[item.type].border || "#eee"
+                  : colors[item.type].bg || "#eee",
             }}
             key={index}
             onClick={() => selectItem(index)}

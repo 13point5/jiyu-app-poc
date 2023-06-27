@@ -3,26 +3,40 @@ import tippy from "tippy.js";
 
 import MentionList from "./MentionList";
 import { CustomNodeTypes } from "@/app/constants";
+import store from "@/app/reactFlowStore";
 
 const suggestion = {
-  items: ({ query }) => {
-    return [
-      {
-        id: "k3u46gu4bg",
-        label: "LangChain OpenAI Functions Webinar",
-        type: CustomNodeTypes.YOUTUBE,
-      },
-      {
-        id: "blala",
-        label: "LangChain SQL Webinar",
-        type: CustomNodeTypes.YOUTUBE,
-      },
-      {
-        id: "2",
-        label: "OpenAI Notes",
-        type: CustomNodeTypes.NOTE,
-      },
-    ]
+  items: ({ query = "" }) => {
+    // return [
+    //   {
+    //     id: "k3u46gu4bg",
+    //     label: "LangChain OpenAI Functions Webinar",
+    //     type: CustomNodeTypes.YOUTUBE,
+    //   },
+    //   {
+    //     id: "blala",
+    //     label: "LangChain SQL Webinar",
+    //     type: CustomNodeTypes.YOUTUBE,
+    //   },
+    //   {
+    //     id: "2",
+    //     label: "OpenAI Notes",
+    //     type: CustomNodeTypes.NOTE,
+    //   },
+    // ]
+    console.log("query", query);
+    let nodes = store.getState().nodes;
+    console.log("nodes", nodes);
+
+    nodes = nodes
+      .filter((node) => node.type !== CustomNodeTypes.CHAT)
+      .map((node) => ({
+        id: node.id,
+        label: node.data.name,
+        type: node.type,
+      }));
+    console.log("nodes", nodes);
+    return nodes
       .filter((item) =>
         item.label.toLowerCase().startsWith(query.toLowerCase())
       )
@@ -78,8 +92,9 @@ const suggestion = {
       },
 
       onExit() {
-        popup[0].destroy();
-        component.destroy();
+        console.log("popup", popup);
+        popup?.[0]?.destroy();
+        component?.destroy();
       },
     };
   },

@@ -85,36 +85,40 @@ const ChatNode = ({
     setLoading(true);
 
     try {
+      let query = "";
+
       if (transcriptText) {
         console.log("transcript", transcriptText);
         console.log("selectedNodes", selectedNodes);
 
+        query = `User query: ${transcriptText}\n\nBlocks: ${selectedNodes
+          .map((nodeId) => `<@block:${nodeId}>`)
+          .join(",")}`;
+        console.log("query", query);
+
         setTranscriptText("");
         setSelectedNodes([]);
+      } else {
+        const htmlContent = editor?.getHTML() || "";
 
-        setLoading(false);
-        return;
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: nanoid(),
+            role: OpenAIRoles.USER,
+            content: htmlContent,
+          },
+        ]);
+
+        editor?.commands.clearContent();
+
+        query = formatHTMLWithMentions(htmlContent);
       }
-
-      const htmlContent = editor?.getHTML() || "";
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: nanoid(),
-          role: OpenAIRoles.USER,
-          content: htmlContent,
-        },
-      ]);
-
-      editor?.commands.clearContent();
-
-      const formattedQuery = formatHTMLWithMentions(htmlContent);
 
       // const res = await axios.post("http://localhost:8000/chat", {
       //   message: formattedQuery,
       // });
-      const res = await chatCall(formattedQuery);
+      const res = await chatCall(query);
       console.log("res", res);
 
       const responseId = nanoid();
