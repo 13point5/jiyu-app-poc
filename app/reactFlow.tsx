@@ -6,6 +6,7 @@ import ChatNode from "@/components/custom-nodes/chat";
 import PDFNode from "@/components/custom-nodes/pdf";
 import YoutubeNode from "@/components/custom-nodes/youtube";
 import NoteNode from "@/components/custom-nodes/note";
+import WebsiteNode from "@/components/custom-nodes/website";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,6 +43,7 @@ const nodeTypes = {
   [CustomNodeTypes.YOUTUBE]: YoutubeNode,
   [CustomNodeTypes.CHAT]: ChatNode,
   [CustomNodeTypes.NOTE]: NoteNode,
+  [CustomNodeTypes.WEBSITE]: WebsiteNode,
 };
 import { shallow } from "zustand/shallow";
 import useStore from "./reactFlowStore";

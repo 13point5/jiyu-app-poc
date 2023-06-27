@@ -17,31 +17,57 @@ import { CustomNodeTypes } from "@/app/constants";
 
 const initialNodes: Node[] = [
   {
-    id: "k3u46gu4bg",
+    id: "pdf_cognitivism",
     position: { x: 50, y: 100 },
-    type: CustomNodeTypes.YOUTUBE,
+    type: CustomNodeTypes.PDF,
     data: {
-      id: "LxI0iofzKWA",
-      name: 'LangChain "OpenAI functions" Webinar',
+      path: "/Learning_Theories_ Cognitivism.pdf",
+      name: "Cognitivism",
     },
   },
   {
-    id: "blala",
-    position: { x: 900, y: 100 },
-    type: CustomNodeTypes.YOUTUBE,
+    id: "chat1",
+    position: { x: 700, y: 100 },
+    type: CustomNodeTypes.CHAT,
     data: {
-      id: "GrCFyyyAxCU",
-      name: "LangChain SQL Webinar",
+      name: "Chat",
     },
   },
   {
-    id: "2",
-    position: { x: 70, y: 500 },
-    type: CustomNodeTypes.NOTE,
+    id: "l136hn5j24n",
+    position: { x: 1350, y: 100 },
+    type: CustomNodeTypes.WEBSITE,
     data: {
-      name: "Notes on OpenAI Functions",
+      url: "https://thedecisionlab.com/reference-guide/neuroscience/behaviorism",
+      name: "Behaviorism",
     },
   },
+  // {
+  //   id: "k3u46gu4bg",
+  //   position: { x: 50, y: 100 },
+  //   type: CustomNodeTypes.YOUTUBE,
+  //   data: {
+  //     id: "LxI0iofzKWA",
+  //     name: 'LangChain "OpenAI functions" Webinar',
+  //   },
+  // },
+  // {
+  //   id: "blala",
+  //   position: { x: 900, y: 100 },
+  //   type: CustomNodeTypes.YOUTUBE,
+  //   data: {
+  //     id: "GrCFyyyAxCU",
+  //     name: "LangChain SQL Webinar",
+  //   },
+  // },
+  // {
+  //   id: "2",
+  //   position: { x: 70, y: 500 },
+  //   type: CustomNodeTypes.NOTE,
+  //   data: {
+  //     name: "Notes on OpenAI Functions",
+  //   },
+  // },
   // {
   //   id: "2",
   //   position: { x: 650, y: 70 },
