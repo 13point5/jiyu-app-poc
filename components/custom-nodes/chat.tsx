@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useOnSelectionChange } from "reactflow";
+import { useState, useRef, useEffect } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
 import { CustomNodeTypes, widths } from "@/app/constants";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ const ChatNode = ({
   yPos,
   id,
 }: {
+  id: string;
   type: CustomNodeTypes;
   xPos: number;
   yPos: number;
@@ -44,16 +46,32 @@ const ChatNode = ({
     speaking,
     transcribing,
     transcript,
-    pauseRecording,
     startRecording,
     stopRecording,
   } = useWhisper({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    removeSilence: true,
   });
 
-  console.log({ recording, speaking, transcribing, transcript });
+  const [transcriptText, setTranscriptText] = useState<string>("");
 
-  console.log("messages", messages);
+  const [selectedNodes, setSelectedNodes] = useState<string[]>([]);
+
+  useOnSelectionChange({
+    onChange: ({ nodes, edges }) => {
+      console.log("changed selection", nodes, edges);
+      setSelectedNodes((prev) => [
+        ...prev,
+        ...nodes.map((n) => n.id).filter((nodeId) => nodeId !== id),
+      ]);
+    },
+  });
+
+  useEffect(() => {
+    setTranscriptText(transcript.text || "");
+  }, [transcript.text]);
+
+  // console.log("messages", messages);
 
   const editor = useEditor({
     ...editorConfig,
@@ -64,12 +82,20 @@ const ChatNode = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // await chatCall();
-    // return;
-
     setLoading(true);
 
     try {
+      if (transcriptText) {
+        console.log("transcript", transcriptText);
+        console.log("selectedNodes", selectedNodes);
+
+        setTranscriptText("");
+        setSelectedNodes([]);
+
+        setLoading(false);
+        return;
+      }
+
       const htmlContent = editor?.getHTML() || "";
 
       setMessages((prev) => [
@@ -164,7 +190,10 @@ const ChatNode = ({
               width: "100%",
             }}
           />
-          <Button onClick={handleSubmit} disabled={loading}>
+          <Button
+            onClick={handleSubmit}
+            disabled={loading || transcribing || recording || speaking}
+          >
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
