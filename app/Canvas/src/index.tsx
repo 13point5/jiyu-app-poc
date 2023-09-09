@@ -33,6 +33,7 @@ import { DEFAULT_BLOCK_DIMS } from "./constants";
 import { useCanvasStore } from "./store";
 
 import { Inter } from "next/font/google";
+import { isCursorInsideALayer } from "@/app/Canvas/src/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 function Canvas() {
@@ -50,6 +51,7 @@ function Canvas() {
 
   useDisableScrollBounce();
 
+  const layers = useCanvasStore((state) => state.layers);
   const layerIds = useCanvasStore((state) => state.layerIds);
   const pencilDraft = useCanvasStore((state) => state.presence.pencilDraft);
   const setPencilDraft = useCanvasStore((state) => state.setPencilDraft);
@@ -277,13 +279,20 @@ function Canvas() {
     }
   }, []);
 
-  const onWheel = useCallback((e: React.WheelEvent) => {
-    // Pan the camera based on the wheel delta
-    setCamera((camera) => ({
-      x: camera.x - e.deltaX,
-      y: camera.y - e.deltaY,
-    }));
-  }, []);
+  const onWheel = useCallback(
+    (e: React.WheelEvent) => {
+      const current = pointerEventToCanvasPoint(e, camera);
+
+      if (!isCursorInsideALayer({ cursor: current, layers })) {
+        // Pan the camera based on the wheel delta
+        setCamera((camera) => ({
+          x: camera.x - e.deltaX,
+          y: camera.y - e.deltaY,
+        }));
+      }
+    },
+    [camera, layers]
+  );
 
   const onPointerDown: PointerEventHandler = useCallback(
     (e) => {
@@ -307,6 +316,7 @@ function Canvas() {
     (e) => {
       e.preventDefault();
       const current = pointerEventToCanvasPoint(e, camera);
+
       if (canvasState.mode === CanvasMode.Pressing) {
         startMultiSelection(current, canvasState.origin);
       } else if (canvasState.mode === CanvasMode.SelectionNet) {

@@ -1,11 +1,14 @@
 import { DocumentLayer } from "@/app/Canvas/src/types";
-import { colorToCss } from "@/app/Canvas/src/utils";
 
 import { CustomNodeTypes } from "@/app/constants";
-import PDFNode from "@/components/custom-nodes/pdf";
 
 import { Document as PDFDoc, Page } from "react-pdf";
 import CustomNodeContainer from "@/components/custom-nodes/container";
+
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+
+// Import the styles
+import "@react-pdf-viewer/core/lib/styles/index.css";
 
 type Props = {
   id: string;
@@ -31,13 +34,14 @@ export default function Document({
         height={height}
         style={{
           transform: `translate(${x}px, ${y}px)`,
-          // backgroundColor: fill ? colorToCss(fill) : "#CCC",
-          // border: "1px solid",
-          // borderColor: selectionColor || "transparent",
         }}
         onPointerDown={(e) => onPointerDown(e, id)}
       >
-        <CustomNodeContainer
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+          <Viewer fileUrl="/Learning_Theories_ Cognitivism.pdf" />;
+        </Worker>
+
+        {/* <CustomNodeContainer
           type={CustomNodeTypes.PDF}
           title="Cognitivism"
           className={`w-[${width}px]`}
@@ -45,7 +49,7 @@ export default function Document({
           <PDFDoc file="/Learning_Theories_ Cognitivism.pdf">
             <Page pageNumber={1} width={width - 32} />
           </PDFDoc>
-        </CustomNodeContainer>
+        </CustomNodeContainer> */}
       </foreignObject>
     </>
   );
