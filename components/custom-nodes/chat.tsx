@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useOnSelectionChange } from "reactflow";
 import { useState, useRef, useEffect } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
@@ -10,11 +11,10 @@ import { nanoid } from "nanoid";
 import editorConfig from "@/app/tiptapConfig";
 import { EditorContent, useEditor } from "@tiptap/react";
 import React from "react";
-import { useWhisper } from "@chengsokdara/use-whisper";
+// import { useWhisper } from "@chengsokdara/use-whisper";
 
 import useStore from "@/app/reactFlowStore";
-import { formatHTMLWithMentions } from "@/app/utils";
-import { chat as chatCall } from "@/dummy/chat";
+import { formatHTMLWithMentions, restoreHTMLFromMentions } from "@/app/utils";
 
 type MessageType = {
   id: string;
@@ -41,17 +41,17 @@ const ChatNode = ({
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const {
-    recording,
-    speaking,
-    transcribing,
-    transcript,
-    startRecording,
-    stopRecording,
-  } = useWhisper({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    removeSilence: true,
-  });
+  // const {
+  //   recording,
+  //   speaking,
+  //   transcribing,
+  //   transcript,
+  //   startRecording,
+  //   stopRecording,
+  // } = useWhisper({
+  //   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  //   removeSilence: true,
+  // });
 
   const [transcriptText, setTranscriptText] = useState<string>("");
 
@@ -67,9 +67,9 @@ const ChatNode = ({
     },
   });
 
-  useEffect(() => {
-    setTranscriptText(transcript.text || "");
-  }, [transcript.text]);
+  // useEffect(() => {
+  //   setTranscriptText(transcript.text || "");
+  // }, [transcript.text]);
 
   // console.log("messages", messages);
 
@@ -77,9 +77,11 @@ const ChatNode = ({
     ...editorConfig,
   });
 
-  const addNode = useStore((state) => state.addNode);
+  // const addNode = useStore((state) => state.addNode);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (
+    e
+  ) => {
     e.preventDefault();
 
     setLoading(true);
@@ -115,10 +117,7 @@ const ChatNode = ({
         query = formatHTMLWithMentions(htmlContent);
       }
 
-      // const res = await axios.post("http://localhost:8000/chat", {
-      //   message: formattedQuery,
-      // });
-      const res = await chatCall(query);
+      const res = await axios.get(`http://localhost:8000/qa?query=${query}`);
       console.log("res", res);
 
       const responseId = nanoid();
@@ -128,30 +127,31 @@ const ChatNode = ({
         {
           id: responseId,
           role: OpenAIRoles.ASSISTANT,
-          content: res.output.text,
+          // content: res.output.text,
+          content: restoreHTMLFromMentions(res.data.output),
         },
       ]);
 
       // const segments = JSON.parse(res.data.source_documents[0].metadata.segments);
-      const segments = res.output.sourceDocuments[0].metadata.segments;
-      segments?.forEach((doc, docIndex: number) => {
-        addNode({
-          id: nanoid(),
-          hidden: true,
-          responseId,
-          position: {
-            x: xPos + docIndex * (widths[CustomNodeTypes.YOUTUBE] + 100),
-            y: yPos + (nodeRef?.current?.clientHeight || 0) + 300,
-          },
-          type: CustomNodeTypes.YOUTUBE,
-          data: {
-            id: "LxI0iofzKWA",
-            start: doc.start,
-            end: doc.end,
-            sourceText: res.output.sourceDocuments[0].pageContent,
-          },
-        });
-      });
+      // const segments = res.output.sourceDocuments[0].metadata.segments;
+      // segments?.forEach((doc, docIndex: number) => {
+      //   addNode({
+      //     id: nanoid(),
+      //     hidden: true,
+      //     responseId,
+      //     position: {
+      //       x: xPos + docIndex * (widths[CustomNodeTypes.YOUTUBE] + 100),
+      //       y: yPos + (nodeRef?.current?.clientHeight || 0) + 300,
+      //     },
+      //     type: CustomNodeTypes.YOUTUBE,
+      //     data: {
+      //       id: "LxI0iofzKWA",
+      //       start: doc.start,
+      //       end: doc.end,
+      //       sourceText: res.output.sourceDocuments[0].pageContent,
+      //     },
+      //   });
+      // });
 
       setLoading(false);
     } catch (error) {
@@ -194,10 +194,7 @@ const ChatNode = ({
               width: "100%",
             }}
           />
-          <Button
-            onClick={handleSubmit}
-            disabled={loading || transcribing || recording || speaking}
-          >
+          <Button onClick={handleSubmit} disabled={loading}>
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
@@ -205,9 +202,9 @@ const ChatNode = ({
             )}
           </Button>
 
-          <Button onClick={recording ? stopRecording : startRecording}>
+          {/* <Button onClick={recording ? stopRecording : startRecording}>
             {recording ? <Pause size={16} /> : <Mic size={16} />}
-          </Button>
+          </Button> */}
         </div>
       </div>
     </CustomNodeContainer>
@@ -238,13 +235,13 @@ const Message = ({ id, blockId, role, content, isLast = false }: Props) => {
     editable: false,
   });
 
-  const [showSources, setShowSources] = useState(false);
-  const setSourcesVisibility = useStore((state) => state.setSourcesVisibility);
+  // const [showSources, setShowSources] = useState(false);
+  // const setSourcesVisibility = useStore((state) => state.setSourcesVisibility);
 
-  const toggleSources = () => {
-    setSourcesVisibility(id, blockId, !showSources);
-    setShowSources(!showSources);
-  };
+  // const toggleSources = () => {
+  //   setSourcesVisibility(id, blockId, !showSources);
+  //   setShowSources(!showSources);
+  // };
 
   return (
     <div className={`flex gap-3`}>
@@ -258,7 +255,7 @@ const Message = ({ id, blockId, role, content, isLast = false }: Props) => {
           }}
         />
 
-        {role === OpenAIRoles.ASSISTANT && (
+        {/* {role === OpenAIRoles.ASSISTANT && (
           <Button
             onClick={toggleSources}
             size="sm"
@@ -272,7 +269,7 @@ const Message = ({ id, blockId, role, content, isLast = false }: Props) => {
               <Eye className="ml-2" size={16} />
             )}
           </Button>
-        )}
+        )} */}
 
         {!isLast && <div className=" bg-slate-300 h-[1px] w-full my-4"></div>}
       </div>

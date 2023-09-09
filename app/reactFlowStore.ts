@@ -25,17 +25,17 @@ const initialNodes: Node[] = [
       name: "Cognitivism",
     },
   },
-  {
-    id: "chat1",
-    position: { x: 700, y: 100 },
-    type: CustomNodeTypes.CHAT,
-    data: {
-      name: "Chat",
-    },
-  },
+  // {
+  //   id: "chat1",
+  //   position: { x: 700, y: 100 },
+  //   type: CustomNodeTypes.CHAT,
+  //   data: {
+  //     name: "Chat",
+  //   },
+  // },
   {
     id: "l136hn5j24n",
-    position: { x: 1350, y: 100 },
+    position: { x: 700, y: 100 },
     type: CustomNodeTypes.WEBSITE,
     data: {
       url: "https://thedecisionlab.com/reference-guide/neuroscience/behaviorism",
