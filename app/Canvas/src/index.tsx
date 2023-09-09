@@ -40,7 +40,6 @@ function Canvas() {
   const [canvasState, setState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
-  console.log("canvasState", canvasState);
 
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
@@ -84,10 +83,10 @@ function Canvas() {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       switch (e.key) {
-        case "Backspace": {
-          deleteLayers();
-          break;
-        }
+        // case "Backspace": {
+        //   deleteLayers();
+        //   break;
+        // }
 
         case "Escape": {
           unselectLayers();

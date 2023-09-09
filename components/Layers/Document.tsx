@@ -1,18 +1,12 @@
 import { DocumentLayer } from "@/app/Canvas/src/types";
 
-import { CustomNodeTypes } from "@/app/constants";
+import { Viewer } from "@react-pdf-viewer/core";
 
-import { Document as PDFDoc, Page } from "react-pdf";
-import CustomNodeContainer from "@/components/custom-nodes/container";
-
-import { Worker, Viewer } from "@react-pdf-viewer/core";
-
-// Import the styles
-import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-
-// Import styles
+import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import "./Document.css";
+
 import { FileText } from "lucide-react";
 import { colorToCss } from "@/app/Canvas/src/utils";
 
@@ -31,7 +25,6 @@ export default function Document({
 }: Props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const { x, y, width, height, fill } = layer;
-  console.log("fill", colorToCss(fill));
 
   return (
     <>
@@ -42,39 +35,28 @@ export default function Document({
         height={height}
         style={{
           transform: `translate(${x}px, ${y}px)`,
+          border: "1.35px solid",
+          borderColor: colorToCss(fill),
         }}
         onPointerDown={(e) => onPointerDown(e, id)}
+        className="rounded-md flex flex-col"
       >
-        <div className={`flex flex-col rounded-md`}>
-          <div
-            className="flex flex-row bg-[${colorToCss(fill)}] gap-2 p-2"
-            style={{
-              backgroundColor: colorToCss(fill),
-            }}
-          >
-            <FileText size={24} />
-
-            <p>Cognitivism</p>
-          </div>
-
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-            <Viewer
-              fileUrl="/Learning_Theories_ Cognitivism.pdf"
-              defaultScale={1}
-              plugins={[defaultLayoutPluginInstance]}
-            />
-          </Worker>
-
-          {/* <CustomNodeContainer
-          type={CustomNodeTypes.PDF}
-          title="Cognitivism"
-          className={`w-[${width}px]`}
+        <div
+          className="flex flex-row gap-2 p-2"
+          style={{
+            backgroundColor: colorToCss(fill),
+          }}
         >
-          <PDFDoc file="/Learning_Theories_ Cognitivism.pdf">
-            <Page pageNumber={1} width={width - 32} />
-          </PDFDoc>
-        </CustomNodeContainer> */}
+          <FileText size={24} />
+
+          <p>Cognitivism</p>
         </div>
+
+        <Viewer
+          fileUrl="/Learning_Theories_ Cognitivism.pdf"
+          defaultScale={1}
+          plugins={[defaultLayoutPluginInstance]}
+        />
       </foreignObject>
     </>
   );
