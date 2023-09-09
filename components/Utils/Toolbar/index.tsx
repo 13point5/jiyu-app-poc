@@ -24,7 +24,7 @@ export default function ToolsBar({
 }: Props) {
   return (
     <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center">
-      <div className="border-2 border-slate-300 rounded-md flex items-center justify-center">
+      <div className="border-2 border-slate-300 rounded-md flex items-center justify-center bg-white">
         <div className="flex gap-2 items-center justify-center p-3">
           <IconButton
             isActive={

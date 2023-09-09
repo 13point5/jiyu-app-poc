@@ -8,12 +8,11 @@ import { CustomNodeTypes, widths } from "@/app/constants";
 import { Button } from "@/components/ui/button";
 import { Send, Loader2, Info, Eye, EyeOff, Mic, Pause } from "lucide-react";
 import { nanoid } from "nanoid";
-import editorConfig from "@/app/tiptapConfig";
+import editorConfig from "@/lib/tiptapConfig";
 import { EditorContent, useEditor } from "@tiptap/react";
 import React from "react";
 // import { useWhisper } from "@chengsokdara/use-whisper";
 
-import useStore from "@/app/reactFlowStore";
 import { formatHTMLWithMentions, restoreHTMLFromMentions } from "@/app/utils";
 
 type MessageType = {

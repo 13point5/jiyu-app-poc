@@ -39,6 +39,8 @@ function Canvas() {
   const [canvasState, setState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
+  console.log("canvasState", canvasState);
+
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 });
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
     r: 252,
@@ -386,10 +388,12 @@ function Canvas() {
                 onLayerPointerDown={onLayerPointerDown}
               />
             ))}
+
             {/* Blue square that show the selection of the current users. Also contains the resize handles. */}
             <SelectionBox
               onResizeHandlePointerDown={onResizeHandlePointerDown}
             />
+
             {/* Selection net that appears when the user is selecting multiple layers at once */}
             {canvasState.mode === CanvasMode.SelectionNet &&
               canvasState.current != null && (
@@ -403,6 +407,7 @@ function Canvas() {
                   )}
                 />
               )}
+
             {/* Drawing in progress. Still not commited to the storage. */}
             {pencilDraft != null && pencilDraft.length > 0 && (
               <Path
@@ -415,6 +420,7 @@ function Canvas() {
           </g>
         </svg>
       </div>
+
       <Toolbar
         canvasState={canvasState}
         setCanvasState={setState}

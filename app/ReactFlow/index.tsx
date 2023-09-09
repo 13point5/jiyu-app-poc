@@ -46,7 +46,7 @@ const nodeTypes = {
   [CustomNodeTypes.WEBSITE]: WebsiteNode,
 };
 import { shallow } from "zustand/shallow";
-import useStore from "./reactFlowStore";
+import useStore from "./store";
 
 const selector = (state) => ({
   nodes: state.nodes,

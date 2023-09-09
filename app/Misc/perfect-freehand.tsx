@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getStroke } from "perfect-freehand";
-import { getSvgPathFromStroke } from "./utils";
+import { getSvgPathFromStroke } from "../utils";
 
 const DrawingApp = () => {
   const [points, setPoints] = useState([]);

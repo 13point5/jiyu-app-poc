@@ -3,7 +3,7 @@ import tippy from "tippy.js";
 
 import MentionList from "./MentionList";
 import { CustomNodeTypes } from "@/app/constants";
-import store from "@/app/reactFlowStore";
+import store from "@/app/ReactFlow/store";
 
 const suggestion = {
   items: ({ query = "" }) => {

@@ -3,7 +3,7 @@ import { mergeAttributes, Node } from "@tiptap/core";
 import { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { PluginKey } from "@tiptap/pm/state";
 import Suggestion, { SuggestionOptions } from "@tiptap/suggestion";
-import reactFlowStore from "@/app/reactFlowStore";
+import reactFlowStore from "@/app/ReactFlow/store";
 
 export type MentionOptions = {
   HTMLAttributes: Record<string, any>;

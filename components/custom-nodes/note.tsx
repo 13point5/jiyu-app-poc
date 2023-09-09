@@ -4,7 +4,7 @@ import CustomNodeContainer from "@/components/custom-nodes/container";
 import { CustomNodeTypes } from "@/app/constants";
 
 import { useEditor, EditorContent } from "@tiptap/react";
-import editorConfig from "@/app/tiptapConfig";
+import editorConfig from "@/lib/tiptapConfig";
 
 const noteConfig = R.mergeDeepRight(editorConfig, {
   editorProps: {
