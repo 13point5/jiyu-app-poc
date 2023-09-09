@@ -11,8 +11,8 @@ export const DEFAULT_BLOCK_DIMS: {
     height: 200,
   },
   [LayerType.Document]: {
-    width: 300,
-    height: 200,
+    width: 680,
+    height: 800,
   },
   [LayerType.Rectangle]: {
     width: 300,
