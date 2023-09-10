@@ -159,6 +159,7 @@ function Canvas() {
         height,
         width,
         fill: lastUsedColor,
+        data: null,
       };
 
       handleInsertLayer(layerId, layer);

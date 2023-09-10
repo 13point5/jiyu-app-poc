@@ -6,9 +6,7 @@ import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import "./Document.css";
-
-import { FileText } from "lucide-react";
-import { colorToCss } from "@/app/Canvas/src/utils";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   id: string;
@@ -17,47 +15,26 @@ type Props = {
   selectionColor?: string;
 };
 
-export default function Document({
-  layer,
-  onPointerDown,
-  id,
-  selectionColor,
-}: Props) {
+export default function Document({ layer, onPointerDown, id }: Props) {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const { x, y, width, height, fill } = layer;
+  const { data } = layer;
+  console.log("id", id);
+  console.log("data", data);
+
+  if (!data) {
+    return (
+      <div className="flex flex-col gap-2 items-center justify-center h-full w-full bg-red-100">
+        <Button>Choose Document</Button>
+        <Button>Upload Document</Button>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <foreignObject
-        x={0}
-        y={0}
-        width={width}
-        height={height}
-        style={{
-          transform: `translate(${x}px, ${y}px)`,
-          border: "1.35px solid",
-          borderColor: colorToCss(fill),
-        }}
-        onPointerDown={(e) => onPointerDown(e, id)}
-        className="rounded-md flex flex-col"
-      >
-        <div
-          className="flex flex-row gap-2 p-2"
-          style={{
-            backgroundColor: colorToCss(fill),
-          }}
-        >
-          <FileText size={24} />
-
-          <p>Cognitivism</p>
-        </div>
-
-        <Viewer
-          fileUrl="/Learning_Theories_ Cognitivism.pdf"
-          defaultScale={1}
-          plugins={[defaultLayoutPluginInstance]}
-        />
-      </foreignObject>
-    </>
+    <Viewer
+      fileUrl="/Learning_Theories_ Cognitivism.pdf"
+      defaultScale={1}
+      plugins={[defaultLayoutPluginInstance]}
+    />
   );
 }

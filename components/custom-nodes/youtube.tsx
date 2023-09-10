@@ -1,5 +1,5 @@
 import CustomNodeContainer from "@/components/custom-nodes/container";
-import { CustomNodeTypes } from "@/app/constants";
+import { CustomNodeTypes } from "@/app/ReactFlow/constants";
 
 const getURL = (id: string, start?: number, end?: number) => {
   let url = `https://www.youtube.com/embed/${id}`;

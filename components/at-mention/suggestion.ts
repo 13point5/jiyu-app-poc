@@ -2,7 +2,7 @@ import { ReactRenderer } from "@tiptap/react";
 import tippy from "tippy.js";
 
 import MentionList from "./MentionList";
-import { CustomNodeTypes } from "@/app/constants";
+import { CustomNodeTypes } from "@/app/ReactFlow/constants";
 import store from "@/app/ReactFlow/store";
 
 const suggestion = {

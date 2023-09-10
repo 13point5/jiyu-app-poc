@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import { CustomNodeTypes, bgColors } from "@/app/constants";
+import { CustomNodeTypes, bgColors } from "@/app/ReactFlow/constants";
 // import "./MentionList.css";
 import { Inter } from "next/font/google";
 

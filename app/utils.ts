@@ -1,5 +1,5 @@
 import useStore from "@/app/ReactFlow/store";
-import { bgColors } from "@/app/constants";
+import { bgColors } from "@/app/ReactFlow/constants";
 
 const average = (a, b) => (a + b) / 2;
 

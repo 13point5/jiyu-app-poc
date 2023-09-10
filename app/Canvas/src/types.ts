@@ -43,6 +43,7 @@ export type DocumentLayer = {
   height: number;
   width: number;
   fill: Color;
+  data: null | Object;
 };
 
 export type RectangleLayer = {

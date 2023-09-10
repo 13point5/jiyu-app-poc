@@ -1,4 +1,9 @@
-import { widths, icons, CustomNodeTypes, bgColors } from "@/app/constants";
+import {
+  widths,
+  icons,
+  CustomNodeTypes,
+  bgColors,
+} from "@/app/ReactFlow/constants";
 
 import { cn } from "@/lib/utils";
 

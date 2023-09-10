@@ -1,7 +1,7 @@
 "use client";
 
 import { nanoid } from "nanoid";
-import { CustomNodeTypes } from "@/app/constants";
+import { CustomNodeTypes } from "@/app/ReactFlow/constants";
 import ChatNode from "@/components/custom-nodes/chat";
 import PDFNode from "@/components/custom-nodes/pdf";
 import YoutubeNode from "@/components/custom-nodes/youtube";

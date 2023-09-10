@@ -13,7 +13,7 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
 } from "reactflow";
-import { CustomNodeTypes } from "@/app/constants";
+import { CustomNodeTypes } from "@/app/ReactFlow/constants";
 
 const initialNodes: Node[] = [
   {

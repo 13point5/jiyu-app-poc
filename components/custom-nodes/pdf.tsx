@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Document, Page } from "react-pdf";
 import CustomNodeContainer from "@/components/custom-nodes/container";
-import { CustomNodeTypes, widths } from "@/app/constants";
+import { CustomNodeTypes, widths } from "@/app/ReactFlow/constants";
 
 function PDFNode({
   data,

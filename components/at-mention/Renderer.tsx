@@ -1,4 +1,4 @@
-import { bgColors } from "@/app/constants";
+import { bgColors } from "@/app/ReactFlow/constants";
 import { mergeAttributes, Node } from "@tiptap/core";
 import { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { PluginKey } from "@tiptap/pm/state";

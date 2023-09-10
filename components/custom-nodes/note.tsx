@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import { memo } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
-import { CustomNodeTypes } from "@/app/constants";
+import { CustomNodeTypes } from "@/app/ReactFlow/constants";
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import editorConfig from "@/lib/tiptapConfig";

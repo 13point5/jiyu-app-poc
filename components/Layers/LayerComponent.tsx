@@ -6,7 +6,13 @@ import { CanvasMode, LayerType } from "@/app/Canvas/src/types";
 import { colorToCss } from "@/app/Canvas/src/utils";
 import Document from "./Document";
 import YoutubeBlock from "./Youtube";
+import CustomLayerContainer from "./container";
 import { useCanvasStore } from "@/app/Canvas/src/store";
+
+const customLayerComponent = Object.freeze({
+  [LayerType.Document]: Document,
+  [LayerType.Youtube]: YoutubeBlock,
+});
 
 type Props = {
   id: string;
@@ -18,8 +24,24 @@ type Props = {
 const LayerComponent = memo(
   ({ onLayerPointerDown, id, selectionColor }: Props) => {
     const layer = useCanvasStore((state) => state.layers.get(id));
+
     if (!layer) {
       return null;
+    }
+
+    if ([LayerType.Document, LayerType.Youtube].includes(layer.type)) {
+      const Layer = customLayerComponent[layer.type];
+
+      return (
+        <CustomLayerContainer id={id} onPointerDown={onLayerPointerDown}>
+          <Layer
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        </CustomLayerContainer>
+      );
     }
 
     switch (layer.type) {
@@ -47,26 +69,6 @@ const LayerComponent = memo(
       case LayerType.Rectangle:
         return (
           <Rectangle
-            id={id}
-            layer={layer}
-            onPointerDown={onLayerPointerDown}
-            selectionColor={selectionColor}
-          />
-        );
-
-      case LayerType.Document:
-        return (
-          <Document
-            id={id}
-            layer={layer}
-            onPointerDown={onLayerPointerDown}
-            selectionColor={selectionColor}
-          />
-        );
-
-      case LayerType.Youtube:
-        return (
-          <YoutubeBlock
             id={id}
             layer={layer}
             onPointerDown={onLayerPointerDown}

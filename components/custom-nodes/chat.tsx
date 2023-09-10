@@ -4,7 +4,7 @@ import axios from "axios";
 import { useOnSelectionChange } from "reactflow";
 import { useState, useRef, useEffect } from "react";
 import CustomNodeContainer from "@/components/custom-nodes/container";
-import { CustomNodeTypes, widths } from "@/app/constants";
+import { CustomNodeTypes, widths } from "@/app/ReactFlow/constants";
 import { Button } from "@/components/ui/button";
 import { Send, Loader2, Info, Eye, EyeOff, Mic, Pause } from "lucide-react";
 import { nanoid } from "nanoid";
