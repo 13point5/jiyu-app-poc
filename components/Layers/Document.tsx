@@ -1,4 +1,4 @@
-import { DocumentLayer } from "@/app/Canvas/src/types";
+import { DocumentLayer } from "@/app/HardWay/types";
 
 import { Viewer } from "@react-pdf-viewer/core";
 

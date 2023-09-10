@@ -3,7 +3,7 @@
 // import "@/lib/pdf";
 
 import { Worker } from "@react-pdf-viewer/core";
-import Draw from "@/app/Canvas/src";
+import Draw from "@/app/HardWay";
 // import Draw from "./reactFlow";
 
 export default function Home() {

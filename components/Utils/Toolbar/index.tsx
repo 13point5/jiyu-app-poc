@@ -1,5 +1,5 @@
 import React from "react";
-import { CanvasMode, LayerType, CanvasState } from "@/app/Canvas/src/types";
+import { CanvasMode, LayerType, CanvasState } from "@/app/HardWay/types";
 import IconButton from "@/components/ui/IconButton";
 import {
   Circle,

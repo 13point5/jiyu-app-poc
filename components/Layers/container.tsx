@@ -1,9 +1,9 @@
-import { defaultNames, icons } from "@/app/Canvas/src/constants";
+import { defaultNames, icons } from "@/app/HardWay/constants";
 
 import { cn } from "@/lib/utils";
-import { useCanvasStore } from "@/app/Canvas/src/store";
-import { colorToCss } from "@/app/Canvas/src/utils";
-import { DocumentLayer } from "@/app/Canvas/src/types";
+import { useCanvasStore } from "@/app/HardWay/store";
+import { colorToCss } from "@/app/HardWay/utils";
+import { DocumentLayer } from "@/app/HardWay/types";
 
 type Props = {
   id: string;

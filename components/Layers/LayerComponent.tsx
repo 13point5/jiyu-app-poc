@@ -2,12 +2,12 @@ import React, { memo } from "react";
 import Ellipse from "./Ellipse";
 import Path from "../Utils/Path";
 import Rectangle from "./Rectangle";
-import { CanvasMode, LayerType } from "@/app/Canvas/src/types";
-import { colorToCss } from "@/app/Canvas/src/utils";
+import { CanvasMode, LayerType } from "@/app/HardWay/types";
+import { colorToCss } from "@/app/HardWay/utils";
 import Document from "./Document";
 import YoutubeBlock from "./Youtube";
 import CustomLayerContainer from "./container";
-import { useCanvasStore } from "@/app/Canvas/src/store";
+import { useCanvasStore } from "@/app/HardWay/store";
 
 const customLayerComponent = Object.freeze({
   [LayerType.Document]: Document,

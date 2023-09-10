@@ -1,5 +1,5 @@
-import { YoutubeLayer } from "@/app/Canvas/src/types";
-import { colorToCss } from "@/app/Canvas/src/utils";
+import { YoutubeLayer } from "@/app/HardWay/types";
+import { colorToCss } from "@/app/HardWay/utils";
 
 import { Plus, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";

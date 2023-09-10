@@ -1,5 +1,5 @@
-import { EllipseLayer } from "@/app/Canvas/src/types";
-import { colorToCss } from "@/app/Canvas/src/utils";
+import { EllipseLayer } from "@/app/HardWay/types";
+import { colorToCss } from "@/app/HardWay/utils";
 
 type Props = {
   id: string;

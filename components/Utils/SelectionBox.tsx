@@ -1,7 +1,7 @@
 import { memo } from "react";
-import useSelectionBounds from "@/app/Canvas/src/hooks/useSelectionBounds";
-import { LayerType, Side, XYWH } from "@/app/Canvas/src/types";
-import { useCanvasStore } from "@/app/Canvas/src/store";
+import useSelectionBounds from "@/app/HardWay/hooks/useSelectionBounds";
+import { LayerType, Side, XYWH } from "@/app/HardWay/types";
+import { useCanvasStore } from "@/app/HardWay/store";
 
 type SelectionBoxProps = {
   onResizeHandlePointerDown: (corner: Side, initialBounds: XYWH) => void;

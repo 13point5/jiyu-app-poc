@@ -1,5 +1,5 @@
-import { Color } from "@/app/Canvas/src/types";
-import { colorToCss } from "@/app/Canvas/src/utils";
+import { Color } from "@/app/HardWay/types";
+import { colorToCss } from "@/app/HardWay/utils";
 
 type Props = {
   onChange: (color: Color) => void;

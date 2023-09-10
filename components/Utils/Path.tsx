@@ -1,4 +1,4 @@
-import { getSvgPathFromStroke } from "@/app/Canvas/src/utils";
+import { getSvgPathFromStroke } from "@/app/HardWay/utils";
 import getStroke from "perfect-freehand";
 
 type Props = {
