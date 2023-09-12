@@ -22,9 +22,11 @@ const CustomNodeContainer = ({
 
   return (
     <div
-      // style={{
-      //   width: `${widths[type] + 8}px`,
-      // }}
+      style={{
+        width: `${widths[type] + 8}px`,
+        minHeight: "300px",
+        maxHeight: "600px",
+      }}
       className={cn(
         `flex flex-col gap-4 ${
           bgColors[type] || "bg-slate-100"
