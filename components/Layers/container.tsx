@@ -42,24 +42,31 @@ const CustomNodeContainer = ({
         borderColor: fillHexCode,
         width,
         height,
-        display: "flex",
-        flexDirection: "column",
       }}
       onPointerDown={(e) => onPointerDown(e, id)}
       className={cn("rounded-md flex flex-col", className)}
     >
       <div
-        className="flex flex-row gap-2 p-2"
         style={{
-          backgroundColor: fillHexCode,
+          width,
+          height,
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Icon size={24} />
+        <div
+          className="flex flex-row gap-2 p-2"
+          style={{
+            backgroundColor: fillHexCode,
+          }}
+        >
+          <Icon size={24} />
 
-        <p>{data?.name || defaultNames[type]}</p>
+          <p>{data?.name || defaultNames[type]}</p>
+        </div>
+
+        {children}
       </div>
-
-      {children}
     </foreignObject>
   );
 };
