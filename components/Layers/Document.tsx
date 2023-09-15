@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { DocumentLayer } from "@/app/HardWay/types";
 
@@ -9,6 +9,10 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 import "./Document.css";
 import { Button } from "@/components/ui/button";
+import { FileText, X } from "lucide-react";
+
+import CustomLayerContainer from "./container";
+import { useCanvasStore } from "@/app/HardWay/store";
 
 type Props = {
   id: string;
@@ -18,6 +22,7 @@ type Props = {
 };
 
 export default function Document({ layer, onPointerDown, id }: Props) {
+  const { updateLayer } = useCanvasStore();
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const { data } = layer;
   // console.log("id", id);
@@ -37,39 +42,62 @@ export default function Document({ layer, onPointerDown, id }: Props) {
     maxFiles: 1,
   });
 
+  useEffect(() => {
+    if (!data && file) {
+      updateLayer({
+        id,
+        layer: {
+          height: 150,
+        },
+      });
+    }
+  }, [file, data, id, updateLayer]);
+
   if (!data) {
     return (
-      <div className="bg-red-100 h-full w-full">
-        {!file && (
-          <div
-            {...getRootProps()}
-            className="flex items-center justify-center h-full w-full p-2"
-          >
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop the files here ...</p>
-            ) : (
-              <Button variant="link">
-                Drag and drop files here, or click to browse
-              </Button>
-            )}
-          </div>
-        )}
+      <CustomLayerContainer id={id} onPointerDown={onPointerDown}>
+        <div className="bg-red-100 h-full w-full">
+          {!file && (
+            <div
+              {...getRootProps()}
+              className="flex items-center justify-center h-full w-full p-2"
+            >
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p>Drop the files here ...</p>
+              ) : (
+                <Button variant="link">
+                  Drag and drop files here, or click to browse
+                </Button>
+              )}
+            </div>
+          )}
 
-        <div className="flex flex-col gap-2 p-2">
-          {file && <p>{file.name}</p>}
+          {file && (
+            <div className="flex flex-col gap-2 p-2">
+              <div className="flex gap-2 w-full items-center justify-between">
+                <p className="text-sm">{file.name}</p>
 
-          {file && <Button>Upload and Process</Button>}
+                <Button variant="ghost" size="icon-sm">
+                  <X size={16} />
+                </Button>
+              </div>
+
+              <Button>Upload and Process</Button>
+            </div>
+          )}
         </div>
-      </div>
+      </CustomLayerContainer>
     );
   }
 
   return (
-    <Viewer
-      fileUrl="/Learning_Theories_ Cognitivism.pdf"
-      defaultScale={1}
-      plugins={[defaultLayoutPluginInstance]}
-    />
+    <CustomLayerContainer id={id} onPointerDown={onPointerDown}>
+      <Viewer
+        fileUrl="/Learning_Theories_ Cognitivism.pdf"
+        defaultScale={1}
+        plugins={[defaultLayoutPluginInstance]}
+      />
+    </CustomLayerContainer>
   );
 }

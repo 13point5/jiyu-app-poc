@@ -45,6 +45,7 @@ type Actions = {
   insertLayer: (layerId: LayerId, layer: Layer) => void;
   deleteLayer: (layerId: LayerId) => void;
   deleteSelectedLayers: () => void;
+  updateLayer: (params: { id: LayerId; layer: Partial<Layer> }) => void;
 
   translateSelectedLayers: (delta: Point) => void;
   resizeFirstSelectedLayer: (bounds: XYWH) => void;
@@ -307,4 +308,18 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       layers: new Map(),
       layerIds: [],
     })),
+
+  updateLayer: ({ id, layer }) =>
+    set((state) => {
+      const currentLayer = state.layers.get(id);
+      if (!currentLayer) return state;
+
+      return {
+        ...state,
+        layers: new Map(state.layers).set(id, {
+          ...currentLayer,
+          ...layer,
+        }),
+      };
+    }),
 }));

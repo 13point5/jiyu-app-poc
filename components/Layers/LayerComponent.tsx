@@ -29,22 +29,32 @@ const LayerComponent = memo(
       return null;
     }
 
-    if ([LayerType.Document, LayerType.Youtube].includes(layer.type)) {
-      const Layer = customLayerComponent[layer.type];
+    // if ([LayerType.Document, LayerType.Youtube].includes(layer.type)) {
+    //   const Layer = customLayerComponent[layer.type];
 
-      return (
-        <CustomLayerContainer id={id} onPointerDown={onLayerPointerDown}>
-          <Layer
+    //   return (
+    //     <CustomLayerContainer id={id} onPointerDown={onLayerPointerDown}>
+    //       <Layer
+    //         id={id}
+    //         layer={layer}
+    //         onPointerDown={onLayerPointerDown}
+    //         selectionColor={selectionColor}
+    //       />
+    //     </CustomLayerContainer>
+    //   );
+    // }
+
+    switch (layer.type) {
+      case LayerType.Document:
+        return (
+          <Document
             id={id}
             layer={layer}
             onPointerDown={onLayerPointerDown}
             selectionColor={selectionColor}
           />
-        </CustomLayerContainer>
-      );
-    }
+        );
 
-    switch (layer.type) {
       case LayerType.Ellipse:
         return (
           <Ellipse
@@ -54,6 +64,7 @@ const LayerComponent = memo(
             selectionColor={selectionColor}
           />
         );
+
       case LayerType.Path:
         return (
           <Path
@@ -66,6 +77,7 @@ const LayerComponent = memo(
             stroke={selectionColor}
           />
         );
+
       case LayerType.Rectangle:
         return (
           <Rectangle
