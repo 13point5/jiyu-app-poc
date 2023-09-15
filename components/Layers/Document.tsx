@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { DocumentLayer } from "@/app/HardWay/types";
+import { DocumentLayer, LayerType } from "@/app/HardWay/types";
 
 import { Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
@@ -13,6 +13,7 @@ import { FileText, X } from "lucide-react";
 
 import CustomLayerContainer from "./container";
 import { useCanvasStore } from "@/app/HardWay/store";
+import { DEFAULT_BLOCK_DIMS } from "@/app/HardWay/constants";
 
 type Props = {
   id: string;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export default function Document({ layer, onPointerDown, id }: Props) {
+  console.log("id, lyer", id, layer);
   const { updateLayer } = useCanvasStore();
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const { data } = layer;
@@ -36,6 +38,19 @@ export default function Document({ layer, onPointerDown, id }: Props) {
 
     setFile(acceptedFiles[0]);
   }, []);
+
+  const handleUpload = () => {
+    updateLayer({
+      id,
+      layer: {
+        data: {
+          path: "",
+        },
+        width: 700,
+        height: 800,
+      },
+    });
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -83,7 +98,7 @@ export default function Document({ layer, onPointerDown, id }: Props) {
                 </Button>
               </div>
 
-              <Button>Upload and Process</Button>
+              <Button onClick={handleUpload}>Upload and Process</Button>
             </div>
           )}
         </div>
