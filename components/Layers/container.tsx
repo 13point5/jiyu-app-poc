@@ -44,7 +44,6 @@ const CustomNodeContainer = ({
         width,
         height,
       }}
-      onPointerDown={(e) => onPointerDown(e, id)}
       className={cn("rounded-md flex flex-col", className)}
     >
       <div
@@ -56,6 +55,7 @@ const CustomNodeContainer = ({
         }}
       >
         <div
+          onPointerDown={(e) => onPointerDown(e, id)}
           className="flex flex-row gap-2 p-2"
           style={{
             backgroundColor: fillHexCode,

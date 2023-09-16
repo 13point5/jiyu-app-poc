@@ -26,8 +26,6 @@ export default function Document({ layer, onPointerDown, id }: Props) {
   const { updateLayer } = useCanvasStore();
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const { data } = layer;
-  // console.log("id", id);
-  // console.log("data", data);
 
   const [file, setFile] = useState<File | null>(null);
 
