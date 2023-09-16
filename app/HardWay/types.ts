@@ -129,29 +129,35 @@ export enum CanvasMode {
   /**
    * Default canvas mode. Nothing is happening.
    */
-  None,
+  None = "none",
+
   /**
    * When the user's pointer is pressed
    */
-  Pressing,
+  Pressing = "pressing",
+
   /**
    * When the user is selecting multiple layers at once
    */
-  SelectionNet,
+  SelectionNet = "selectionNet",
+
   /**
    * When the user is moving layers
    */
-  Translating,
+  Translating = "translating",
+
   /**
    * When the user is going to insert a Rectangle or an Ellipse
    */
-  Inserting,
+  Inserting = "inserting",
+
   /**
    * When the user is resizing a layer
    */
-  Resizing,
+  Resizing = "resizing",
+
   /**
    * When the pencil is activated
    */
-  Pencil,
+  Pencil = "pencil",
 }

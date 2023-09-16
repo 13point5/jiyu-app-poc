@@ -31,6 +31,7 @@ const SelectionBox = ({ onResizeHandlePointerDown }: SelectionBoxProps) => {
   });
 
   const bounds = useSelectionBounds();
+
   if (!bounds) {
     return null;
   }
@@ -47,6 +48,7 @@ const SelectionBox = ({ onResizeHandlePointerDown }: SelectionBoxProps) => {
         width={bounds.width}
         height={bounds.height}
       />
+
       {isShowingHandles && (
         <>
           <rect

@@ -23,7 +23,6 @@ type Props = {
 };
 
 export default function Document({ layer, onPointerDown, id }: Props) {
-  console.log("id, lyer", id, layer);
   const { updateLayer } = useCanvasStore();
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const { data } = layer;
