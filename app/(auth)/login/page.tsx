@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import { useSupabase } from "@/lib/context/SupabaseProvider";
-import { redirectToPreviousPageOrChatPage } from "@/lib/redirectToPreviousPageOrChatPage";
+import { redirectToPreviousPageOrChatPage } from "@/lib/router";
 import { GoogleLoginButton } from "@/app/(auth)/login/components/GoogleLogin";
 import { Suspense } from "react";
 

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import { useSupabase } from "@/lib/context/SupabaseProvider";
-import { redirectToPreviousPageOrChatPage } from "@/lib/redirectToPreviousPageOrChatPage";
+import { redirectToPreviousPageOrChatPage } from "@/lib/router";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
