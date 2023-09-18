@@ -4,10 +4,10 @@ import { useEffect } from "react";
 
 import { useSupabase } from "@/lib/context/SupabaseProvider";
 import { redirectToPreviousPageOrChatPage } from "@/lib/redirectToPreviousPageOrChatPage";
-import { GoogleLoginButton } from "@/app/(auth)/login/components/GoogleLogin";
-import { Suspense } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-const Main = () => {
+export default function Home() {
   const { session } = useSupabase();
 
   useEffect(() => {
@@ -17,16 +17,16 @@ const Main = () => {
   }, [session?.user]);
 
   return (
-    <main className="w-full flex flex-col gap-4 p-4">
-      <GoogleLoginButton />
-    </main>
-  );
-};
+    <main className="">
+      <section className="w-full flex flex-col gap-4 items-center p-4">
+        <h1 className="text-5xl font-bold">Jiyu</h1>
 
-export default function Login() {
-  return (
-    <Suspense fallback="Loading...">
-      <Main />
-    </Suspense>
+        <Link href={"/login"}>
+          <Button variant="default">Login</Button>
+        </Link>
+
+        <p>homepage</p>
+      </section>
+    </main>
   );
 }
