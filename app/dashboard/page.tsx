@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 // import Canvas from "@/app/HardWay";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { Database } from "@/app/supabaseTypes";
+import { CreateBoardButton } from "@/app/dashboard/components/create-board-button";
 
 type BoardsTable = Database["public"]["Tables"]["boards"]["Row"];
 
@@ -29,18 +28,6 @@ export default function Dashboard() {
     fetchBoards();
   }, [supabase]);
 
-  const createNewBoard = async () => {
-    const res = await supabase
-      .from("boards")
-      .insert([
-        {
-          name: "untitled",
-        },
-      ])
-      .select();
-    console.log("res", res);
-  };
-
   if (fetching)
     return (
       <div>
@@ -55,9 +42,7 @@ export default function Dashboard() {
       <div className="flex gap-4">
         <h1 className="text-3xl font-bold">Boards</h1>
 
-        <Button onClick={createNewBoard}>
-          <Plus className="mr-2" /> Create Board
-        </Button>
+        <CreateBoardButton />
       </div>
 
       <div className="flex gap-4">
