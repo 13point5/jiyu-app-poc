@@ -199,7 +199,7 @@ export function penPointsToPathLayer(
 }
 
 export function pointerEventToCanvasPoint(
-  e: React.PointerEvent,
+  e: React.PointerEvent | React.WheelEvent,
   camera: Camera
 ): Point {
   return {

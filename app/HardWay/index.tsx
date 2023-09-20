@@ -375,7 +375,7 @@ function Canvas() {
 
   return (
     <>
-      <div className="bg-[#eee] touch-none">
+      <div className="bg-[#F1F6F8] touch-none">
         <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
 
         <svg

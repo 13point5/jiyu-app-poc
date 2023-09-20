@@ -68,7 +68,7 @@ export default function Document({ layer, onPointerDown, id }: Props) {
   if (!data) {
     return (
       <CustomLayerContainer id={id} onPointerDown={onPointerDown}>
-        <div className="bg-red-100 h-full w-full">
+        <div className="h-full w-full">
           {!file && (
             <div
               {...getRootProps()}

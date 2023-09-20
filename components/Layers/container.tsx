@@ -39,12 +39,13 @@ const CustomNodeContainer = ({
       y={0}
       style={{
         transform: `translate(${x}px, ${y}px)`,
-        border: "1.35px solid",
-        borderColor: fillHexCode,
         width,
         height,
       }}
-      className={cn("rounded-md flex flex-col", className)}
+      className={cn(
+        "rounded-md flex flex-col drop-shadow-md bg-white",
+        className
+      )}
     >
       <div
         style={{
@@ -58,7 +59,9 @@ const CustomNodeContainer = ({
           onPointerDown={(e) => onPointerDown(e, id)}
           className="flex flex-row gap-2 p-2"
           style={{
-            backgroundColor: fillHexCode,
+            backgroundColor: "#F7FAFC",
+            borderTop: "4px solid",
+            borderColor: fillHexCode,
           }}
         >
           <Icon size={24} />
