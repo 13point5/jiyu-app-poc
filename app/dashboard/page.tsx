@@ -28,6 +28,31 @@ export default function Dashboard() {
     fetchBoards();
   }, [supabase]);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime boards")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "boards",
+        },
+        (payload) => {
+          console.log("payload", payload);
+          if (payload.new) {
+            const newBoard = payload.new as BoardsTable;
+            setBoards((prev) => [...prev, newBoard]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase]);
+
   if (fetching)
     return (
       <div>
