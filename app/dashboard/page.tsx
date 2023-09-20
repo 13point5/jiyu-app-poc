@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 // import Canvas from "@/app/HardWay";
 
+import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/app/supabaseTypes";
 import { CreateBoardButton } from "@/app/dashboard/components/create-board-button";
@@ -73,12 +74,11 @@ export default function Dashboard() {
 
       <div className="flex flex-wrap gap-4">
         {boards.map((board) => (
-          <div
-            key={board.id}
-            className="p-2 rounded-md shadow-sm bg-slate-200 w-fit"
-          >
-            <span>{board.name}</span>
-          </div>
+          <Link key={board.id} href={`/board/${board.id}`}>
+            <div className="p-2 rounded-md shadow-sm bg-slate-200 w-fit">
+              <span>{board.name}</span>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
