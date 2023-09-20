@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [boards, setBoards] = useState<BoardsTable[]>([]);
   console.log("boards", boards);
 
+  // Fetch Boards on load
   useEffect(() => {
     const fetchBoards = async () => {
       const res = await supabase.from("boards").select();
@@ -28,6 +29,7 @@ export default function Dashboard() {
     fetchBoards();
   }, [supabase]);
 
+  // Subscribe to realtime creation of Boards
   useEffect(() => {
     const channel = supabase
       .channel("realtime boards")
@@ -39,7 +41,6 @@ export default function Dashboard() {
           table: "boards",
         },
         (payload) => {
-          console.log("payload", payload);
           if (payload.new) {
             const newBoard = payload.new as BoardsTable;
             setBoards((prev) => [...prev, newBoard]);
