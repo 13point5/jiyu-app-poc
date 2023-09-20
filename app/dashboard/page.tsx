@@ -71,7 +71,7 @@ export default function Dashboard() {
         <CreateBoardButton />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         {boards.map((board) => (
           <div
             key={board.id}
