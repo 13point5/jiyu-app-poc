@@ -264,7 +264,7 @@ function Canvas({ blocks, boardId }: Props) {
    * Resize selected layer. Only resizing a single layer is allowed.
    */
   const resizeSelectedLayer = useCallback(
-    (point: Point) => {
+    async (point: Point) => {
       if (canvasState.mode !== CanvasMode.Resizing) {
         return;
       }
@@ -276,8 +276,31 @@ function Canvas({ blocks, boardId }: Props) {
       );
 
       handleResizeFirstSelectedLayer(bounds);
+
+      const updates = [];
+
+      const layerId = selection[0];
+      const layer = layers.get(layerId);
+
+      updates.push({
+        id: parseInt(layerId, 10),
+        board_id: boardId,
+        data: {
+          ...layer,
+          ...bounds,
+        },
+      });
+
+      await supabase.from("blocks").upsert(updates);
     },
-    [canvasState, handleResizeFirstSelectedLayer]
+    [
+      canvasState,
+      handleResizeFirstSelectedLayer,
+      selection,
+      layers,
+      boardId,
+      supabase,
+    ]
   );
 
   /**
