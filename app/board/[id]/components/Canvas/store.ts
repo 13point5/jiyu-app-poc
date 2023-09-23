@@ -321,12 +321,26 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       });
     }),
 
-  clearCanvas: () =>
+  clearCanvas: async () => {
+    const state = get();
+    const { layerIds } = state;
+
     set((state) => ({
       ...state,
       layers: new Map(),
       layerIds: [],
-    })),
+    }));
+
+    const supabase = createClientComponentClient();
+
+    await supabase
+      .from("blocks")
+      .delete()
+      .in(
+        "id",
+        layerIds.map((id) => parseInt(id, 10))
+      );
+  },
 
   updateLayer: ({ id, layer }) =>
     set((state) => {
