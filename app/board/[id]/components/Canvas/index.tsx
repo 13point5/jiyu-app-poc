@@ -221,7 +221,6 @@ function Canvas({ blocks, boardId }: Props) {
 
       selection.forEach((layerId) => {
         const layer = layers.get(layerId);
-        console.log("moving layer", layer);
         if (!layer) return;
 
         updates.push({
@@ -428,7 +427,11 @@ function Canvas({ blocks, boardId }: Props) {
   return (
     <>
       <div className="bg-[#F1F6F8] touch-none">
-        <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
+        <SelectionTools
+          boardId={boardId}
+          camera={camera}
+          setLastUsedColor={setLastUsedColor}
+        />
 
         <svg
           className={`${inter.className} w-screen h-screen`}
