@@ -2,25 +2,28 @@ import React from "react";
 import Ellipse from "./Ellipse";
 import Path from "../Utils/Path";
 import Rectangle from "./Rectangle";
-import { CanvasMode, LayerType } from "@/app/HardWay/types";
-import { colorToCss } from "@/app/HardWay/utils";
+import {
+  CanvasMode,
+  LayerType,
+} from "@/app/board/[id]/components/HardWay/types";
+import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
 import Document from "./Document";
 import YoutubeBlock from "./Youtube";
-import { useCanvasStore } from "@/app/HardWay/store";
+import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
 
 type Props = {
-  id: string;
+  block: any;
   mode: CanvasMode;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
   selectionColor?: string;
 };
 
-const LayerComponent = ({ onLayerPointerDown, id, selectionColor }: Props) => {
-  const layer = useCanvasStore((state) => state.layers.get(id));
-
-  if (!layer) {
-    return null;
-  }
+const LayerComponent = ({
+  onLayerPointerDown,
+  block,
+  selectionColor,
+}: Props) => {
+  const { id, data: layer } = block;
 
   switch (layer.type) {
     case LayerType.Document:

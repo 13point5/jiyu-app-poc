@@ -1,5 +1,5 @@
-import { Color } from "@/app/HardWay/types";
-import { colorToCss } from "@/app/HardWay/utils";
+import { Color } from "@/app/board/[id]/components/HardWay/types";
+import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
 
 type Props = {
   onChange: (color: Color) => void;

@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { DocumentLayer, LayerType } from "@/app/HardWay/types";
+import {
+  DocumentLayer,
+  LayerType,
+} from "@/app/board/[id]/components/HardWay/types";
 
 import { Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
@@ -12,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { FileText, X } from "lucide-react";
 
 import CustomLayerContainer from "./container";
-import { useCanvasStore } from "@/app/HardWay/store";
-import { DEFAULT_BLOCK_DIMS } from "@/app/HardWay/constants";
+import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
+import { DEFAULT_BLOCK_DIMS } from "@/app/board/[id]/components/HardWay/constants";
 
 type Props = {
   id: string;
@@ -68,7 +71,7 @@ export default function Document({ layer, onPointerDown, id }: Props) {
   if (!data) {
     return (
       <CustomLayerContainer id={id} onPointerDown={onPointerDown}>
-        <div className="bg-red-100 h-full w-full">
+        <div className="h-full w-full">
           {!file && (
             <div
               {...getRootProps()}

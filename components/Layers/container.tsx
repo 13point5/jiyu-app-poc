@@ -1,9 +1,12 @@
-import { defaultNames, icons } from "@/app/HardWay/constants";
+import {
+  defaultNames,
+  icons,
+} from "@/app/board/[id]/components/HardWay/constants";
 
 import { cn } from "@/lib/utils";
-import { useCanvasStore } from "@/app/HardWay/store";
-import { colorToCss } from "@/app/HardWay/utils";
-import { DocumentLayer } from "@/app/HardWay/types";
+import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
+import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
+import { DocumentLayer } from "@/app/board/[id]/components/HardWay/types";
 
 type Props = {
   id: string;
@@ -39,12 +42,13 @@ const CustomNodeContainer = ({
       y={0}
       style={{
         transform: `translate(${x}px, ${y}px)`,
-        border: "1.35px solid",
-        borderColor: fillHexCode,
         width,
         height,
       }}
-      className={cn("rounded-md flex flex-col", className)}
+      className={cn(
+        "rounded-md flex flex-col drop-shadow-md bg-white",
+        className
+      )}
     >
       <div
         style={{
@@ -58,7 +62,9 @@ const CustomNodeContainer = ({
           onPointerDown={(e) => onPointerDown(e, id)}
           className="flex flex-row gap-2 p-2"
           style={{
-            backgroundColor: fillHexCode,
+            backgroundColor: "#F7FAFC",
+            borderTop: "4px solid",
+            borderColor: fillHexCode,
           }}
         >
           <Icon size={24} />
