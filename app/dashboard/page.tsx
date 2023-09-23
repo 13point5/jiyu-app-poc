@@ -8,52 +8,12 @@ import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/app/supabaseTypes";
 import { CreateBoardButton } from "@/app/dashboard/components/create-board-button";
+import { useBoards } from "@/app/dashboard/hooks/useBoards";
 
 type BoardsTable = Database["public"]["Tables"]["boards"]["Row"];
 
 export default function Dashboard() {
-  const supabase = createClientComponentClient();
-
-  const [fetching, setFetching] = useState(true);
-  const [boards, setBoards] = useState<BoardsTable[]>([]);
-  console.log("boards", boards);
-
-  // Fetch Boards on load
-  useEffect(() => {
-    const fetchBoards = async () => {
-      const res = await supabase.from("boards").select();
-      const data = res.data as BoardsTable[];
-      setBoards(data);
-      setFetching(false);
-    };
-
-    fetchBoards();
-  }, [supabase]);
-
-  // Subscribe to realtime creation of Boards
-  useEffect(() => {
-    const channel = supabase
-      .channel("realtime boards")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "boards",
-        },
-        (payload) => {
-          if (payload.new) {
-            const newBoard = payload.new as BoardsTable;
-            setBoards((prev) => [...prev, newBoard]);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase]);
+  const { fetching, data: boards, error } = useBoards();
 
   if (fetching)
     return (
@@ -61,6 +21,8 @@ export default function Dashboard() {
         <p>fetching...</p>
       </div>
     );
+
+  if (error) return <p>error: {error.message}</p>;
 
   console.log("boards", boards);
 
