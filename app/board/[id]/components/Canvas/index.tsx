@@ -358,7 +358,7 @@ function Canvas({ blocks, boardId }: Props) {
     (e: React.WheelEvent) => {
       const current = pointerEventToCanvasPoint(e, camera);
 
-      if (!isCursorInsideALayer({ cursor: current, layers: blocks })) {
+      if (!isCursorInsideALayer({ cursor: current, layers })) {
         // Pan the camera based on the wheel delta
         setCamera((camera) => ({
           x: camera.x - e.deltaX,
@@ -366,7 +366,7 @@ function Canvas({ blocks, boardId }: Props) {
         }));
       }
     },
-    [camera, blocks]
+    [camera, layers]
   );
 
   const onPointerDown: PointerEventHandler = useCallback(

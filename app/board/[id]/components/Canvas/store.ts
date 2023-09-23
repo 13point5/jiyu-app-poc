@@ -2,6 +2,7 @@ import * as R from "ramda";
 import { Layer, Point, Color, XYWH } from "./types";
 import { findIntersectingLayersWithRectangle } from "./utils";
 import { create } from "zustand";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export type LayerId = string;
 
@@ -44,7 +45,6 @@ type Actions = {
 
   setInitialLayers: (layers: { id: number; data: Layer }[]) => void;
   insertLayer: (layerId: LayerId, layer: Layer) => void;
-  deleteLayer: (layerId: LayerId) => void;
   deleteSelectedLayers: () => void;
   updateLayer: (params: { id: LayerId; layer: Partial<Layer> }) => void;
 
@@ -165,27 +165,17 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       layers: new Map(state.layers).set(layerId, layer),
     })),
 
-  deleteLayer: (layerId) =>
-    set((state) => {
-      const updatedLayers = new Map(state.layers);
+  deleteSelectedLayers: async () => {
+    const state = get();
+
+    const selection = state.presence.selection;
+
+    const updatedLayers = new Map(state.layers);
+    selection.forEach((layerId) => {
       updatedLayers.delete(layerId);
+    });
 
-      return {
-        ...state,
-        layerIds: state.layerIds.filter((id) => id !== layerId),
-        layers: updatedLayers,
-      };
-    }),
-
-  deleteSelectedLayers: () =>
-    set((state) => {
-      const selection = state.presence.selection;
-
-      const updatedLayers = new Map(state.layers);
-      selection.forEach((layerId) => {
-        updatedLayers.delete(layerId);
-      });
-
+    set(() => {
       return {
         ...state,
         layerIds: state.layerIds.filter((id) => !selection.includes(id)),
@@ -195,7 +185,18 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
           selection: [],
         },
       };
-    }),
+    });
+
+    const supabase = createClientComponentClient();
+
+    await supabase
+      .from("blocks")
+      .delete()
+      .in(
+        "id",
+        selection.map((id) => parseInt(id, 10))
+      );
+  },
 
   translateSelectedLayers: (delta) =>
     set((state) => {
