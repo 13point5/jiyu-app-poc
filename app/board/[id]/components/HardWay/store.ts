@@ -143,7 +143,6 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
 
   setInitialLayers: (layers) =>
     set((state) => {
-      console.log("layers", layers);
       const layerIds: string[] = [];
       const initialLayers: Array<[string, Layer]> = [];
 

@@ -75,7 +75,7 @@ function Canvas({ blocks, boardId }: Props) {
   const setMyPresence = useCanvasStore((state) => state.setMyPresence);
   const setMyCursor = useCanvasStore((state) => state.setMyCursor);
   const clearCanvas = useCanvasStore((state) => state.clearCanvas);
-  const handleTranslateSelectedLayers = useCanvasStore(
+  const translateSelectedLayersInStore = useCanvasStore(
     (state) => state.translateSelectedLayers
   );
   const handleResizeFirstSelectedLayer = useCanvasStore(
@@ -212,6 +212,33 @@ function Canvas({ blocks, boardId }: Props) {
     setPencilDraft(null);
     setState({ mode: CanvasMode.Pencil });
   }, [handleInsertLayer, lastUsedColor, pencilDraft, setPencilDraft]);
+
+  const handleTranslateSelectedLayers = useCallback(
+    async (offset) => {
+      translateSelectedLayersInStore(offset);
+
+      const updates: any[] = [];
+
+      selection.forEach((layerId) => {
+        const layer = layers.get(layerId);
+        console.log("moving layer", layer);
+        if (!layer) return;
+
+        updates.push({
+          id: parseInt(layerId, 10),
+          board_id: boardId,
+          data: {
+            ...layer,
+            x: layer.x + offset.x,
+            y: layer.y + offset.y,
+          },
+        });
+      });
+
+      await supabase.from("blocks").upsert(updates);
+    },
+    [layers, selection, supabase, translateSelectedLayersInStore, boardId]
+  );
 
   /**
    * Move selected layers on the canvas
