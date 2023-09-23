@@ -70,38 +70,5 @@ export const useBlocks = (boardId: BoardId): HookResult => {
     fetchTableData();
   }, [supabase, boardId]);
 
-  // Subscribe to realtime insertion
-  useEffect(() => {
-    const channel = supabase
-      .channel(`realtime ${tableName}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: tableName,
-          filter: `board_id=${boardId}`,
-        },
-        (payload) => {
-          console.log("payload", payload);
-          if (!payload.new) {
-            return;
-          }
-
-          const newData = payload.new as TableRow;
-          setState((prev) => ({
-            fetching: false,
-            error: null,
-            data: [...(prev.data || []), newData],
-          }));
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase, boardId]);
-
   return state;
 };

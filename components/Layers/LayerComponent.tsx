@@ -12,18 +12,18 @@ import YoutubeBlock from "./Youtube";
 import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
 
 type Props = {
-  block: any;
+  id: string;
   mode: CanvasMode;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
   selectionColor?: string;
 };
 
-const LayerComponent = ({
-  onLayerPointerDown,
-  block,
-  selectionColor,
-}: Props) => {
-  const { id, data: layer } = block;
+const LayerComponent = ({ onLayerPointerDown, id, selectionColor }: Props) => {
+  const layer = useCanvasStore((state) => state.layers.get(String(id)));
+
+  if (!layer) {
+    return null;
+  }
 
   switch (layer.type) {
     case LayerType.Document:

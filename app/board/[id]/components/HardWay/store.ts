@@ -42,6 +42,7 @@ type Actions = {
     pencilDraft: Presence["pencilDraft"]
   ) => void;
 
+  setInitialLayers: (layers: { id: number; data: Layer }[]) => void;
   insertLayer: (layerId: LayerId, layer: Layer) => void;
   deleteLayer: (layerId: LayerId) => void;
   deleteSelectedLayers: () => void;
@@ -139,6 +140,24 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
         pencilDraft,
       },
     })),
+
+  setInitialLayers: (layers) =>
+    set((state) => {
+      console.log("layers", layers);
+      const layerIds: string[] = [];
+      const initialLayers: Array<[string, Layer]> = [];
+
+      layers.forEach((layer) => {
+        layerIds.push(String(layer.id));
+        initialLayers.push([String(layer.id), layer.data]);
+      });
+
+      return {
+        ...state,
+        layerIds,
+        layers: new Map(initialLayers),
+      };
+    }),
 
   insertLayer: (layerId, layer) =>
     set((state) => ({

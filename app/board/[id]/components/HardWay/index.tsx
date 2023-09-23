@@ -59,9 +59,11 @@ function Canvas({ blocks, boardId }: Props) {
 
   const supabase = createClientComponentClient();
 
-  // const layers = useCanvasStore((state) => state.layers);
-  // console.log("layers", layers);
-  // const layerIds = useCanvasStore((state) => state.layerIds);
+  const setInitialLayers = useCanvasStore((state) => state.setInitialLayers);
+
+  const layers = useCanvasStore((state) => state.layers);
+  console.log("layers", layers);
+  const layerIds = useCanvasStore((state) => state.layerIds);
   const pencilDraft = useCanvasStore((state) => state.presence.pencilDraft);
   const setPencilDraft = useCanvasStore((state) => state.setPencilDraft);
 
@@ -86,6 +88,10 @@ function Canvas({ blocks, boardId }: Props) {
   const updateSelectionNet = useCanvasStore(
     (state) => state.updateSelectionNet
   );
+
+  useEffect(() => {
+    setInitialLayers(blocks);
+  }, [blocks, setInitialLayers]);
 
   /**
    * Hook used to listen to Undo / Redo and delete selected layers
@@ -172,14 +178,14 @@ function Canvas({ blocks, boardId }: Props) {
         data: null,
       };
 
-      // handleInsertLayer(layerId, layer);
+      handleInsertLayer(layerId, layer);
 
       await supabase.from("blocks").insert({ data: layer, board_id: boardId });
 
       setMyPresence([layerId]);
       setState({ mode: CanvasMode.None });
     },
-    [lastUsedColor, setMyPresence, supabase, boardId]
+    [lastUsedColor, setMyPresence, supabase, boardId, handleInsertLayer]
   );
 
   /**
@@ -403,10 +409,10 @@ function Canvas({ blocks, boardId }: Props) {
               transform: `translate(${camera.x}px, ${camera.y}px)`,
             }}
           >
-            {blocks.map((block) => (
+            {layerIds.map((id) => (
               <LayerComponent
-                key={block.id}
-                block={block}
+                key={id}
+                id={id}
                 mode={canvasState.mode}
                 onLayerPointerDown={onLayerPointerDown}
               />
