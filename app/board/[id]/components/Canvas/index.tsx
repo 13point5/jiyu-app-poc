@@ -155,62 +155,51 @@ function Canvas({ blocks, boardId }: Props) {
     []
   );
 
-  const handleInsertLayer = useCallback(
-    async (layerId, layer) => {
-      insertLayerToStore(layerId, layer);
+  // const handleInsertLayer = useCallback(
+  //   async (layerId, layer) => {
+  //     // insertLayerToStore(layerId, layer);
 
-      await supabase.from("blocks").insert({ data: layer, board_id: boardId });
-    },
-    [supabase, boardId, insertLayerToStore]
-  );
+  //     // await supabase.from("blocks").insert({ data: layer, board_id: boardId });
+  //   },
+  //   [supabase, boardId, insertLayerToStore]
+  // );
 
   /**
    * Insert an ellipse or a rectangle at the given position and select it
    */
   const insertLayer = useCallback(
     async (layerType: BlockLayerType, position: Point) => {
-      const layerId = nanoid();
-
-      const { height, width } = DEFAULT_BLOCK_DIMS[layerType] || {
-        height: 100,
-        width: 100,
-      };
-
-      const layer = {
-        type: layerType,
-        x: position.x,
-        y: position.y,
-        height,
-        width,
+      const layer = await insertLayerToStore({
+        layerType,
+        position,
         fill: lastUsedColor,
-        data: null,
-      };
+        boardId,
+      });
+      console.log("new layer", layer);
 
-      await handleInsertLayer(layerId, layer);
-
-      setMyPresence([layerId]);
+      setMyPresence([layer.id]);
       setState({ mode: CanvasMode.None });
     },
-    [lastUsedColor, setMyPresence, handleInsertLayer]
+    [lastUsedColor, setMyPresence, boardId, insertLayerToStore]
   );
 
   /**
    * Transform the drawing of the current user in a layer and reset the presence to delete the draft.
    */
-  const insertPath = useCallback(() => {
-    if (pencilDraft == null || pencilDraft.length < 2) {
-      setPencilDraft(null);
-      return;
-    }
+  // const insertPath = useCallback(() => {
+  //   if (pencilDraft == null || pencilDraft.length < 2) {
+  //     setPencilDraft(null);
+  //     return;
+  //   }
 
-    handleInsertLayer(
-      nanoid(),
-      penPointsToPathLayer(pencilDraft, lastUsedColor)
-    );
+  //   // handleInsertLayer(
+  //   //   nanoid(),
+  //   //   penPointsToPathLayer(pencilDraft, lastUsedColor)
+  //   // );
 
-    setPencilDraft(null);
-    setState({ mode: CanvasMode.Pencil });
-  }, [handleInsertLayer, lastUsedColor, pencilDraft, setPencilDraft]);
+  //   setPencilDraft(null);
+  //   setState({ mode: CanvasMode.Pencil });
+  // }, [lastUsedColor, pencilDraft, setPencilDraft]);
 
   const handleTranslateSelectedLayers = useCallback(
     async (offset) => {
@@ -223,7 +212,7 @@ function Canvas({ blocks, boardId }: Props) {
         if (!layer) return;
 
         updates.push({
-          id: parseInt(layerId, 10),
+          id: layerId,
           board_id: boardId,
           data: {
             ...layer,
@@ -282,7 +271,7 @@ function Canvas({ blocks, boardId }: Props) {
       const layer = layers.get(layerId);
 
       updates.push({
-        id: parseInt(layerId, 10),
+        id: layerId,
         board_id: boardId,
         data: {
           ...layer,
@@ -434,7 +423,8 @@ function Canvas({ blocks, boardId }: Props) {
           mode: CanvasMode.None,
         });
       } else if (canvasState.mode === CanvasMode.Pencil) {
-        insertPath();
+        // TODO: because of ID issue there might be lag
+        // insertPath();
       } else if (canvasState.mode === CanvasMode.Inserting) {
         insertLayer(canvasState.layerType, point);
       } else {
@@ -443,7 +433,7 @@ function Canvas({ blocks, boardId }: Props) {
         });
       }
     },
-    [camera, canvasState, insertLayer, insertPath, setState, unselectLayers]
+    [camera, canvasState, insertLayer, setState, unselectLayers]
   );
 
   return (

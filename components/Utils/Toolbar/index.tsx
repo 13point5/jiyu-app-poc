@@ -43,12 +43,12 @@ export default function ToolsBar({
             <MousePointer />
           </IconButton>
 
-          <IconButton
+          {/* <IconButton
             isActive={canvasState.mode === CanvasMode.Pencil}
             onClick={() => setCanvasState({ mode: CanvasMode.Pencil })}
           >
             <Pencil />
-          </IconButton>
+          </IconButton> */}
 
           <IconButton
             isActive={

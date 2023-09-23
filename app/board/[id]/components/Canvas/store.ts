@@ -1,8 +1,9 @@
 import * as R from "ramda";
-import { Layer, Point, Color, XYWH } from "./types";
+import { Layer, Point, Color, XYWH, BlockLayerType } from "./types";
 import { findIntersectingLayersWithRectangle } from "./utils";
 import { create } from "zustand";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { DEFAULT_BLOCK_DIMS } from "@/app/board/[id]/components/Canvas/constants";
 
 export type LayerId = string;
 
@@ -44,7 +45,12 @@ type Actions = {
   ) => void;
 
   setInitialLayers: (layers: { id: number; data: Layer }[]) => void;
-  insertLayer: (layerId: LayerId, layer: Layer) => void;
+  insertLayer: (params: {
+    layerType: BlockLayerType;
+    position: Point;
+    fill: Color;
+    boardId: number;
+  }) => void;
   deleteSelectedLayers: () => void;
   updateLayer: (params: { id: LayerId; layer: Partial<Layer> }) => void;
 
@@ -158,12 +164,40 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       };
     }),
 
-  insertLayer: (layerId, layer) =>
+  insertLayer: async ({ layerType, position, fill, boardId }) => {
+    const supabase = createClientComponentClient();
+
+    const { height, width } = DEFAULT_BLOCK_DIMS[layerType] || {
+      height: 100,
+      width: 100,
+    };
+
+    const layer = {
+      type: layerType,
+      x: position.x,
+      y: position.y,
+      height,
+      width,
+      fill,
+      data: null,
+    };
+
+    const res = await supabase
+      .from("blocks")
+      .insert({ data: layer, board_id: boardId })
+      .select();
+    console.log("res", res);
+
+    const layerData = res.data[0];
+
     set((state) => ({
       ...state,
-      layerIds: [...state.layerIds, layerId],
-      layers: new Map(state.layers).set(layerId, layer),
-    })),
+      layerIds: [...state.layerIds, layerData.id],
+      layers: new Map(state.layers).set(layerData.id, layerData.data),
+    }));
+
+    return layerData;
+  },
 
   deleteSelectedLayers: async () => {
     const state = get();
@@ -189,13 +223,7 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
 
     const supabase = createClientComponentClient();
 
-    await supabase
-      .from("blocks")
-      .delete()
-      .in(
-        "id",
-        selection.map((id) => parseInt(id, 10))
-      );
+    await supabase.from("blocks").delete().in("id", selection);
   },
 
   translateSelectedLayers: (delta) =>
@@ -333,13 +361,7 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
 
     const supabase = createClientComponentClient();
 
-    await supabase
-      .from("blocks")
-      .delete()
-      .in(
-        "id",
-        layerIds.map((id) => parseInt(id, 10))
-      );
+    await supabase.from("blocks").delete().in("id", layerIds);
   },
 
   updateLayer: ({ id, layer }) =>

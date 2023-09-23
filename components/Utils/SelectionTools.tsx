@@ -45,7 +45,7 @@ function SelectionTools({
       if (!layer) return;
 
       updates.push({
-        id: parseInt(id, 10),
+        id,
         board_id: boardId,
         data: {
           ...layer,
