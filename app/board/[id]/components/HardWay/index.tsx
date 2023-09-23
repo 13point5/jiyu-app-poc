@@ -71,7 +71,7 @@ function Canvas({ blocks, boardId }: Props) {
   const selection = useCanvasStore((state) => state.presence.selection);
   const setLayerSelection = useCanvasStore((state) => state.setLayerSelection);
   const unselectLayers = useCanvasStore((state) => state.unselectLayers);
-  const handleInsertLayer = useCanvasStore((state) => state.insertLayer);
+  const insertLayerToStore = useCanvasStore((state) => state.insertLayer);
   const setMyPresence = useCanvasStore((state) => state.setMyPresence);
   const setMyCursor = useCanvasStore((state) => state.setMyCursor);
   const clearCanvas = useCanvasStore((state) => state.clearCanvas);
@@ -156,6 +156,15 @@ function Canvas({ blocks, boardId }: Props) {
     []
   );
 
+  const handleInsertLayer = useCallback(
+    async (layerId, layer) => {
+      insertLayerToStore(layerId, layer);
+
+      await supabase.from("blocks").insert({ data: layer, board_id: boardId });
+    },
+    [supabase, boardId, insertLayerToStore]
+  );
+
   /**
    * Insert an ellipse or a rectangle at the given position and select it
    */
@@ -178,14 +187,12 @@ function Canvas({ blocks, boardId }: Props) {
         data: null,
       };
 
-      handleInsertLayer(layerId, layer);
-
-      await supabase.from("blocks").insert({ data: layer, board_id: boardId });
+      await handleInsertLayer(layerId, layer);
 
       setMyPresence([layerId]);
       setState({ mode: CanvasMode.None });
     },
-    [lastUsedColor, setMyPresence, supabase, boardId, handleInsertLayer]
+    [lastUsedColor, setMyPresence, handleInsertLayer]
   );
 
   /**
