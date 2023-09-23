@@ -67,7 +67,6 @@ function Canvas({ blocks, boardId }: Props) {
   const pencilDraft = useCanvasStore((state) => state.presence.pencilDraft);
   const setPencilDraft = useCanvasStore((state) => state.setPencilDraft);
 
-  const deleteLayers = useCanvasStore((state) => state.deleteSelectedLayers);
   const selection = useCanvasStore((state) => state.presence.selection);
   const setLayerSelection = useCanvasStore((state) => state.setLayerSelection);
   const unselectLayers = useCanvasStore((state) => state.unselectLayers);
@@ -116,7 +115,7 @@ function Canvas({ blocks, boardId }: Props) {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [deleteLayers, unselectLayers]);
+  }, [unselectLayers]);
 
   /**
    * Select the layer if not already selected and start translating the selection

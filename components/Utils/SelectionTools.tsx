@@ -21,7 +21,9 @@ function SelectionTools({
   const setFill = useCanvasStore((state) => state.setFill);
   const moveToFront = useCanvasStore((state) => state.moveToFront);
   const moveToBack = useCanvasStore((state) => state.moveToBack);
-  const deleteLayers = useCanvasStore((state) => state.deleteSelectedLayers);
+  const deleteSelectedLayers = useCanvasStore(
+    (state) => state.deleteSelectedLayers
+  );
   const selection = useCanvasStore((state) => state.presence.selection);
   const layers = useCanvasStore((state) => state.layers);
 
@@ -57,6 +59,7 @@ function SelectionTools({
 
   const x = selectionBounds.width / 2 + selectionBounds.x + camera.x;
   const y = selectionBounds.y + camera.y;
+
   return (
     <div
       className="absolute rounded-md shadow-md flex divide-x bg-white select-none"
@@ -73,7 +76,7 @@ function SelectionTools({
         <IconButton onClick={moveToBack}>
           <ArrowBigDownDash />
         </IconButton>
-        <IconButton onClick={deleteLayers}>
+        <IconButton onClick={deleteSelectedLayers}>
           <Trash2 />
         </IconButton>
       </div>

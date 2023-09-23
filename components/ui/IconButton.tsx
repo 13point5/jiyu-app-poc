@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 
 type Props = {
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   children: React.ReactNode;
   isActive?: boolean;
   disabled?: boolean;
