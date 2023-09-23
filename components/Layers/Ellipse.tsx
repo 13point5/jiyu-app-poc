@@ -1,5 +1,5 @@
-import { EllipseLayer } from "@/app/HardWay/types";
-import { colorToCss } from "@/app/HardWay/utils";
+import { EllipseLayer } from "@/app/board/[id]/components/HardWay/types";
+import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
 
 type Props = {
   id: string;

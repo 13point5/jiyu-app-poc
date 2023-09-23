@@ -33,10 +33,16 @@ import { DEFAULT_BLOCK_DIMS } from "./constants";
 import { useCanvasStore } from "./store";
 
 import { Inter } from "next/font/google";
-import { isCursorInsideALayer } from "@/app/HardWay/lib/utils";
+import { isCursorInsideALayer } from "@/app/board/[id]/components/HardWay/lib/utils";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 const inter = Inter({ subsets: ["latin"] });
 
-function Canvas() {
+type Props = {
+  blocks: any;
+  boardId: number;
+};
+
+function Canvas({ blocks, boardId }: Props) {
   const [canvasState, setState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
@@ -51,8 +57,11 @@ function Canvas() {
 
   useDisableScrollBounce();
 
-  const layers = useCanvasStore((state) => state.layers);
-  const layerIds = useCanvasStore((state) => state.layerIds);
+  const supabase = createClientComponentClient();
+
+  // const layers = useCanvasStore((state) => state.layers);
+  // console.log("layers", layers);
+  // const layerIds = useCanvasStore((state) => state.layerIds);
   const pencilDraft = useCanvasStore((state) => state.presence.pencilDraft);
   const setPencilDraft = useCanvasStore((state) => state.setPencilDraft);
 
@@ -145,7 +154,7 @@ function Canvas() {
    * Insert an ellipse or a rectangle at the given position and select it
    */
   const insertLayer = useCallback(
-    (layerType: BlockLayerType, position: Point) => {
+    async (layerType: BlockLayerType, position: Point) => {
       const layerId = nanoid();
 
       const { height, width } = DEFAULT_BLOCK_DIMS[layerType] || {
@@ -163,11 +172,14 @@ function Canvas() {
         data: null,
       };
 
-      handleInsertLayer(layerId, layer);
+      // handleInsertLayer(layerId, layer);
+
+      await supabase.from("blocks").insert({ data: layer, board_id: boardId });
+
       setMyPresence([layerId]);
       setState({ mode: CanvasMode.None });
     },
-    [handleInsertLayer, lastUsedColor, setMyPresence]
+    [lastUsedColor, setMyPresence, supabase, boardId]
   );
 
   /**
@@ -284,7 +296,7 @@ function Canvas() {
     (e: React.WheelEvent) => {
       const current = pointerEventToCanvasPoint(e, camera);
 
-      if (!isCursorInsideALayer({ cursor: current, layers })) {
+      if (!isCursorInsideALayer({ cursor: current, layers: blocks })) {
         // Pan the camera based on the wheel delta
         setCamera((camera) => ({
           x: camera.x - e.deltaX,
@@ -292,7 +304,7 @@ function Canvas() {
         }));
       }
     },
-    [camera, layers]
+    [camera, blocks]
   );
 
   const onPointerDown: PointerEventHandler = useCallback(
@@ -391,10 +403,10 @@ function Canvas() {
               transform: `translate(${camera.x}px, ${camera.y}px)`,
             }}
           >
-            {layerIds.map((layerId) => (
+            {blocks.map((block) => (
               <LayerComponent
-                key={layerId}
-                id={layerId}
+                key={block.id}
+                block={block}
                 mode={canvasState.mode}
                 onLayerPointerDown={onLayerPointerDown}
               />

@@ -5,11 +5,13 @@ import { Database } from "@/app/supabaseTypes";
 
 type Tables = Database["public"]["Tables"];
 
-const tableName = "boards";
+const tableName = "blocks";
 
 type TableName = typeof tableName;
 
 type TableRow = Tables[TableName]["Row"];
+
+type BoardId = TableRow["board_id"];
 
 type HookResult =
   | {
@@ -28,7 +30,7 @@ type HookResult =
       error: Error;
     };
 
-export const useBoards = (): HookResult => {
+export const useBlocks = (boardId: BoardId): HookResult => {
   const supabase = createClientComponentClient();
 
   const [state, setState] = useState<HookResult>({
@@ -40,7 +42,10 @@ export const useBoards = (): HookResult => {
   useEffect(() => {
     const fetchTableData = async () => {
       try {
-        const res = await supabase.from(tableName).select();
+        const res = await supabase
+          .from(tableName)
+          .select()
+          .eq("board_id", boardId);
 
         if (res.error) {
           throw res.error;
@@ -63,7 +68,7 @@ export const useBoards = (): HookResult => {
     };
 
     fetchTableData();
-  }, [supabase]);
+  }, [supabase, boardId]);
 
   // Subscribe to realtime insertion
   useEffect(() => {
@@ -75,8 +80,10 @@ export const useBoards = (): HookResult => {
           event: "INSERT",
           schema: "public",
           table: tableName,
+          filter: `board_id=${boardId}`,
         },
         (payload) => {
+          console.log("payload", payload);
           if (!payload.new) {
             return;
           }
@@ -94,7 +101,7 @@ export const useBoards = (): HookResult => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase]);
+  }, [supabase, boardId]);
 
   return state;
 };
