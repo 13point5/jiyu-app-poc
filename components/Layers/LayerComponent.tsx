@@ -5,11 +5,11 @@ import Rectangle from "./Rectangle";
 import {
   CanvasMode,
   LayerType,
-} from "@/app/board/[id]/components/HardWay/types";
-import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
+} from "@/app/board/[id]/components/Canvas/types";
+import { colorToCss } from "@/app/board/[id]/components/Canvas/utils";
 import Document from "./Document";
 import YoutubeBlock from "./Youtube";
-import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
+import { useCanvasStore } from "@/app/board/[id]/components/Canvas/store";
 
 type Props = {
   id: string;

@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useBlocks } from "@/app/board/[id]/hooks/useBlocks";
-import Canvas from "./components/HardWay";
+import Canvas from "./components/Canvas";
 import { Loader2 } from "lucide-react";
 
 export default function BoardPage() {

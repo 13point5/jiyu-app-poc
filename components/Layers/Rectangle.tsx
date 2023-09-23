@@ -1,5 +1,5 @@
-import { RectangleLayer } from "@/app/board/[id]/components/HardWay/types";
-import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
+import { RectangleLayer } from "@/app/board/[id]/components/Canvas/types";
+import { colorToCss } from "@/app/board/[id]/components/Canvas/utils";
 
 type Props = {
   id: string;

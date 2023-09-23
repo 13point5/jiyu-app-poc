@@ -3,7 +3,7 @@ import {
   CanvasMode,
   LayerType,
   CanvasState,
-} from "@/app/board/[id]/components/HardWay/types";
+} from "@/app/board/[id]/components/Canvas/types";
 import IconButton from "@/components/ui/IconButton";
 import {
   Circle,

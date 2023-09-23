@@ -2,9 +2,9 @@ import { memo } from "react";
 import { ArrowBigUpDash, ArrowBigDownDash, Trash2 } from "lucide-react";
 import ColorPicker from "./ColorPicker";
 import IconButton from "@/components/ui/IconButton";
-import { Camera, Color } from "@/app/board/[id]/components/HardWay/types";
-import useSelectionBounds from "@/app/board/[id]/components/HardWay/hooks/useSelectionBounds";
-import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
+import { Camera, Color } from "@/app/board/[id]/components/Canvas/types";
+import useSelectionBounds from "@/app/board/[id]/components/Canvas/hooks/useSelectionBounds";
+import { useCanvasStore } from "@/app/board/[id]/components/Canvas/store";
 
 type SelectionToolsProps = {
   camera: Camera;

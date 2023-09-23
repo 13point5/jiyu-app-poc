@@ -1,12 +1,12 @@
 import {
   defaultNames,
   icons,
-} from "@/app/board/[id]/components/HardWay/constants";
+} from "@/app/board/[id]/components/Canvas/constants";
 
 import { cn } from "@/lib/utils";
-import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
-import { colorToCss } from "@/app/board/[id]/components/HardWay/utils";
-import { DocumentLayer } from "@/app/board/[id]/components/HardWay/types";
+import { useCanvasStore } from "@/app/board/[id]/components/Canvas/store";
+import { colorToCss } from "@/app/board/[id]/components/Canvas/utils";
+import { DocumentLayer } from "@/app/board/[id]/components/Canvas/types";
 
 type Props = {
   id: string;

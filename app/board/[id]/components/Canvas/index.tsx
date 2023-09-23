@@ -33,7 +33,7 @@ import { DEFAULT_BLOCK_DIMS } from "./constants";
 import { useCanvasStore } from "./store";
 
 import { Inter } from "next/font/google";
-import { isCursorInsideALayer } from "@/app/board/[id]/components/HardWay/lib/utils";
+import { isCursorInsideALayer } from "@/app/board/[id]/components/Canvas/lib/utils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 const inter = Inter({ subsets: ["latin"] });
 

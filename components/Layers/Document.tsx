@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import {
   DocumentLayer,
   LayerType,
-} from "@/app/board/[id]/components/HardWay/types";
+} from "@/app/board/[id]/components/Canvas/types";
 
 import { Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { FileText, X } from "lucide-react";
 
 import CustomLayerContainer from "./container";
-import { useCanvasStore } from "@/app/board/[id]/components/HardWay/store";
-import { DEFAULT_BLOCK_DIMS } from "@/app/board/[id]/components/HardWay/constants";
+import { useCanvasStore } from "@/app/board/[id]/components/Canvas/store";
+import { DEFAULT_BLOCK_DIMS } from "@/app/board/[id]/components/Canvas/constants";
 
 type Props = {
   id: string;
