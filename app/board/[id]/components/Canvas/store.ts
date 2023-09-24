@@ -54,15 +54,15 @@ type Actions = {
   deleteSelectedLayers: () => void;
   updateLayer: (params: { id: LayerId; layer: Partial<Layer> }) => void;
 
-  translateSelectedLayers: (delta: Point) => void;
-  resizeFirstSelectedLayer: (bounds: XYWH) => void;
+  translateSelectedLayers: (params: { delta: Point; boardId: number }) => void;
+  resizeFirstSelectedLayer: (params: { bounds: XYWH; boardId: number }) => void;
 
   updateSelectionNet: (current: Point, origin: Point) => void;
 
   moveToFront: () => void;
   moveToBack: () => void;
 
-  setFill: (fill: Color) => void;
+  setFill: (params: { fill: Color; boardId: number }) => void;
 
   clearCanvas: () => void;
 };
@@ -78,6 +78,8 @@ const initialState: State = {
     penColor: null,
   },
 };
+
+const supabase = createClientComponentClient();
 
 export const useCanvasStore = create<State & Actions>((set, get) => ({
   ...initialState,
@@ -165,8 +167,6 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
     }),
 
   insertLayer: async ({ layerType, position, fill, boardId }) => {
-    const supabase = createClientComponentClient();
-
     const { height, width } = DEFAULT_BLOCK_DIMS[layerType] || {
       height: 100,
       width: 100,
@@ -186,7 +186,6 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       .from("blocks")
       .insert({ data: layer, board_id: boardId })
       .select();
-    console.log("res", res);
 
     const layerData = res.data[0];
 
@@ -221,38 +220,51 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       };
     });
 
-    const supabase = createClientComponentClient();
-
     await supabase.from("blocks").delete().in("id", selection);
   },
 
-  translateSelectedLayers: (delta) =>
-    set((state) => {
-      const selection = state.presence.selection;
+  translateSelectedLayers: async ({ delta, boardId }) => {
+    const state = get();
 
-      const updatedLayers = new Map(state.layers);
-      selection.forEach((layerId) => {
-        const layer = updatedLayers.get(layerId);
-        if (!layer) return;
+    const selection = state.presence.selection;
 
-        layer.x += delta.x;
-        layer.y += delta.y;
+    const updatedLayers = new Map(state.layers);
+    const updates: any[] = [];
+
+    selection.forEach((layerId) => {
+      const layer = updatedLayers.get(layerId);
+      if (!layer) return;
+
+      layer.x += delta.x;
+      layer.y += delta.y;
+
+      updates.push({
+        id: layerId,
+        board_id: boardId,
+        data: layer,
       });
+    });
 
+    set(() => {
       return {
         ...state,
         layers: updatedLayers,
       };
-    }),
+    });
 
-  resizeFirstSelectedLayer: (bounds: XYWH) =>
-    set((state) => {
-      const layerId = state.presence.selection[0];
-      if (!layerId) return state;
+    await supabase.from("blocks").upsert(updates);
+  },
 
-      const layer = state.layers.get(layerId);
-      if (!layer) return state;
+  resizeFirstSelectedLayer: async ({ bounds, boardId }) => {
+    const state = get();
 
+    const layerId = state.presence.selection[0];
+    if (!layerId) return;
+
+    const layer = state.layers.get(layerId);
+    if (!layer) return;
+
+    set(() => {
       const updatedLayers = new Map(state.layers);
       updatedLayers.set(layerId, {
         ...layer,
@@ -263,7 +275,19 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
         ...state,
         layers: updatedLayers,
       };
-    }),
+    });
+
+    await supabase.from("blocks").upsert([
+      {
+        id: layerId,
+        board_id: boardId,
+        data: {
+          ...layer,
+          ...bounds,
+        },
+      },
+    ]);
+  },
 
   updateSelectionNet: (current, origin) => {
     const state = get();
@@ -328,26 +352,41 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       });
     }),
 
-  setFill: (color) =>
-    set((state) => {
-      const selection = state.presence.selection;
+  setFill: async ({ fill, boardId }) => {
+    const state = get();
 
-      const updatedLayers = new Map(state.layers);
+    const selection = state.presence.selection;
+    const updatedLayers = new Map(state.layers);
 
-      selection.forEach((id) => {
-        const layer = updatedLayers.get(id);
-        if (!layer) return;
+    const updates: any[] = [];
 
-        updatedLayers.set(id, {
-          ...layer,
-          fill: color,
-        });
+    selection.forEach((id) => {
+      const layer = updatedLayers.get(id);
+      if (!layer) return;
+
+      updatedLayers.set(id, {
+        ...layer,
+        fill,
       });
 
+      updates.push({
+        id,
+        board_id: boardId,
+        data: {
+          ...layer,
+          fill,
+        },
+      });
+    });
+
+    set(() => {
       return R.mergeDeepRight(state, {
         layers: updatedLayers,
       });
-    }),
+    });
+
+    await supabase.from("blocks").upsert(updates);
+  },
 
   clearCanvas: async () => {
     const state = get();
@@ -358,8 +397,6 @@ export const useCanvasStore = create<State & Actions>((set, get) => ({
       layers: new Map(),
       layerIds: [],
     }));
-
-    const supabase = createClientComponentClient();
 
     await supabase.from("blocks").delete().in("id", layerIds);
   },

@@ -5,7 +5,6 @@ import IconButton from "@/components/ui/IconButton";
 import { Camera, Color } from "@/app/board/[id]/components/Canvas/types";
 import useSelectionBounds from "@/app/board/[id]/components/Canvas/hooks/useSelectionBounds";
 import { useCanvasStore } from "@/app/board/[id]/components/Canvas/store";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 type SelectionToolsProps = {
   boardId: number;
@@ -24,10 +23,6 @@ function SelectionTools({
   const deleteSelectedLayers = useCanvasStore(
     (state) => state.deleteSelectedLayers
   );
-  const selection = useCanvasStore((state) => state.presence.selection);
-  const layers = useCanvasStore((state) => state.layers);
-
-  const supabase = createClientComponentClient();
 
   const selectionBounds = useSelectionBounds();
   if (!selectionBounds) {
@@ -36,25 +31,7 @@ function SelectionTools({
 
   const handleSetFill = async (fill: Color) => {
     setLastUsedColor(fill);
-    setFill(fill);
-
-    const updates = [];
-
-    selection.forEach((id) => {
-      const layer = layers.get(id);
-      if (!layer) return;
-
-      updates.push({
-        id,
-        board_id: boardId,
-        data: {
-          ...layer,
-          fill,
-        },
-      });
-    });
-
-    await supabase.from("blocks").upsert(updates);
+    await setFill({ fill, boardId });
   };
 
   const x = selectionBounds.width / 2 + selectionBounds.x + camera.x;

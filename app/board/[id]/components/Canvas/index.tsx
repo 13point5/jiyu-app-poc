@@ -2,9 +2,9 @@ import React, {
   PointerEventHandler,
   useCallback,
   useEffect,
-  useMemo,
+  // useMemo,
   useState,
-  Suspense,
+  // Suspense,
 } from "react";
 import {
   Color,
@@ -18,23 +18,20 @@ import {
 } from "./types";
 import {
   colorToCss,
-  penPointsToPathLayer,
+  // penPointsToPathLayer,
   pointerEventToCanvasPoint,
   resizeBounds,
 } from "./utils";
 import SelectionBox from "@/components/Utils/SelectionBox";
-import { nanoid } from "nanoid";
 import LayerComponent from "@/components/Layers/LayerComponent";
 import SelectionTools from "@/components/Utils/SelectionTools";
 import useDisableScrollBounce from "./hooks/useDisableScrollBounce";
 import Path from "@/components/Utils/Path";
 import Toolbar from "@/components/Utils/Toolbar";
-import { DEFAULT_BLOCK_DIMS } from "./constants";
 import { useCanvasStore } from "./store";
 
 import { Inter } from "next/font/google";
 import { isCursorInsideALayer } from "@/app/board/[id]/components/Canvas/lib/utils";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 const inter = Inter({ subsets: ["latin"] });
 
 type Props = {
@@ -57,12 +54,9 @@ function Canvas({ blocks, boardId }: Props) {
 
   useDisableScrollBounce();
 
-  const supabase = createClientComponentClient();
-
   const setInitialLayers = useCanvasStore((state) => state.setInitialLayers);
 
   const layers = useCanvasStore((state) => state.layers);
-  console.log("layers", layers);
   const layerIds = useCanvasStore((state) => state.layerIds);
   const pencilDraft = useCanvasStore((state) => state.presence.pencilDraft);
   const setPencilDraft = useCanvasStore((state) => state.setPencilDraft);
@@ -159,7 +153,6 @@ function Canvas({ blocks, boardId }: Props) {
   //   async (layerId, layer) => {
   //     // insertLayerToStore(layerId, layer);
 
-  //     // await supabase.from("blocks").insert({ data: layer, board_id: boardId });
   //   },
   //   [supabase, boardId, insertLayerToStore]
   // );
@@ -175,7 +168,6 @@ function Canvas({ blocks, boardId }: Props) {
         fill: lastUsedColor,
         boardId,
       });
-      console.log("new layer", layer);
 
       setMyPresence([layer.id]);
       setState({ mode: CanvasMode.None });
@@ -201,37 +193,11 @@ function Canvas({ blocks, boardId }: Props) {
   //   setState({ mode: CanvasMode.Pencil });
   // }, [lastUsedColor, pencilDraft, setPencilDraft]);
 
-  const handleTranslateSelectedLayers = useCallback(
-    async (offset) => {
-      translateSelectedLayersInStore(offset);
-
-      const updates: any[] = [];
-
-      selection.forEach((layerId) => {
-        const layer = layers.get(layerId);
-        if (!layer) return;
-
-        updates.push({
-          id: layerId,
-          board_id: boardId,
-          data: {
-            ...layer,
-            x: layer.x + offset.x,
-            y: layer.y + offset.y,
-          },
-        });
-      });
-
-      await supabase.from("blocks").upsert(updates);
-    },
-    [layers, selection, supabase, translateSelectedLayersInStore, boardId]
-  );
-
   /**
    * Move selected layers on the canvas
    */
   const translateSelectedLayers = useCallback(
-    (point: Point) => {
+    async (point: Point) => {
       if (canvasState.mode !== CanvasMode.Translating) {
         return;
       }
@@ -241,11 +207,10 @@ function Canvas({ blocks, boardId }: Props) {
         y: point.y - canvasState.current.y,
       };
 
-      handleTranslateSelectedLayers(offset);
-
       setState({ mode: CanvasMode.Translating, current: point });
+      await translateSelectedLayersInStore({ delta: offset, boardId });
     },
-    [canvasState, handleTranslateSelectedLayers]
+    [canvasState, translateSelectedLayersInStore, boardId]
   );
 
   /**
@@ -263,32 +228,9 @@ function Canvas({ blocks, boardId }: Props) {
         point
       );
 
-      handleResizeFirstSelectedLayer(bounds);
-
-      const updates = [];
-
-      const layerId = selection[0];
-      const layer = layers.get(layerId);
-
-      updates.push({
-        id: layerId,
-        board_id: boardId,
-        data: {
-          ...layer,
-          ...bounds,
-        },
-      });
-
-      await supabase.from("blocks").upsert(updates);
+      await handleResizeFirstSelectedLayer({ bounds, boardId });
     },
-    [
-      canvasState,
-      handleResizeFirstSelectedLayer,
-      selection,
-      layers,
-      boardId,
-      supabase,
-    ]
+    [canvasState, handleResizeFirstSelectedLayer, boardId]
   );
 
   /**
