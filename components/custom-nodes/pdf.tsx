@@ -32,6 +32,13 @@ function PDFNode({
         style={{
           height: "500px",
         }}
+        onPointerDown={(e) => {
+          console.log("la");
+          e.preventDefault();
+        }}
+        onSelect={() => {
+          console.log("on select");
+        }}
       >
         <Viewer
           fileUrl="/Learning_Theories_ Cognitivism.pdf"

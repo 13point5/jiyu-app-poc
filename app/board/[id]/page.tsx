@@ -3,7 +3,9 @@
 import { useParams } from "next/navigation";
 import { useBlocks } from "@/app/board/[id]/hooks/useBlocks";
 import Canvas from "./components/Canvas";
+import RFlow from "../../ReactFlow";
 import { Loader2 } from "lucide-react";
+import { Worker } from "@react-pdf-viewer/core";
 
 export default function BoardPage() {
   const params = useParams();
@@ -16,5 +18,10 @@ export default function BoardPage() {
 
   if (blocksData.error) return <p>error: {blocksData.error.message}</p>;
 
-  return <Canvas blocks={blocksData.data} boardId={boardId} />;
+  // return <Canvas blocks={blocksData.data} boardId={boardId} />;
+  return (
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+      <RFlow />
+    </Worker>
+  );
 }
