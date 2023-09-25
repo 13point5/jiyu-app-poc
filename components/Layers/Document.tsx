@@ -108,11 +108,21 @@ export default function Document({ layer, onPointerDown, id }: Props) {
 
   return (
     <CustomLayerContainer id={id} onPointerDown={onPointerDown}>
-      <Viewer
-        fileUrl="/Learning_Theories_ Cognitivism.pdf"
-        defaultScale={1}
-        plugins={[defaultLayoutPluginInstance]}
-      />
+      <div
+        onSelect={(e) => {
+          // e.preventDefault();
+          console.log("onselect");
+        }}
+        onPointerDown={(e) => {
+          // e.preventDefault();
+        }}
+      >
+        <Viewer
+          fileUrl="/Learning_Theories_ Cognitivism.pdf"
+          defaultScale={1}
+          plugins={[defaultLayoutPluginInstance]}
+        />
+      </div>
     </CustomLayerContainer>
   );
 }

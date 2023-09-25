@@ -18,10 +18,10 @@ export default function BoardPage() {
 
   if (blocksData.error) return <p>error: {blocksData.error.message}</p>;
 
-  // return <Canvas blocks={blocksData.data} boardId={boardId} />;
-  return (
-    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-      <RFlow />
-    </Worker>
-  );
+  return <Canvas blocks={blocksData.data} boardId={boardId} />;
+  // return (
+  //   <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+  //     <RFlow />
+  //   </Worker>
+  // );
 }

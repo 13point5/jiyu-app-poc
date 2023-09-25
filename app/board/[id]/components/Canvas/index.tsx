@@ -272,17 +272,22 @@ function Canvas({ blocks, boardId }: Props) {
   /**
    * Start multiselection with the selection net if the pointer move enough since pressed
    */
-  const startMultiSelection = useCallback((current: Point, origin: Point) => {
-    // If the distance between the pointer position and the pointer position when it was pressed
-    if (Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > 5) {
-      // Start multi selection
-      setState({
-        mode: CanvasMode.SelectionNet,
-        origin,
-        current,
-      });
-    }
-  }, []);
+  const startMultiSelection = useCallback(
+    (current: Point, origin: Point) => {
+      console.log("selection, layers", selection, layers);
+
+      // If the distance between the pointer position and the pointer position when it was pressed
+      if (Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > 5) {
+        // Start multi selection
+        setState({
+          mode: CanvasMode.SelectionNet,
+          origin,
+          current,
+        });
+      }
+    },
+    [selection, layers]
+  );
 
   const onWheel = useCallback(
     (e: React.WheelEvent) => {
