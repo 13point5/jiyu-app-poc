@@ -1,6 +1,6 @@
 import React from "react";
 import Ellipse from "./Ellipse";
-import Path from "../Utils/Path";
+import Path from "../../../../../../../components/Utils/Path";
 import Rectangle from "./Rectangle";
 import {
   CanvasMode,

@@ -23,7 +23,7 @@ import {
   resizeBounds,
 } from "./utils";
 import SelectionBox from "@/components/Utils/SelectionBox";
-import LayerComponent from "@/components/Layers/LayerComponent";
+import LayerComponent from "@/app/board/[id]/components/Canvas/components/Layers/LayerComponent";
 import SelectionTools from "@/components/Utils/SelectionTools";
 import useDisableScrollBounce from "./hooks/useDisableScrollBounce";
 import Path from "@/components/Utils/Path";
